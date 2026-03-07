@@ -14,68 +14,133 @@
   <link rel="apple-touch-icon" href="/static/icons/icono_terminal_192.png">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    /* ══ TEMAS ══ */
+    :root {
+      --bg:        #0d0d0d;
+      --bg2:       #111;
+      --bg3:       #1a1a1a;
+      --border:    #2a2a2a;
+      --border2:   #1e1e1e;
+      --text:      #ccc;
+      --text2:     #888;
+      --text3:     #666;
+      --text4:     #555;
+      --accent:    #ff6b00;
+      --accent2:   #e05e00;
+      --input-bg:  #0d0d0d;
+      --resultado-bg: #0d0d0d;
+    }
+    body[data-tema="gris"] {
+      --bg:        #1e1e1e;
+      --bg2:       #262626;
+      --bg3:       #2e2e2e;
+      --border:    #3a3a3a;
+      --border2:   #333;
+      --text:      #d0d0d0;
+      --text2:     #999;
+      --text3:     #777;
+      --text4:     #666;
+      --accent:    #ff8c3a;
+      --accent2:   #e07530;
+      --input-bg:  #1e1e1e;
+      --resultado-bg: #1e1e1e;
+    }
+    body[data-tema="verde"] {
+      --bg:        #0a0f0a;
+      --bg2:       #0d140d;
+      --bg3:       #111a11;
+      --border:    #1a2e1a;
+      --border2:   #162416;
+      --text:      #a0c8a0;
+      --text2:     #5a8a5a;
+      --text3:     #3a6a3a;
+      --text4:     #2a4a2a;
+      --accent:    #00cc44;
+      --accent2:   #00aa33;
+      --input-bg:  #0a0f0a;
+      --resultado-bg: #0a0f0a;
+    }
+
     body {
-      background: #0d0d0d;
-      color: #ccc;
+      background: var(--bg);
+      color: var(--text);
       font-family: 'Share Tech Mono', monospace;
       min-height: 100vh;
       padding: 20px;
+      transition: background 0.3s, color 0.3s;
     }
     .header {
       display: flex; align-items: center; gap: 10px;
-      border-bottom: 2px solid #ff6b00;
+      border-bottom: 2px solid var(--accent);
       padding-bottom: 12px; margin-bottom: 24px;
     }
     .dot {
       width: 8px; height: 8px;
-      background: #ff6b00; border-radius: 50%;
+      background: var(--accent); border-radius: 50%;
       animation: pulse 2s infinite;
     }
-    .header h1 { font-size: 0.9rem; color: #ff6b00; letter-spacing: 2px; }
+    .header h1 { font-size: 0.9rem; color: var(--accent); letter-spacing: 2px; flex: 1; }
+
+    /* ── BOTÓN TEMA ── */
+    .tema-btn {
+      background: var(--bg3); border: 1px solid var(--border);
+      color: var(--text2); padding: 6px 10px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.6rem; cursor: pointer;
+      border-radius: 4px; letter-spacing: 1px;
+      transition: all 0.2s; white-space: nowrap;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .tema-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .tema-circulo {
+      width: 10px; height: 10px; border-radius: 50%;
+      display: inline-block; border: 1px solid var(--border);
+    }
     .container { max-width: 980px; margin: 0 auto; }
     .layout { display: grid; grid-template-columns: 220px 1fr; gap: 20px; }
     @media (max-width: 650px) { .layout { grid-template-columns: 1fr; } }
 
     /* ── MÓDULOS ── */
-    .panel-title { font-size: 0.65rem; color: #ff6b00; letter-spacing: 3px; margin-bottom: 12px; opacity: 0.7; }
+    .panel-title { font-size: 0.65rem; color: var(--accent); letter-spacing: 3px; margin-bottom: 12px; opacity: 0.7; }
     .modulos { display: grid; grid-template-columns: 1fr; gap: 6px; }
     a { text-decoration: none; display: block; }
     .mod-btn {
-      background: #1a1a1a; border: 1px solid #2a2a2a;
-      color: #888; padding: 10px 12px;
+      background: var(--bg3); border: 1px solid var(--border);
+      color: var(--text2); padding: 10px 12px;
       font-family: 'Share Tech Mono', monospace;
       font-size: 0.65rem; cursor: pointer;
       border-radius: 4px; text-align: left;
       transition: all 0.2s; letter-spacing: 1px; width: 100%;
     }
-    .mod-btn:hover { border-color: #ff6b00; color: #ff6b00; background: #1a0f00; }
-    .mod-btn.activo { border-color: #ff6b00; color: #ff6b00; background: #1a0f00; }
+    .mod-btn:hover { border-color: var(--accent); color: var(--accent); background: #1a0f00; }
+    .mod-btn.activo { border-color: var(--accent); color: var(--accent); background: #1a0f00; }
 
     /* ── PANEL CALC ── */
     .calc-panel {
-      background: #111; border: 1px solid #2a2a2a;
+      background: var(--bg2); border: 1px solid var(--border);
       border-radius: 6px; padding: 20px;
     }
-    .calc-title { font-size: 0.75rem; color: #ff6b00; margin-bottom: 16px; }
+    .calc-title { font-size: 0.75rem; color: var(--accent); margin-bottom: 16px; }
     .formula-select {
-      width: 100%; background: #0d0d0d;
-      border: 1px solid #2a2a2a; color: #ff6b00;
+      width: 100%; background: var(--bg);
+      border: 1px solid var(--border); color: var(--accent);
       padding: 10px; font-family: 'Share Tech Mono', monospace;
       font-size: 0.72rem; border-radius: 4px;
       margin-bottom: 16px; outline: none; cursor: pointer;
     }
-    .formula-select option, .formula-select optgroup { background: #0d0d0d; }
+    .formula-select option, .formula-select optgroup { background: var(--bg); }
     .input-group { margin-bottom: 12px; }
-    .input-label { font-size: 0.6rem; color: #666; margin-bottom: 4px; letter-spacing: 1px; }
+    .input-label { font-size: 0.6rem; color: var(--text3); margin-bottom: 4px; letter-spacing: 1px; }
     .input-field {
-      width: 100%; background: #0d0d0d;
-      border: 1px solid #2a2a2a; color: #ff6b00;
+      width: 100%; background: var(--bg);
+      border: 1px solid var(--border); color: var(--accent);
       padding: 10px; font-family: 'Share Tech Mono', monospace;
       font-size: 0.78rem; border-radius: 4px; outline: none;
     }
-    .input-field:focus { border-color: #ff6b00; }
+    .input-field:focus { border-color: var(--accent); }
     .btn-calcular {
-      width: 100%; background: #ff6b00; color: #000;
+      width: 100%; background: var(--accent); color: #000;
       border: none; padding: 12px;
       font-family: 'Share Tech Mono', monospace;
       font-size: 0.78rem; letter-spacing: 2px;
@@ -83,11 +148,11 @@
       margin-top: 8px; font-weight: bold;
       transition: background 0.2s;
     }
-    .btn-calcular:hover { background: #e05e00; }
+    .btn-calcular:hover { background: var(--accent2); }
     .resultado {
-      background: #0d0d0d; border: 1px solid #ff6b00;
+      background: var(--bg); border: 1px solid #ff6b00;
       padding: 12px; font-size: 0.85rem;
-      color: #ff6b00; margin-top: 14px;
+      color: var(--accent); margin-top: 14px;
       border-radius: 4px; letter-spacing: 1px;
     }
     .error {
@@ -97,23 +162,23 @@
     }
     .placeholder {
       text-align: center; padding: 40px 20px;
-      color: #333; font-size: 0.75rem; letter-spacing: 2px;
+      color: var(--text4); font-size: 0.75rem; letter-spacing: 2px;
     }
     .footer {
       display: flex; justify-content: space-between;
       align-items: center; margin-top: 30px;
-      padding-top: 12px; border-top: 1px solid #1a1a1a;
-      font-size: 0.6rem; color: #333; letter-spacing: 2px;
+      padding-top: 12px; border-top: 1px solid var(--border2);
+      font-size: 0.6rem; color: var(--text4); letter-spacing: 2px;
     }
     @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
     /* ── GLOSARIO ── */
     .glosario {
       max-width: 980px; margin: 36px auto 0;
-      border-top: 1px solid #1f1f1f;
+      border-top: 1px solid var(--border2);
       padding-top: 24px;
     }
     .glosario-title {
-      font-size: 0.65rem; color: #ff6b00;
+      font-size: 0.65rem; color: var(--accent);
       letter-spacing: 3px; margin-bottom: 16px; opacity: 0.8;
     }
     .glosario-grid {
@@ -122,7 +187,7 @@
       gap: 8px;
     }
     .glos-item {
-      background: #111; border: 1px solid #1e1e1e;
+      background: var(--bg2); border: 1px solid var(--border2);
       border-radius: 4px; padding: 10px 12px;
       display: grid;
       grid-template-columns: 44px 1fr;
@@ -131,11 +196,11 @@
     }
     .glos-sym {
       grid-row: 1 / 3; align-self: center;
-      font-size: 1.1rem; color: #ff6b00;
+      font-size: 1.1rem; color: var(--accent);
       font-weight: bold; text-align: center;
     }
-    .glos-name { font-size: 0.65rem; color: #ccc; letter-spacing: 1px; }
-    .glos-def  { font-size: 0.58rem; color: #555; line-height: 1.4; }
+    .glos-name { font-size: 0.65rem; color: var(--text); letter-spacing: 1px; }
+    .glos-def  { font-size: 0.58rem; color: var(--text4); line-height: 1.4; }
     @media (max-width: 650px) { .glosario-grid { grid-template-columns: 1fr; } }
 
     /* ── CÓDIGO DE COLORES ── */
@@ -153,20 +218,20 @@
     }
     .banda-group { display: flex; flex-direction: column; gap: 4px; }
     .banda-label {
-      font-size: 0.58rem; color: #888; letter-spacing: 1px;
+      font-size: 0.58rem; color: var(--text2); letter-spacing: 1px;
     }
-    .banda-label span { color: #ff6b00; }
+    .banda-label span { color: var(--accent); }
     .banda-select {
-      background: #0d0d0d; border: 1px solid #333;
-      color: #ff6b00; padding: 8px 10px;
+      background: var(--bg); border: 1px solid var(--border);
+      color: var(--accent); padding: 8px 10px;
       font-family: 'Share Tech Mono', monospace;
       font-size: 0.7rem; border-radius: 4px;
       outline: none; cursor: pointer;
       border-left-width: 5px;
       transition: border-color 0.2s;
     }
-    .banda-select:focus { border-color: #ff6b00; }
-    .banda-select option { background: #111; color: #ccc; }
+    .banda-select:focus { border-color: var(--accent); }
+    .banda-select option { background: var(--bg2); color: var(--text); }
 
     /* ── CONVERSIÓN ── */
     .conv-row {
@@ -177,16 +242,16 @@
       margin-bottom: 14px;
     }
     .conv-arrow {
-      font-size: 1.2rem; color: #ff6b00;
+      font-size: 1.2rem; color: var(--accent);
       padding-bottom: 10px; text-align: center;
     }
     .conv-resultado {
-      background: #0d0d0d; border: 1px solid #ff6b00;
+      background: var(--bg); border: 1px solid #ff6b00;
       border-radius: 4px; padding: 14px;
       margin-top: 14px;
     }
     .conv-resultado .conv-linea {
-      font-size: 0.82rem; color: #ff6b00;
+      font-size: 0.82rem; color: var(--accent);
       padding: 3px 0; letter-spacing: 1px;
     }
     .conv-resultado .conv-linea.principal {
@@ -202,6 +267,10 @@
   <div class="header">
     <div class="dot"></div>
     <h1>CALCULADORA / ELECTRÓNICA BÁSICA</h1>
+    <button class="tema-btn" onclick="ciclarTema()" id="temaBtn">
+      <span class="tema-circulo" id="temaCirculo"></span>
+      <span id="temaNombre">NEGRO</span>
+    </button>
   </div>
 
   <div class="layout">
@@ -709,8 +778,42 @@ function updateBandas() {
   pares.forEach(([sid, bid]) => colorearBanda(sid, bid));
 }
 
-// Ejecutar al cargar (repoblado por Flask tras calcular)
-document.addEventListener("DOMContentLoaded", updateBandas);
+// updateBandas se llama desde el DOMContentLoaded del tema
+
+// ── TEMAS ──
+const TEMAS = [
+  { id: 'negro', nombre: 'NEGRO',  color: '#0d0d0d' },
+  { id: 'gris',  nombre: 'GRIS',   color: '#1e1e1e' },
+  { id: 'verde', nombre: 'VERDE',  color: '#0a0f0a' },
+];
+let temaActual = 0;
+
+function aplicarTema(idx) {
+  const tema = TEMAS[idx];
+  document.body.setAttribute('data-tema', tema.id === 'negro' ? '' : tema.id);
+  document.getElementById('temaNombre').textContent = tema.nombre;
+  document.getElementById('temaCirculo').style.background = tema.color;
+  document.getElementById('temaCirculo').style.borderColor =
+    idx === 0 ? '#444' : TEMAS[idx].color;
+  localStorage.setItem('ecalc-tema', idx);
+}
+
+function ciclarTema() {
+  temaActual = (temaActual + 1) % TEMAS.length;
+  aplicarTema(temaActual);
+}
+
+// Cargar tema guardado al iniciar
+document.addEventListener('DOMContentLoaded', () => {
+  const guardado = localStorage.getItem('ecalc-tema');
+  if (guardado !== null) {
+    temaActual = parseInt(guardado);
+    aplicarTema(temaActual);
+  } else {
+    aplicarTema(0);
+  }
+  updateBandas();
+});
 
 // ── PWA: registrar Service Worker ──
 if ('serviceWorker' in navigator) {
