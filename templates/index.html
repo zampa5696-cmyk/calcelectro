@@ -171,6 +171,7 @@
       font-size: 0.6rem; color: var(--text4); letter-spacing: 2px;
     }
     @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    .formula-hint { font-size: 0.65rem; color: var(--text3); margin: -4px 0 12px; letter-spacing: 1px; }
     /* ── GLOSARIO ── */
     .glosario {
       max-width: 980px; margin: 36px auto 0;
@@ -717,11 +718,6 @@
 
             {% endif %}<!-- /if formula -->
 
-          {% endif %}<!-- fin modulos -->
-
-          {% if formula %}
-            <button type="submit" class="btn-calcular">CALCULAR</button>
-  
           {# ── CÁLCULO LED ── #}
           {% elif modulo == "led" %}
             <div class="calc-title">// CÁLCULO LED</div>
@@ -731,7 +727,6 @@
               <option value="corriente"      {% if formula == 'corriente' %}selected{% endif %}>If = (Vcc - Vf) / R → Corriente en LED</option>
               <option value="vf_referencia"  {% if formula == 'vf_referencia' %}selected{% endif %}>Vf referencia por color</option>
             </select>
-
             {% if formula == "resistencia" %}
               <div class="input-group"><div class="input-label">TENSIÓN DE FUENTE Vcc — Volts</div><input class="input-field" type="number" step="any" name="vcc" placeholder="5 (ej: 5V, 9V, 12V)" required></div>
               <div class="input-group"><div class="input-label">TENSIÓN FORWARD Vf — Volts</div><input class="input-field" type="number" step="any" name="vf" placeholder="2.0 (rojo≈1.8V, azul≈3.2V)" required></div>
@@ -770,7 +765,6 @@
               <option value="voltaje_cap"   {% if formula == 'voltaje_cap' %}selected{% endif %}>V = Q / C → Voltaje</option>
               <option value="tiempo_carga"  {% if formula == 'tiempo_carga' %}selected{% endif %}>τ = R × C → Tiempo de carga</option>
             </select>
-
             {% if formula == "energia" %}
               <div class="input-group"><div class="input-label">CAPACITANCIA C — Farads</div><input class="input-field" type="number" step="any" name="capacitancia" placeholder="0.001 (1mF = 0.001F)" required></div>
               <div class="input-group"><div class="input-label">VOLTAJE V — Volts</div><input class="input-field" type="number" step="any" name="voltaje" placeholder="5" required></div>
@@ -789,6 +783,10 @@
               <div class="formula-hint">τ = R × C  |  63% carga en 1τ  |  99% en 5τ</div>
             {% endif %}
 
+          {% endif %}<!-- fin modulos -->
+
+          {% if formula %}
+            <button type="submit" class="btn-calcular">CALCULAR</button>
           {% endif %}
 
         </form>
