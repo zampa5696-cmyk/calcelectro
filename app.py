@@ -1,6 +1,52 @@
 from flask import Flask, render_template, request
 import math
 
+# ============================================================
+# FORMATEADOR DE NÚMEROS — estilo argentino (punto miles, coma decimal)
+# ============================================================
+def fmt(valor, decimales=4):
+    """
+    Formatea un número con separador de miles (punto) y decimal (coma).
+    Ej: 1234567.891 → '1.234.567,8910'
+    Maneja automáticamente notación científica para valores muy pequeños.
+    """
+    if valor == 0:
+        return "0"
+    abs_val = abs(valor)
+    # Notación científica para valores muy pequeños o muy grandes
+    if abs_val < 1e-6 or abs_val >= 1e15:
+        # Notación científica con coma decimal
+        s = f"{valor:.{decimales}e}"
+        # Reemplazar punto por coma en la parte decimal
+        partes = s.split('e')
+        partes[0] = partes[0].replace('.', ',')
+        return 'e'.join(partes)
+    # Formatear con decimales fijos
+    s = f"{valor:.{decimales}f}"
+    # Separar parte entera y decimal
+    if '.' in s:
+        entero, dec = s.split('.')
+    else:
+        entero, dec = s, ''
+    # Signo
+    signo = ''
+    if entero.startswith('-'):
+        signo = '-'
+        entero = entero[1:]
+    # Agregar puntos cada 3 dígitos desde la derecha
+    grupos = []
+    while len(entero) > 3:
+        grupos.insert(0, entero[-3:])
+        entero = entero[:-3]
+    grupos.insert(0, entero)
+    entero_fmt = '.'.join(grupos)
+    # Unir con coma decimal
+    resultado_fmt = signo + entero_fmt
+    if dec:
+        resultado_fmt += ',' + dec
+    return resultado_fmt
+
+
 app = Flask(__name__)
 
 # ============================================================
@@ -28,54 +74,54 @@ def calcular():
             if formula == "voltaje":
                 i = float(request.form.get("corriente"))
                 r = float(request.form.get("resistencia"))
-                resultado = f"Voltaje = {i * r:.4f} V"
+                resultado = f"Voltaje = {fmt(i * r)} V"
             elif formula == "corriente":
                 v = float(request.form.get("voltaje"))
                 r = float(request.form.get("resistencia"))
-                resultado = f"Corriente = {v / r:.4f} A"
+                resultado = f"Corriente = {fmt(v / r)} A"
             elif formula == "resistencia":
                 v = float(request.form.get("voltaje"))
                 i = float(request.form.get("corriente"))
-                resultado = f"Resistencia = {v / i:.4f} Ω"
+                resultado = f"Resistencia = {fmt(v / i)} Ω"
 
         # ── POTENCIA ─────────────────────────────────────────
         elif modulo == "potencia":
             if formula == "p_vi":
                 v = float(request.form.get("voltaje"))
                 i = float(request.form.get("corriente"))
-                resultado = f"Potencia = {v * i:.4f} W"
+                resultado = f"Potencia = {fmt(v * i)} W"
             elif formula == "p_i2r":
                 i = float(request.form.get("corriente"))
                 r = float(request.form.get("resistencia"))
-                resultado = f"Potencia = {i**2 * r:.4f} W"
+                resultado = f"Potencia = {fmt(i**2 * r)} W"
             elif formula == "p_v2r":
                 v = float(request.form.get("voltaje"))
                 r = float(request.form.get("resistencia"))
-                resultado = f"Potencia = {v**2 / r:.4f} W"
+                resultado = f"Potencia = {fmt(v**2 / r)} W"
             elif formula == "v_pi":
                 p = float(request.form.get("potencia"))
                 i = float(request.form.get("corriente"))
-                resultado = f"Voltaje = {p / i:.4f} V"
+                resultado = f"Voltaje = {fmt(p / i)} V"
             elif formula == "i_pv":
                 p = float(request.form.get("potencia"))
                 v = float(request.form.get("voltaje"))
-                resultado = f"Corriente = {p / v:.4f} A"
+                resultado = f"Corriente = {fmt(p / v)} A"
             elif formula == "i_raiz":
                 p = float(request.form.get("potencia"))
                 r = float(request.form.get("resistencia"))
-                resultado = f"Corriente = {(p / r)**0.5:.4f} A"
+                resultado = f"Corriente = {fmt((p / r)**0.5)} A"
             elif formula == "r_pi2":
                 p = float(request.form.get("potencia"))
                 i = float(request.form.get("corriente"))
-                resultado = f"Resistencia = {p / i**2:.4f} Ω"
+                resultado = f"Resistencia = {fmt(p / i**2)} Ω"
             elif formula == "r_v2p":
                 v = float(request.form.get("voltaje"))
                 p = float(request.form.get("potencia"))
-                resultado = f"Resistencia = {v**2 / p:.4f} Ω"
+                resultado = f"Resistencia = {fmt(v**2 / p)} Ω"
             elif formula == "v_raiz":
                 p = float(request.form.get("potencia"))
                 r = float(request.form.get("resistencia"))
-                resultado = f"Voltaje = {(p * r)**0.5:.4f} V"
+                resultado = f"Voltaje = {fmt((p * r)**0.5)} V"
 
         # ── KIRCHHOFF ────────────────────────────────────────
         elif modulo == "kirchhoff":
@@ -83,120 +129,120 @@ def calcular():
                 it = float(request.form.get("i_total"))
                 r1 = float(request.form.get("r1"))
                 r2 = float(request.form.get("r2"))
-                resultado = f"Corriente rama 1 = {it * (r2 / (r1 + r2)):.4f} A"
+                resultado = f"Corriente rama 1 = {fmt(it * (r2 / (r1 + r2)))} A"
             elif formula == "i2":
                 it = float(request.form.get("i_total"))
                 r1 = float(request.form.get("r1"))
                 r2 = float(request.form.get("r2"))
-                resultado = f"Corriente rama 2 = {it * (r1 / (r1 + r2)):.4f} A"
+                resultado = f"Corriente rama 2 = {fmt(it * (r1 / (r1 + r2)))} A"
             elif formula == "v1":
                 vt = float(request.form.get("v_total"))
                 r1 = float(request.form.get("r1"))
                 r2 = float(request.form.get("r2"))
-                resultado = f"Voltaje en R1 = {vt * (r1 / (r1 + r2)):.4f} V"
+                resultado = f"Voltaje en R1 = {fmt(vt * (r1 / (r1 + r2)))} V"
             elif formula == "v2":
                 vt = float(request.form.get("v_total"))
                 r1 = float(request.form.get("r1"))
                 r2 = float(request.form.get("r2"))
-                resultado = f"Voltaje en R2 = {vt * (r2 / (r1 + r2)):.4f} V"
+                resultado = f"Voltaje en R2 = {fmt(vt * (r2 / (r1 + r2)))} V"
             elif formula == "i_total":
                 i1 = float(request.form.get("i1"))
                 i2 = float(request.form.get("i2"))
-                resultado = f"Corriente total = {i1 + i2:.4f} A"
+                resultado = f"Corriente total = {fmt(i1 + i2)} A"
             elif formula == "v_total":
                 v1 = float(request.form.get("v1"))
                 v2 = float(request.form.get("v2"))
                 v3 = float(request.form.get("v3"))
-                resultado = f"Voltaje total = {v1 + v2 + v3:.4f} V"
+                resultado = f"Voltaje total = {fmt(v1 + v2 + v3)} V"
 
         # ── POTENCIA DISIPADA ────────────────────────────────
         elif modulo == "disipada":
             if formula == "p_i2r":
                 i = float(request.form.get("corriente"))
                 r = float(request.form.get("resistencia"))
-                resultado = f"Potencia disipada = {i**2 * r:.4f} W"
+                resultado = f"Potencia disipada = {fmt(i**2 * r)} W"
             elif formula == "p_v2r":
                 v = float(request.form.get("voltaje"))
                 r = float(request.form.get("resistencia"))
-                resultado = f"Potencia disipada = {v**2 / r:.4f} W"
+                resultado = f"Potencia disipada = {fmt(v**2 / r)} W"
             elif formula == "r_pi2":
                 p = float(request.form.get("potencia"))
                 i = float(request.form.get("corriente"))
-                resultado = f"Resistencia = {p / i**2:.4f} Ω"
+                resultado = f"Resistencia = {fmt(p / i**2)} Ω"
             elif formula == "r_v2p":
                 v = float(request.form.get("voltaje"))
                 p = float(request.form.get("potencia"))
-                resultado = f"Resistencia = {v**2 / p:.4f} Ω"
+                resultado = f"Resistencia = {fmt(v**2 / p)} Ω"
             elif formula == "i_raiz":
                 p = float(request.form.get("potencia"))
                 r = float(request.form.get("resistencia"))
-                resultado = f"Corriente = {(p / r)**0.5:.4f} A"
+                resultado = f"Corriente = {fmt((p / r)**0.5)} A"
             elif formula == "v_raiz":
                 p = float(request.form.get("potencia"))
                 r = float(request.form.get("resistencia"))
-                resultado = f"Voltaje = {(p * r)**0.5:.4f} V"
+                resultado = f"Voltaje = {fmt((p * r)**0.5)} V"
 
         # ── RESISTENCIAS EQUIVALENTES ────────────────────────
         elif modulo == "resistencias":
             if formula == "serie2":
                 r1 = float(request.form.get("r1"))
                 r2 = float(request.form.get("r2"))
-                resultado = f"R equivalente = {r1 + r2:.4f} Ω"
+                resultado = f"R equivalente = {fmt(r1 + r2)} Ω"
             elif formula == "serie3":
                 r1 = float(request.form.get("r1"))
                 r2 = float(request.form.get("r2"))
                 r3 = float(request.form.get("r3"))
-                resultado = f"R equivalente = {r1 + r2 + r3:.4f} Ω"
+                resultado = f"R equivalente = {fmt(r1 + r2 + r3)} Ω"
             elif formula == "paralelo2":
                 r1 = float(request.form.get("r1"))
                 r2 = float(request.form.get("r2"))
-                resultado = f"R equivalente = {(r1 * r2) / (r1 + r2):.4f} Ω"
+                resultado = f"R equivalente = {fmt((r1 * r2) / (r1 + r2))} Ω"
             elif formula == "paralelo3":
                 r1 = float(request.form.get("r1"))
                 r2 = float(request.form.get("r2"))
                 r3 = float(request.form.get("r3"))
-                resultado = f"R equivalente = {1 / (1/r1 + 1/r2 + 1/r3):.4f} Ω"
+                resultado = f"R equivalente = {fmt(1 / (1/r1 + 1/r2 + 1/r3))} Ω"
 
         # ── CAÍDA DE TENSIÓN ─────────────────────────────────
         elif modulo == "caida":
             if formula == "v_ir":
                 i = float(request.form.get("corriente"))
                 r = float(request.form.get("resistencia"))
-                resultado = f"Caída de tensión = {i * r:.4f} V"
+                resultado = f"Caída de tensión = {fmt(i * r)} V"
             elif formula == "v1_serie":
                 vt = float(request.form.get("v_total"))
                 r1 = float(request.form.get("r1"))
                 r2 = float(request.form.get("r2"))
-                resultado = f"Caída en R1 = {vt * (r1 / (r1 + r2)):.4f} V"
+                resultado = f"Caída en R1 = {fmt(vt * (r1 / (r1 + r2)))} V"
             elif formula == "v2_serie":
                 vt = float(request.form.get("v_total"))
                 r1 = float(request.form.get("r1"))
                 r2 = float(request.form.get("r2"))
-                resultado = f"Caída en R2 = {vt * (r2 / (r1 + r2)):.4f} V"
+                resultado = f"Caída en R2 = {fmt(vt * (r2 / (r1 + r2)))} V"
             elif formula == "i1_paralelo":
                 it = float(request.form.get("i_total"))
                 r1 = float(request.form.get("r1"))
                 r2 = float(request.form.get("r2"))
-                resultado = f"Corriente rama 1 = {it * (r2 / (r1 + r2)):.4f} A"
+                resultado = f"Corriente rama 1 = {fmt(it * (r2 / (r1 + r2)))} A"
             elif formula == "i2_paralelo":
                 it = float(request.form.get("i_total"))
                 r1 = float(request.form.get("r1"))
                 r2 = float(request.form.get("r2"))
-                resultado = f"Corriente rama 2 = {it * (r1 / (r1 + r2)):.4f} A"
+                resultado = f"Corriente rama 2 = {fmt(it * (r1 / (r1 + r2)))} A"
             elif formula == "i_vr":
                 v = float(request.form.get("voltaje"))
                 r = float(request.form.get("resistencia"))
-                resultado = f"Corriente = {v / r:.4f} A"
+                resultado = f"Corriente = {fmt(v / r)} A"
             elif formula == "v_total_serie":
                 v1 = float(request.form.get("v1"))
                 v2 = float(request.form.get("v2"))
                 v3 = float(request.form.get("v3"))
-                resultado = f"Voltaje total = {v1 + v2 + v3:.4f} V"
+                resultado = f"Voltaje total = {fmt(v1 + v2 + v3)} V"
             elif formula == "i_total_paralelo":
                 i1 = float(request.form.get("i1"))
                 i2 = float(request.form.get("i2"))
                 i3 = float(request.form.get("i3"))
-                resultado = f"Corriente total = {i1 + i2 + i3:.4f} A"
+                resultado = f"Corriente total = {fmt(i1 + i2 + i3)} A"
 
         # ── CÓDIGO DE COLORES ────────────────────────────────
         elif modulo == "colores":
@@ -267,13 +313,13 @@ def calcular():
                 r  = float(request.form.get("resistencia"))
                 c  = float(request.form.get("capacitancia"))
                 fc = 1 / (2 * math.pi * r * c)
-                resultado = f"Frecuencia de corte = {fc:.4f} Hz  ({fc/1000:.6f} kHz)"
+                resultado = f"Frecuencia de corte = {fmt(fc)} Hz  ({fmt(fc/1000, 6)} kHz)"
 
             elif formula == "rc_r":
                 fc = float(request.form.get("frecuencia"))
                 c  = float(request.form.get("capacitancia"))
                 r  = 1 / (2 * math.pi * fc * c)
-                resultado = f"Resistencia = {r:.4f} Ω"
+                resultado = f"Resistencia = {fmt(r)} Ω"
 
             elif formula == "rc_c":
                 fc = float(request.form.get("frecuencia"))
@@ -293,19 +339,19 @@ def calcular():
                 f  = float(request.form.get("frecuencia"))
                 c  = float(request.form.get("capacitancia"))
                 xc = 1 / (2 * math.pi * f * c)
-                resultado = f"Reactancia capacitiva Xc = {xc:.4f} Ω"
+                resultado = f"Reactancia capacitiva Xc = {fmt(xc)} Ω"
 
             elif formula == "rl_fc":
                 r  = float(request.form.get("resistencia"))
                 l  = float(request.form.get("inductancia"))
                 fc = r / (2 * math.pi * l)
-                resultado = f"Frecuencia de corte = {fc:.4f} Hz  ({fc/1000:.6f} kHz)"
+                resultado = f"Frecuencia de corte = {fmt(fc)} Hz  ({fmt(fc/1000, 6)} kHz)"
 
             elif formula == "rl_r":
                 fc = float(request.form.get("frecuencia"))
                 l  = float(request.form.get("inductancia"))
                 r  = 2 * math.pi * fc * l
-                resultado = f"Resistencia = {r:.4f} Ω"
+                resultado = f"Resistencia = {fmt(r)} Ω"
 
             elif formula == "rl_l":
                 fc = float(request.form.get("frecuencia"))
@@ -323,7 +369,7 @@ def calcular():
                 f  = float(request.form.get("frecuencia"))
                 l  = float(request.form.get("inductancia"))
                 xl = 2 * math.pi * f * l
-                resultado = f"Reactancia inductiva Xl = {xl:.4f} Ω"
+                resultado = f"Reactancia inductiva Xl = {fmt(xl)} Ω"
 
         # ── CONVERSIÓN DE UNIDADES ───────────────────────────
         elif modulo == "conversion":
@@ -367,13 +413,8 @@ def calcular():
                     valor_base    = v * FACTORES[origen]
                     valor_destino = valor_base / FACTORES[destino]
                     # Formato inteligente
-                    def fmt(n):
-                        if n == 0: return "0"
-                        if abs(n) >= 1e9:  return f"{n:.6e}"
-                        if abs(n) >= 1:    return f"{n:.6g}"
-                        return f"{n:.6e}"
-                    resultado = (f"{v} {SIMBOLOS[origen]}  =  "
-                                 f"{fmt(valor_destino)} {SIMBOLOS[destino]}")
+                    resultado = (f"{fmt(v)}  {SIMBOLOS[origen]}  =  "
+                                 f"{fmt(valor_destino, 6)}  {SIMBOLOS[destino]}")
 
     except (ValueError, TypeError):
         error = "Ingresá valores numéricos válidos en todos los campos."
