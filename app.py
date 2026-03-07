@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 import math
 
 # ============================================================
@@ -54,8 +54,9 @@ app = Flask(__name__)
 # ============================================================
 @app.route("/")
 def index():
-    modulo = request.args.get("modulo")
-    return render_template("index.html", resultado=None, modulo=modulo, formula=None, error=None)
+    modulo  = request.args.get("modulo")
+    formula = request.args.get("formula")  # para redirect desde seleccionarFormula
+    return render_template("index.html", resultado=None, modulo=modulo, formula=formula, error=None)
 
 
 # ============================================================
@@ -69,11 +70,9 @@ def calcular():
     resultado = None
     error = None
 
-    # Si solo cambió la fórmula, mostrar el formulario sin calcular
+    # Si solo cambió la fórmula, redirigir via GET para evitar reenvío de formulario
     if solo_formula:
-        return render_template("index.html",
-                               resultado=None, error=None,
-                               modulo=modulo, formula=formula)
+        return redirect(url_for("index", modulo=modulo, formula=formula))
 
     try:
         # ── LEY DE OHM ──────────────────────────────────────
