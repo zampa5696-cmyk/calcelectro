@@ -306,7 +306,7 @@
           <!-- ── LEY DE OHM ── -->
           {% if modulo == "ohm" %}
             <div class="calc-title">// LEY DE OHM</div>
-            <select class="formula-select" name="formula" onchange="this.form.submit()">
+            <select class="formula-select" name="formula" onchange="seleccionarFormula(this)">
               <option value="">-- SELECCIONAR FÓRMULA --</option>
               <option value="voltaje"     {% if formula == 'voltaje' %}selected{% endif %}>V = I × R → Calcular Voltaje</option>
               <option value="corriente"   {% if formula == 'corriente' %}selected{% endif %}>I = V / R → Calcular Corriente</option>
@@ -326,7 +326,7 @@
           <!-- ── POTENCIA ── -->
           {% elif modulo == "potencia" %}
             <div class="calc-title">// POTENCIA</div>
-            <select class="formula-select" name="formula" onchange="this.form.submit()">
+            <select class="formula-select" name="formula" onchange="seleccionarFormula(this)">
               <option value="">-- SELECCIONAR FÓRMULA --</option>
               <option value="p_vi"   {% if formula == 'p_vi' %}selected{% endif %}>P = V × I</option>
               <option value="p_i2r"  {% if formula == 'p_i2r' %}selected{% endif %}>P = I² × R</option>
@@ -355,7 +355,7 @@
           <!-- ── KIRCHHOFF ── -->
           {% elif modulo == "kirchhoff" %}
             <div class="calc-title">// LEYES DE KIRCHHOFF</div>
-            <select class="formula-select" name="formula" onchange="this.form.submit()">
+            <select class="formula-select" name="formula" onchange="seleccionarFormula(this)">
               <option value="">-- SELECCIONAR FÓRMULA --</option>
               <option value="i1"      {% if formula == 'i1' %}selected{% endif %}>I1 = I_total × (R2/(R1+R2))</option>
               <option value="i2"      {% if formula == 'i2' %}selected{% endif %}>I2 = I_total × (R1/(R1+R2))</option>
@@ -384,7 +384,7 @@
           <!-- ── POTENCIA DISIPADA ── -->
           {% elif modulo == "disipada" %}
             <div class="calc-title">// POTENCIA DISIPADA</div>
-            <select class="formula-select" name="formula" onchange="this.form.submit()">
+            <select class="formula-select" name="formula" onchange="seleccionarFormula(this)">
               <option value="">-- SELECCIONAR FÓRMULA --</option>
               <option value="p_i2r"  {% if formula == 'p_i2r' %}selected{% endif %}>P = I² × R</option>
               <option value="p_v2r"  {% if formula == 'p_v2r' %}selected{% endif %}>P = V² / R</option>
@@ -413,7 +413,7 @@
           <!-- ── RESISTENCIAS EQUIV ── -->
           {% elif modulo == "resistencias" %}
             <div class="calc-title">// RESISTENCIAS EQUIVALENTES</div>
-            <select class="formula-select" name="formula" onchange="this.form.submit()">
+            <select class="formula-select" name="formula" onchange="seleccionarFormula(this)">
               <option value="">-- SELECCIONAR FÓRMULA --</option>
               <option value="serie2"    {% if formula == 'serie2' %}selected{% endif %}>Serie 2R: R = R1 + R2</option>
               <option value="serie3"    {% if formula == 'serie3' %}selected{% endif %}>Serie 3R: R = R1 + R2 + R3</option>
@@ -429,7 +429,7 @@
           <!-- ── CAÍDA DE TENSIÓN ── -->
           {% elif modulo == "caida" %}
             <div class="calc-title">// CAÍDA DE TENSIÓN</div>
-            <select class="formula-select" name="formula" onchange="this.form.submit()">
+            <select class="formula-select" name="formula" onchange="seleccionarFormula(this)">
               <option value="">-- SELECCIONAR FÓRMULA --</option>
               <option value="v_ir"            {% if formula == 'v_ir' %}selected{% endif %}>V = I × R</option>
               <option value="v1_serie"         {% if formula == 'v1_serie' %}selected{% endif %}>V1 serie = Vt × (R1/(R1+R2))</option>
@@ -471,7 +471,7 @@
             <div class="calc-title">// CÓDIGO DE COLORES — RESISTENCIAS</div>
 
             <!-- Tipo de resistencia -->
-            <select class="formula-select" name="formula" onchange="this.form.submit()">
+            <select class="formula-select" name="formula" onchange="seleccionarFormula(this)">
               <option value="">-- SELECCIONAR TIPO --</option>
               <option value="4bandas" {% if formula == '4bandas' %}selected{% endif %}>4 Bandas (estándar)</option>
               <option value="5bandas" {% if formula == '5bandas' %}selected{% endif %}>5 Bandas (precisión)</option>
@@ -592,7 +592,7 @@
           <!-- ── FILTROS RC / RL ── -->
           {% elif modulo == "filtros" %}
             <div class="calc-title">// FILTROS RC / RL</div>
-            <select class="formula-select" name="formula" onchange="this.form.submit()">
+            <select class="formula-select" name="formula" onchange="seleccionarFormula(this)">
               <option value="">-- SELECCIONAR CÁLCULO --</option>
               <optgroup label="── FILTRO RC ──">
                 <option value="rc_fc" {% if formula == 'rc_fc' %}selected{% endif %}>RC → Frec. de corte: fc = 1/(2πRC)</option>
@@ -634,7 +634,7 @@
             <div class="calc-title">// CONVERSIÓN DE UNIDADES</div>
 
             <!-- Selector de magnitud -->
-            <select class="formula-select" name="formula" onchange="this.form.submit()">
+            <select class="formula-select" name="formula" onchange="seleccionarFormula(this)">
               <option value="">-- SELECCIONAR MAGNITUD --</option>
               <optgroup label="── RESISTENCIA ──">
                 <option value="resistencia" {% if formula=='resistencia' %}selected{% endif %}>Resistencia (Ω / kΩ / MΩ)</option>
@@ -725,7 +725,7 @@
           {# ── CÁLCULO LED ── #}
           {% elif modulo == "led" %}
             <div class="calc-title">// CÁLCULO LED</div>
-            <select class="formula-select" name="formula" onchange="this.form.submit()">
+            <select class="formula-select" name="formula" onchange="seleccionarFormula(this)">
               <option value="">-- SELECCIONAR CÁLCULO --</option>
               <option value="resistencia"    {% if formula == 'resistencia' %}selected{% endif %}>R = (Vcc - Vf) / If → Resistencia limitadora</option>
               <option value="corriente"      {% if formula == 'corriente' %}selected{% endif %}>If = (Vcc - Vf) / R → Corriente en LED</option>
@@ -763,7 +763,7 @@
           {# ── CAPACITOR — ENERGÍA Y CARGA ── #}
           {% elif modulo == "capacitor" %}
             <div class="calc-title">// CAPACITOR — ENERGÍA Y CARGA</div>
-            <select class="formula-select" name="formula" onchange="this.form.submit()">
+            <select class="formula-select" name="formula" onchange="seleccionarFormula(this)">
               <option value="">-- SELECCIONAR CÁLCULO --</option>
               <option value="energia"       {% if formula == 'energia' %}selected{% endif %}>E = ½CV² → Energía almacenada</option>
               <option value="carga"         {% if formula == 'carga' %}selected{% endif %}>Q = C × V → Carga eléctrica</option>
@@ -827,6 +827,21 @@ const COLOR_MAP = {
   dorado:   "#CFB53B",
   plateado: "#C0C0C0",
 };
+
+// ── Selección de fórmula sin calcular ──
+function seleccionarFormula(sel) {
+  const form = sel.form || sel.closest("form");
+  // Marcar que es solo cambio de fórmula, no cálculo
+  let inp = form.querySelector("input[name=solo_formula]");
+  if (!inp) {
+    inp = document.createElement("input");
+    inp.type = "hidden";
+    inp.name = "solo_formula";
+    form.appendChild(inp);
+  }
+  inp.value = "1";
+  form.submit();
+}
 
 // ── Aplica color al SVG y al borde del select para UNA banda ──
 function colorearBanda(selId, svgId) {
