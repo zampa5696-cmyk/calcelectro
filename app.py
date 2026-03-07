@@ -47,6 +47,31 @@ def fmt(valor, decimales=4):
     return resultado_fmt
 
 
+def parsear_numero(valor_str):
+    """
+    Convierte string numérico aceptando tanto punto como coma decimal.
+    '1,5' → 1.5  |  '1.5' → 1.5  |  '1.000,5' → 1000.5  |  '1,000.5' → 1000.5
+    """
+    if valor_str is None:
+        raise ValueError("Valor vacío")
+    s = valor_str.strip()
+    if not s:
+        raise ValueError("Valor vacío")
+    # Detectar formato: si tiene coma Y punto, el último es el decimal
+    if ',' in s and '.' in s:
+        if s.rfind(',') > s.rfind('.'):
+            # formato europeo: 1.000,5
+            s = s.replace('.', '').replace(',', '.')
+        else:
+            # formato anglosajón: 1,000.5
+            s = s.replace(',', '')
+    elif ',' in s:
+        # solo coma → separador decimal
+        s = s.replace(',', '.')
+    # si solo tiene punto, ya es válido para float()
+    return float(s)
+
+
 app = Flask(__name__)
 
 # ============================================================
@@ -78,176 +103,176 @@ def calcular():
         # ── LEY DE OHM ──────────────────────────────────────
         if modulo == "ohm":
             if formula == "voltaje":
-                i = float(request.form.get("corriente"))
-                r = float(request.form.get("resistencia"))
+                i = parsear_numero(request.form.get("corriente"))
+                r = parsear_numero(request.form.get("resistencia"))
                 resultado = f"Voltaje = {fmt(i * r)} V"
             elif formula == "corriente":
-                v = float(request.form.get("voltaje"))
-                r = float(request.form.get("resistencia"))
+                v = parsear_numero(request.form.get("voltaje"))
+                r = parsear_numero(request.form.get("resistencia"))
                 resultado = f"Corriente = {fmt(v / r)} A"
             elif formula == "resistencia":
-                v = float(request.form.get("voltaje"))
-                i = float(request.form.get("corriente"))
+                v = parsear_numero(request.form.get("voltaje"))
+                i = parsear_numero(request.form.get("corriente"))
                 resultado = f"Resistencia = {fmt(v / i)} Ω"
 
         # ── POTENCIA ─────────────────────────────────────────
         elif modulo == "potencia":
             if formula == "p_vi":
-                v = float(request.form.get("voltaje"))
-                i = float(request.form.get("corriente"))
+                v = parsear_numero(request.form.get("voltaje"))
+                i = parsear_numero(request.form.get("corriente"))
                 resultado = f"Potencia = {fmt(v * i)} W"
             elif formula == "p_i2r":
-                i = float(request.form.get("corriente"))
-                r = float(request.form.get("resistencia"))
+                i = parsear_numero(request.form.get("corriente"))
+                r = parsear_numero(request.form.get("resistencia"))
                 resultado = f"Potencia = {fmt(i**2 * r)} W"
             elif formula == "p_v2r":
-                v = float(request.form.get("voltaje"))
-                r = float(request.form.get("resistencia"))
+                v = parsear_numero(request.form.get("voltaje"))
+                r = parsear_numero(request.form.get("resistencia"))
                 resultado = f"Potencia = {fmt(v**2 / r)} W"
             elif formula == "v_pi":
-                p = float(request.form.get("potencia"))
-                i = float(request.form.get("corriente"))
+                p = parsear_numero(request.form.get("potencia"))
+                i = parsear_numero(request.form.get("corriente"))
                 resultado = f"Voltaje = {fmt(p / i)} V"
             elif formula == "i_pv":
-                p = float(request.form.get("potencia"))
-                v = float(request.form.get("voltaje"))
+                p = parsear_numero(request.form.get("potencia"))
+                v = parsear_numero(request.form.get("voltaje"))
                 resultado = f"Corriente = {fmt(p / v)} A"
             elif formula == "i_raiz":
-                p = float(request.form.get("potencia"))
-                r = float(request.form.get("resistencia"))
+                p = parsear_numero(request.form.get("potencia"))
+                r = parsear_numero(request.form.get("resistencia"))
                 resultado = f"Corriente = {fmt((p / r)**0.5)} A"
             elif formula == "r_pi2":
-                p = float(request.form.get("potencia"))
-                i = float(request.form.get("corriente"))
+                p = parsear_numero(request.form.get("potencia"))
+                i = parsear_numero(request.form.get("corriente"))
                 resultado = f"Resistencia = {fmt(p / i**2)} Ω"
             elif formula == "r_v2p":
-                v = float(request.form.get("voltaje"))
-                p = float(request.form.get("potencia"))
+                v = parsear_numero(request.form.get("voltaje"))
+                p = parsear_numero(request.form.get("potencia"))
                 resultado = f"Resistencia = {fmt(v**2 / p)} Ω"
             elif formula == "v_raiz":
-                p = float(request.form.get("potencia"))
-                r = float(request.form.get("resistencia"))
+                p = parsear_numero(request.form.get("potencia"))
+                r = parsear_numero(request.form.get("resistencia"))
                 resultado = f"Voltaje = {fmt((p * r)**0.5)} V"
 
         # ── KIRCHHOFF ────────────────────────────────────────
         elif modulo == "kirchhoff":
             if formula == "i1":
-                it = float(request.form.get("i_total"))
-                r1 = float(request.form.get("r1"))
-                r2 = float(request.form.get("r2"))
+                it = parsear_numero(request.form.get("i_total"))
+                r1 = parsear_numero(request.form.get("r1"))
+                r2 = parsear_numero(request.form.get("r2"))
                 resultado = f"Corriente rama 1 = {fmt(it * (r2 / (r1 + r2)))} A"
             elif formula == "i2":
-                it = float(request.form.get("i_total"))
-                r1 = float(request.form.get("r1"))
-                r2 = float(request.form.get("r2"))
+                it = parsear_numero(request.form.get("i_total"))
+                r1 = parsear_numero(request.form.get("r1"))
+                r2 = parsear_numero(request.form.get("r2"))
                 resultado = f"Corriente rama 2 = {fmt(it * (r1 / (r1 + r2)))} A"
             elif formula == "v1":
-                vt = float(request.form.get("v_total"))
-                r1 = float(request.form.get("r1"))
-                r2 = float(request.form.get("r2"))
+                vt = parsear_numero(request.form.get("v_total"))
+                r1 = parsear_numero(request.form.get("r1"))
+                r2 = parsear_numero(request.form.get("r2"))
                 resultado = f"Voltaje en R1 = {fmt(vt * (r1 / (r1 + r2)))} V"
             elif formula == "v2":
-                vt = float(request.form.get("v_total"))
-                r1 = float(request.form.get("r1"))
-                r2 = float(request.form.get("r2"))
+                vt = parsear_numero(request.form.get("v_total"))
+                r1 = parsear_numero(request.form.get("r1"))
+                r2 = parsear_numero(request.form.get("r2"))
                 resultado = f"Voltaje en R2 = {fmt(vt * (r2 / (r1 + r2)))} V"
             elif formula == "i_total":
-                i1 = float(request.form.get("i1"))
-                i2 = float(request.form.get("i2"))
+                i1 = parsear_numero(request.form.get("i1"))
+                i2 = parsear_numero(request.form.get("i2"))
                 resultado = f"Corriente total = {fmt(i1 + i2)} A"
             elif formula == "v_total":
-                v1 = float(request.form.get("v1"))
-                v2 = float(request.form.get("v2"))
-                v3 = float(request.form.get("v3"))
+                v1 = parsear_numero(request.form.get("v1"))
+                v2 = parsear_numero(request.form.get("v2"))
+                v3 = parsear_numero(request.form.get("v3"))
                 resultado = f"Voltaje total = {fmt(v1 + v2 + v3)} V"
 
         # ── POTENCIA DISIPADA ────────────────────────────────
         elif modulo == "disipada":
             if formula == "p_i2r":
-                i = float(request.form.get("corriente"))
-                r = float(request.form.get("resistencia"))
+                i = parsear_numero(request.form.get("corriente"))
+                r = parsear_numero(request.form.get("resistencia"))
                 resultado = f"Potencia disipada = {fmt(i**2 * r)} W"
             elif formula == "p_v2r":
-                v = float(request.form.get("voltaje"))
-                r = float(request.form.get("resistencia"))
+                v = parsear_numero(request.form.get("voltaje"))
+                r = parsear_numero(request.form.get("resistencia"))
                 resultado = f"Potencia disipada = {fmt(v**2 / r)} W"
             elif formula == "r_pi2":
-                p = float(request.form.get("potencia"))
-                i = float(request.form.get("corriente"))
+                p = parsear_numero(request.form.get("potencia"))
+                i = parsear_numero(request.form.get("corriente"))
                 resultado = f"Resistencia = {fmt(p / i**2)} Ω"
             elif formula == "r_v2p":
-                v = float(request.form.get("voltaje"))
-                p = float(request.form.get("potencia"))
+                v = parsear_numero(request.form.get("voltaje"))
+                p = parsear_numero(request.form.get("potencia"))
                 resultado = f"Resistencia = {fmt(v**2 / p)} Ω"
             elif formula == "i_raiz":
-                p = float(request.form.get("potencia"))
-                r = float(request.form.get("resistencia"))
+                p = parsear_numero(request.form.get("potencia"))
+                r = parsear_numero(request.form.get("resistencia"))
                 resultado = f"Corriente = {fmt((p / r)**0.5)} A"
             elif formula == "v_raiz":
-                p = float(request.form.get("potencia"))
-                r = float(request.form.get("resistencia"))
+                p = parsear_numero(request.form.get("potencia"))
+                r = parsear_numero(request.form.get("resistencia"))
                 resultado = f"Voltaje = {fmt((p * r)**0.5)} V"
 
         # ── RESISTENCIAS EQUIVALENTES ────────────────────────
         elif modulo == "resistencias":
             if formula == "serie2":
-                r1 = float(request.form.get("r1"))
-                r2 = float(request.form.get("r2"))
+                r1 = parsear_numero(request.form.get("r1"))
+                r2 = parsear_numero(request.form.get("r2"))
                 resultado = f"R equivalente = {fmt(r1 + r2)} Ω"
             elif formula == "serie3":
-                r1 = float(request.form.get("r1"))
-                r2 = float(request.form.get("r2"))
-                r3 = float(request.form.get("r3"))
+                r1 = parsear_numero(request.form.get("r1"))
+                r2 = parsear_numero(request.form.get("r2"))
+                r3 = parsear_numero(request.form.get("r3"))
                 resultado = f"R equivalente = {fmt(r1 + r2 + r3)} Ω"
             elif formula == "paralelo2":
-                r1 = float(request.form.get("r1"))
-                r2 = float(request.form.get("r2"))
+                r1 = parsear_numero(request.form.get("r1"))
+                r2 = parsear_numero(request.form.get("r2"))
                 resultado = f"R equivalente = {fmt((r1 * r2) / (r1 + r2))} Ω"
             elif formula == "paralelo3":
-                r1 = float(request.form.get("r1"))
-                r2 = float(request.form.get("r2"))
-                r3 = float(request.form.get("r3"))
+                r1 = parsear_numero(request.form.get("r1"))
+                r2 = parsear_numero(request.form.get("r2"))
+                r3 = parsear_numero(request.form.get("r3"))
                 resultado = f"R equivalente = {fmt(1 / (1/r1 + 1/r2 + 1/r3))} Ω"
 
         # ── CAÍDA DE TENSIÓN ─────────────────────────────────
         elif modulo == "caida":
             if formula == "v_ir":
-                i = float(request.form.get("corriente"))
-                r = float(request.form.get("resistencia"))
+                i = parsear_numero(request.form.get("corriente"))
+                r = parsear_numero(request.form.get("resistencia"))
                 resultado = f"Caída de tensión = {fmt(i * r)} V"
             elif formula == "v1_serie":
-                vt = float(request.form.get("v_total"))
-                r1 = float(request.form.get("r1"))
-                r2 = float(request.form.get("r2"))
+                vt = parsear_numero(request.form.get("v_total"))
+                r1 = parsear_numero(request.form.get("r1"))
+                r2 = parsear_numero(request.form.get("r2"))
                 resultado = f"Caída en R1 = {fmt(vt * (r1 / (r1 + r2)))} V"
             elif formula == "v2_serie":
-                vt = float(request.form.get("v_total"))
-                r1 = float(request.form.get("r1"))
-                r2 = float(request.form.get("r2"))
+                vt = parsear_numero(request.form.get("v_total"))
+                r1 = parsear_numero(request.form.get("r1"))
+                r2 = parsear_numero(request.form.get("r2"))
                 resultado = f"Caída en R2 = {fmt(vt * (r2 / (r1 + r2)))} V"
             elif formula == "i1_paralelo":
-                it = float(request.form.get("i_total"))
-                r1 = float(request.form.get("r1"))
-                r2 = float(request.form.get("r2"))
+                it = parsear_numero(request.form.get("i_total"))
+                r1 = parsear_numero(request.form.get("r1"))
+                r2 = parsear_numero(request.form.get("r2"))
                 resultado = f"Corriente rama 1 = {fmt(it * (r2 / (r1 + r2)))} A"
             elif formula == "i2_paralelo":
-                it = float(request.form.get("i_total"))
-                r1 = float(request.form.get("r1"))
-                r2 = float(request.form.get("r2"))
+                it = parsear_numero(request.form.get("i_total"))
+                r1 = parsear_numero(request.form.get("r1"))
+                r2 = parsear_numero(request.form.get("r2"))
                 resultado = f"Corriente rama 2 = {fmt(it * (r1 / (r1 + r2)))} A"
             elif formula == "i_vr":
-                v = float(request.form.get("voltaje"))
-                r = float(request.form.get("resistencia"))
+                v = parsear_numero(request.form.get("voltaje"))
+                r = parsear_numero(request.form.get("resistencia"))
                 resultado = f"Corriente = {fmt(v / r)} A"
             elif formula == "v_total_serie":
-                v1 = float(request.form.get("v1"))
-                v2 = float(request.form.get("v2"))
-                v3 = float(request.form.get("v3"))
+                v1 = parsear_numero(request.form.get("v1"))
+                v2 = parsear_numero(request.form.get("v2"))
+                v3 = parsear_numero(request.form.get("v3"))
                 resultado = f"Voltaje total = {fmt(v1 + v2 + v3)} V"
             elif formula == "i_total_paralelo":
-                i1 = float(request.form.get("i1"))
-                i2 = float(request.form.get("i2"))
-                i3 = float(request.form.get("i3"))
+                i1 = parsear_numero(request.form.get("i1"))
+                i2 = parsear_numero(request.form.get("i2"))
+                i3 = parsear_numero(request.form.get("i3"))
                 resultado = f"Corriente total = {fmt(i1 + i2 + i3)} A"
 
         # ── CÓDIGO DE COLORES ────────────────────────────────
@@ -316,20 +341,20 @@ def calcular():
         # ── FILTROS RC / RL ──────────────────────────────────
         elif modulo == "filtros":
             if formula == "rc_fc":
-                r  = float(request.form.get("resistencia"))
-                c  = float(request.form.get("capacitancia"))
+                r  = parsear_numero(request.form.get("resistencia"))
+                c  = parsear_numero(request.form.get("capacitancia"))
                 fc = 1 / (2 * math.pi * r * c)
                 resultado = f"Frecuencia de corte = {fmt(fc)} Hz  ({fmt(fc/1000, 6)} kHz)"
 
             elif formula == "rc_r":
-                fc = float(request.form.get("frecuencia"))
-                c  = float(request.form.get("capacitancia"))
+                fc = parsear_numero(request.form.get("frecuencia"))
+                c  = parsear_numero(request.form.get("capacitancia"))
                 r  = 1 / (2 * math.pi * fc * c)
                 resultado = f"Resistencia = {fmt(r)} Ω"
 
             elif formula == "rc_c":
-                fc = float(request.form.get("frecuencia"))
-                r  = float(request.form.get("resistencia"))
+                fc = parsear_numero(request.form.get("frecuencia"))
+                r  = parsear_numero(request.form.get("resistencia"))
                 c  = 1 / (2 * math.pi * fc * r)
                 if c >= 1e-3:
                     c_str = f"{c*1e3:.4f} mF"
@@ -342,26 +367,26 @@ def calcular():
                 resultado = f"Capacitancia = {c_str}"
 
             elif formula == "rc_xc":
-                f  = float(request.form.get("frecuencia"))
-                c  = float(request.form.get("capacitancia"))
+                f  = parsear_numero(request.form.get("frecuencia"))
+                c  = parsear_numero(request.form.get("capacitancia"))
                 xc = 1 / (2 * math.pi * f * c)
                 resultado = f"Reactancia capacitiva Xc = {fmt(xc)} Ω"
 
             elif formula == "rl_fc":
-                r  = float(request.form.get("resistencia"))
-                l  = float(request.form.get("inductancia"))
+                r  = parsear_numero(request.form.get("resistencia"))
+                l  = parsear_numero(request.form.get("inductancia"))
                 fc = r / (2 * math.pi * l)
                 resultado = f"Frecuencia de corte = {fmt(fc)} Hz  ({fmt(fc/1000, 6)} kHz)"
 
             elif formula == "rl_r":
-                fc = float(request.form.get("frecuencia"))
-                l  = float(request.form.get("inductancia"))
+                fc = parsear_numero(request.form.get("frecuencia"))
+                l  = parsear_numero(request.form.get("inductancia"))
                 r  = 2 * math.pi * fc * l
                 resultado = f"Resistencia = {fmt(r)} Ω"
 
             elif formula == "rl_l":
-                fc = float(request.form.get("frecuencia"))
-                r  = float(request.form.get("resistencia"))
+                fc = parsear_numero(request.form.get("frecuencia"))
+                r  = parsear_numero(request.form.get("resistencia"))
                 l  = r / (2 * math.pi * fc)
                 if l >= 1:
                     l_str = f"{l:.4f} H"
@@ -372,14 +397,14 @@ def calcular():
                 resultado = f"Inductancia = {l_str}"
 
             elif formula == "rl_xl":
-                f  = float(request.form.get("frecuencia"))
-                l  = float(request.form.get("inductancia"))
+                f  = parsear_numero(request.form.get("frecuencia"))
+                l  = parsear_numero(request.form.get("inductancia"))
                 xl = 2 * math.pi * f * l
                 resultado = f"Reactancia inductiva Xl = {fmt(xl)} Ω"
 
         # ── CONVERSIÓN DE UNIDADES ───────────────────────────
         elif modulo == "conversion":
-            v        = float(request.form.get("valor"))
+            v        = parsear_numero(request.form.get("valor"))
             origen   = request.form.get("unidad_origen", "")
             destino  = request.form.get("unidad_destino", "")
 
@@ -431,9 +456,9 @@ def calcular():
                 "uv": 3.4, "infrarrojo": 1.2
             }
             if formula == "resistencia":
-                vcc   = float(request.form.get("vcc"))
-                vf    = float(request.form.get("vf"))
-                if_ma = float(request.form.get("if_ma"))
+                vcc   = parsear_numero(request.form.get("vcc"))
+                vf    = parsear_numero(request.form.get("vf"))
+                if_ma = parsear_numero(request.form.get("if_ma"))
                 if if_ma <= 0:
                     error = "La corriente del LED debe ser mayor a 0."
                 else:
@@ -448,9 +473,9 @@ def calcular():
                                      f"Potencia en R = {fmt(p_r * 1000, 2)} mW  |  "
                                      f"Potencia en LED = {fmt(p_led * 1000, 2)} mW")
             elif formula == "corriente":
-                vcc = float(request.form.get("vcc"))
-                vf  = float(request.form.get("vf"))
-                r   = float(request.form.get("resistencia"))
+                vcc = parsear_numero(request.form.get("vcc"))
+                vf  = parsear_numero(request.form.get("vf"))
+                r   = parsear_numero(request.form.get("resistencia"))
                 if r <= 0:
                     error = "La resistencia debe ser mayor a 0."
                 else:
@@ -471,22 +496,22 @@ def calcular():
         # ── CAPACITOR — ENERGÍA Y CARGA ──────────────────────
         elif modulo == "capacitor":
             if formula == "energia":
-                c = float(request.form.get("capacitancia"))
-                v = float(request.form.get("voltaje"))
+                c = parsear_numero(request.form.get("capacitancia"))
+                v = parsear_numero(request.form.get("voltaje"))
                 e = 0.5 * c * v**2
                 resultado = f"Energía almacenada = {fmt(e, 6)} J  ({fmt(e * 1000, 4)} mJ)"
             elif formula == "carga":
-                c = float(request.form.get("capacitancia"))
-                v = float(request.form.get("voltaje"))
+                c = parsear_numero(request.form.get("capacitancia"))
+                v = parsear_numero(request.form.get("voltaje"))
                 q = c * v
                 resultado = f"Carga = {fmt(q, 6)} C  ({fmt(q * 1_000_000, 4)} µC)"
             elif formula == "voltaje_cap":
-                q = float(request.form.get("carga"))
-                c = float(request.form.get("capacitancia"))
+                q = parsear_numero(request.form.get("carga"))
+                c = parsear_numero(request.form.get("capacitancia"))
                 resultado = f"Voltaje = {fmt(q / c)} V"
             elif formula == "tiempo_carga":
-                r   = float(request.form.get("resistencia"))
-                c   = float(request.form.get("capacitancia"))
+                r   = parsear_numero(request.form.get("resistencia"))
+                c   = parsear_numero(request.form.get("capacitancia"))
                 tau = r * c
                 resultado = (f"Constante τ = {fmt(tau, 6)} s  |  "
                              f"Carga al 63% en τ = {fmt(tau, 6)} s  |  "
