@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora Electrónica</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <!-- PWA -->
+  <link rel="manifest" href="/static/manifest.json">
+  <meta name="theme-color" content="#ff6b00">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="E-CALC">
+  <link rel="apple-touch-icon" href="/static/icons/icono_terminal_192.png">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #0d0d0d;
+      color: #ccc;
+      font-family: 'Share Tech Mono', monospace;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .header {
+      display: flex; align-items: center; gap: 10px;
+      border-bottom: 2px solid #ff6b00;
+      padding-bottom: 12px; margin-bottom: 24px;
+    }
+    .dot {
+      width: 8px; height: 8px;
+      background: #ff6b00; border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    .header h1 { font-size: 0.9rem; color: #ff6b00; letter-spacing: 2px; }
+    .container { max-width: 980px; margin: 0 auto; }
+    .layout { display: grid; grid-template-columns: 220px 1fr; gap: 20px; }
+    @media (max-width: 650px) { .layout { grid-template-columns: 1fr; } }
+
+    /* ── MÓDULOS ── */
+    .panel-title { font-size: 0.65rem; color: #ff6b00; letter-spacing: 3px; margin-bottom: 12px; opacity: 0.7; }
+    .modulos { display: grid; grid-template-columns: 1fr; gap: 6px; }
+    a { text-decoration: none; display: block; }
+    .mod-btn {
+      background: #1a1a1a; border: 1px solid #2a2a2a;
+      color: #888; padding: 10px 12px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem; cursor: pointer;
+      border-radius: 4px; text-align: left;
+      transition: all 0.2s; letter-spacing: 1px; width: 100%;
+    }
+    .mod-btn:hover { border-color: #ff6b00; color: #ff6b00; background: #1a0f00; }
+    .mod-btn.activo { border-color: #ff6b00; color: #ff6b00; background: #1a0f00; }
+
+    /* ── PANEL CALC ── */
+    .calc-panel {
+      background: #111; border: 1px solid #2a2a2a;
+      border-radius: 6px; padding: 20px;
+    }
+    .calc-title { font-size: 0.75rem; color: #ff6b00; margin-bottom: 16px; }
+    .formula-select {
+      width: 100%; background: #0d0d0d;
+      border: 1px solid #2a2a2a; color: #ff6b00;
+      padding: 10px; font-family: 'Share Tech Mono', monospace;
+      font-size: 0.72rem; border-radius: 4px;
+      margin-bottom: 16px; outline: none; cursor: pointer;
+    }
+    .formula-select option, .formula-select optgroup { background: #0d0d0d; }
+    .input-group { margin-bottom: 12px; }
+    .input-label { font-size: 0.6rem; color: #666; margin-bottom: 4px; letter-spacing: 1px; }
+    .input-field {
+      width: 100%; background: #0d0d0d;
+      border: 1px solid #2a2a2a; color: #ff6b00;
+      padding: 10px; font-family: 'Share Tech Mono', monospace;
+      font-size: 0.78rem; border-radius: 4px; outline: none;
+    }
+    .input-field:focus { border-color: #ff6b00; }
+    .btn-calcular {
+      width: 100%; background: #ff6b00; color: #000;
+      border: none; padding: 12px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.78rem; letter-spacing: 2px;
+      cursor: pointer; border-radius: 4px;
+      margin-top: 8px; font-weight: bold;
+      transition: background 0.2s;
+    }
+    .btn-calcular:hover { background: #e05e00; }
+    .resultado {
+      background: #0d0d0d; border: 1px solid #ff6b00;
+      padding: 12px; font-size: 0.85rem;
+      color: #ff6b00; margin-top: 14px;
+      border-radius: 4px; letter-spacing: 1px;
+    }
+    .error {
+      background: #1a0000; border: 1px solid #ff0000;
+      padding: 12px; font-size: 0.78rem;
+      color: #ff4444; margin-top: 14px; border-radius: 4px;
+    }
+    .placeholder {
+      text-align: center; padding: 40px 20px;
+      color: #333; font-size: 0.75rem; letter-spacing: 2px;
+    }
+    .footer {
+      display: flex; justify-content: space-between;
+      align-items: center; margin-top: 30px;
+      padding-top: 12px; border-top: 1px solid #1a1a1a;
+      font-size: 0.6rem; color: #333; letter-spacing: 2px;
+    }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    /* ── GLOSARIO ── */
+    .glosario {
+      max-width: 980px; margin: 36px auto 0;
+      border-top: 1px solid #1f1f1f;
+      padding-top: 24px;
+    }
+    .glosario-title {
+      font-size: 0.65rem; color: #ff6b00;
+      letter-spacing: 3px; margin-bottom: 16px; opacity: 0.8;
+    }
+    .glosario-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 8px;
+    }
+    .glos-item {
+      background: #111; border: 1px solid #1e1e1e;
+      border-radius: 4px; padding: 10px 12px;
+      display: grid;
+      grid-template-columns: 44px 1fr;
+      grid-template-rows: auto auto;
+      gap: 2px 8px;
+    }
+    .glos-sym {
+      grid-row: 1 / 3; align-self: center;
+      font-size: 1.1rem; color: #ff6b00;
+      font-weight: bold; text-align: center;
+    }
+    .glos-name { font-size: 0.65rem; color: #ccc; letter-spacing: 1px; }
+    .glos-def  { font-size: 0.58rem; color: #555; line-height: 1.4; }
+    @media (max-width: 650px) { .glosario-grid { grid-template-columns: 1fr; } }
+
+    /* ── CÓDIGO DE COLORES ── */
+    .resistor-container {
+      display: flex; justify-content: center;
+      align-items: center; margin: 16px 0 20px;
+    }
+    .resistor-svg { width: 100%; max-width: 380px; height: auto; }
+
+    .bandas-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .banda-group { display: flex; flex-direction: column; gap: 4px; }
+    .banda-label {
+      font-size: 0.58rem; color: #888; letter-spacing: 1px;
+    }
+    .banda-label span { color: #ff6b00; }
+    .banda-select {
+      background: #0d0d0d; border: 1px solid #333;
+      color: #ff6b00; padding: 8px 10px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.7rem; border-radius: 4px;
+      outline: none; cursor: pointer;
+      border-left-width: 5px;
+      transition: border-color 0.2s;
+    }
+    .banda-select:focus { border-color: #ff6b00; }
+    .banda-select option { background: #111; color: #ccc; }
+
+    /* ── CONVERSIÓN ── */
+    .conv-row {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: end;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .conv-arrow {
+      font-size: 1.2rem; color: #ff6b00;
+      padding-bottom: 10px; text-align: center;
+    }
+    .conv-resultado {
+      background: #0d0d0d; border: 1px solid #ff6b00;
+      border-radius: 4px; padding: 14px;
+      margin-top: 14px;
+    }
+    .conv-resultado .conv-linea {
+      font-size: 0.82rem; color: #ff6b00;
+      padding: 3px 0; letter-spacing: 1px;
+    }
+    .conv-resultado .conv-linea.principal {
+      font-size: 1rem; color: #ffaa44;
+      border-bottom: 1px solid #2a2a2a;
+      padding-bottom: 8px; margin-bottom: 6px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="dot"></div>
+    <h1>CALCULADORA / ELECTRÓNICA BÁSICA</h1>
+  </div>
+
+  <div class="layout">
+
+    <!-- MÓDULOS -->
+    <div>
+      <div class="panel-title">// MÓDULOS</div>
+      <div class="modulos">
+        <a href="/?modulo=ohm"><button class="mod-btn {% if modulo == 'ohm' %}activo{% endif %}">01 / LEY DE OHM</button></a>
+        <a href="/?modulo=potencia"><button class="mod-btn {% if modulo == 'potencia' %}activo{% endif %}">02 / POTENCIA</button></a>
+        <a href="/?modulo=kirchhoff"><button class="mod-btn {% if modulo == 'kirchhoff' %}activo{% endif %}">03 / KIRCHHOFF</button></a>
+        <a href="/?modulo=disipada"><button class="mod-btn {% if modulo == 'disipada' %}activo{% endif %}">04 / POT. DISIPADA</button></a>
+        <a href="/?modulo=resistencias"><button class="mod-btn {% if modulo == 'resistencias' %}activo{% endif %}">05 / RESISTENCIAS EQ.</button></a>
+        <a href="/?modulo=caida"><button class="mod-btn {% if modulo == 'caida' %}activo{% endif %}">06 / CAÍDA TENSIÓN</button></a>
+        <a href="/?modulo=colores"><button class="mod-btn {% if modulo == 'colores' %}activo{% endif %}">07 / COD. COLORES</button></a>
+        <a href="/?modulo=filtros"><button class="mod-btn {% if modulo == 'filtros' %}activo{% endif %}">08 / FILTROS RC/RL</button></a>
+        <a href="/?modulo=conversion"><button class="mod-btn {% if modulo == 'conversion' %}activo{% endif %}">09 / CONVERSIÓN</button></a>
+      </div>
+    </div>
+
+    <!-- PANEL DERECHO -->
+    <div class="calc-panel">
+
+      {% if not modulo %}
+        <div class="placeholder">// SELECCIONÁ UN MÓDULO<br>PARA COMENZAR</div>
+
+      {% else %}
+        <form method="POST" action="/calcular" id="mainForm">
+          <input type="hidden" name="modulo" value="{{ modulo }}">
+
+          <!-- ── LEY DE OHM ── -->
+          {% if modulo == "ohm" %}
+            <div class="calc-title">// LEY DE OHM</div>
+            <select class="formula-select" name="formula" onchange="this.form.submit()">
+              <option value="">-- SELECCIONAR FÓRMULA --</option>
+              <option value="voltaje"     {% if formula == 'voltaje' %}selected{% endif %}>V = I × R → Calcular Voltaje</option>
+              <option value="corriente"   {% if formula == 'corriente' %}selected{% endif %}>I = V / R → Calcular Corriente</option>
+              <option value="resistencia" {% if formula == 'resistencia' %}selected{% endif %}>R = V / I → Calcular Resistencia</option>
+            </select>
+            {% if formula == "voltaje" %}
+              <div class="input-group"><div class="input-label">CORRIENTE (I) — Amperes</div><input class="input-field" type="number" step="any" name="corriente" placeholder="0.00" required></div>
+              <div class="input-group"><div class="input-label">RESISTENCIA (R) — Ohms</div><input class="input-field" type="number" step="any" name="resistencia" placeholder="0.00" required></div>
+            {% elif formula == "corriente" %}
+              <div class="input-group"><div class="input-label">VOLTAJE (V) — Volts</div><input class="input-field" type="number" step="any" name="voltaje" placeholder="0.00" required></div>
+              <div class="input-group"><div class="input-label">RESISTENCIA (R) — Ohms</div><input class="input-field" type="number" step="any" name="resistencia" placeholder="0.00" required></div>
+            {% elif formula == "resistencia" %}
+              <div class="input-group"><div class="input-label">VOLTAJE (V) — Volts</div><input class="input-field" type="number" step="any" name="voltaje" placeholder="0.00" required></div>
+              <div class="input-group"><div class="input-label">CORRIENTE (I) — Amperes</div><input class="input-field" type="number" step="any" name="corriente" placeholder="0.00" required></div>
+            {% endif %}
+
+          <!-- ── POTENCIA ── -->
+          {% elif modulo == "potencia" %}
+            <div class="calc-title">// POTENCIA</div>
+            <select class="formula-select" name="formula" onchange="this.form.submit()">
+              <option value="">-- SELECCIONAR FÓRMULA --</option>
+              <option value="p_vi"   {% if formula == 'p_vi' %}selected{% endif %}>P = V × I</option>
+              <option value="p_i2r"  {% if formula == 'p_i2r' %}selected{% endif %}>P = I² × R</option>
+              <option value="p_v2r"  {% if formula == 'p_v2r' %}selected{% endif %}>P = V² / R</option>
+              <option value="v_pi"   {% if formula == 'v_pi' %}selected{% endif %}>V = P / I</option>
+              <option value="i_pv"   {% if formula == 'i_pv' %}selected{% endif %}>I = P / V</option>
+              <option value="i_raiz" {% if formula == 'i_raiz' %}selected{% endif %}>I = √(P / R)</option>
+              <option value="r_pi2"  {% if formula == 'r_pi2' %}selected{% endif %}>R = P / I²</option>
+              <option value="r_v2p"  {% if formula == 'r_v2p' %}selected{% endif %}>R = V² / P</option>
+              <option value="v_raiz" {% if formula == 'v_raiz' %}selected{% endif %}>V = √(P × R)</option>
+            </select>
+            {% if formula in ["p_vi", "v_pi", "i_pv"] %}
+              {% if formula != "i_pv" %}<div class="input-group"><div class="input-label">VOLTAJE (V)</div><input class="input-field" type="number" step="any" name="voltaje" placeholder="0.00" required></div>{% endif %}
+              {% if formula != "v_pi" %}<div class="input-group"><div class="input-label">CORRIENTE (I)</div><input class="input-field" type="number" step="any" name="corriente" placeholder="0.00" required></div>{% endif %}
+              {% if formula in ["v_pi","i_pv"] %}<div class="input-group"><div class="input-label">POTENCIA (P)</div><input class="input-field" type="number" step="any" name="potencia" placeholder="0.00" required></div>{% endif %}
+            {% elif formula in ["p_i2r", "i_raiz", "r_pi2"] %}
+              {% if formula != "i_raiz" %}<div class="input-group"><div class="input-label">CORRIENTE (I)</div><input class="input-field" type="number" step="any" name="corriente" placeholder="0.00" required></div>{% endif %}
+              {% if formula != "p_i2r" %}<div class="input-group"><div class="input-label">POTENCIA (P)</div><input class="input-field" type="number" step="any" name="potencia" placeholder="0.00" required></div>{% endif %}
+              <div class="input-group"><div class="input-label">RESISTENCIA (R)</div><input class="input-field" type="number" step="any" name="resistencia" placeholder="0.00" required></div>
+            {% elif formula in ["p_v2r", "r_v2p", "v_raiz"] %}
+              {% if formula != "v_raiz" %}<div class="input-group"><div class="input-label">VOLTAJE (V)</div><input class="input-field" type="number" step="any" name="voltaje" placeholder="0.00" required></div>{% endif %}
+              {% if formula != "p_v2r" %}<div class="input-group"><div class="input-label">POTENCIA (P)</div><input class="input-field" type="number" step="any" name="potencia" placeholder="0.00" required></div>{% endif %}
+              <div class="input-group"><div class="input-label">RESISTENCIA (R)</div><input class="input-field" type="number" step="any" name="resistencia" placeholder="0.00" required></div>
+            {% endif %}
+
+          <!-- ── KIRCHHOFF ── -->
+          {% elif modulo == "kirchhoff" %}
+            <div class="calc-title">// LEYES DE KIRCHHOFF</div>
+            <select class="formula-select" name="formula" onchange="this.form.submit()">
+              <option value="">-- SELECCIONAR FÓRMULA --</option>
+              <option value="i1"      {% if formula == 'i1' %}selected{% endif %}>I1 = I_total × (R2/(R1+R2))</option>
+              <option value="i2"      {% if formula == 'i2' %}selected{% endif %}>I2 = I_total × (R1/(R1+R2))</option>
+              <option value="v1"      {% if formula == 'v1' %}selected{% endif %}>V1 = V_total × (R1/(R1+R2))</option>
+              <option value="v2"      {% if formula == 'v2' %}selected{% endif %}>V2 = V_total × (R2/(R1+R2))</option>
+              <option value="i_total" {% if formula == 'i_total' %}selected{% endif %}>I_total = I1 + I2</option>
+              <option value="v_total" {% if formula == 'v_total' %}selected{% endif %}>V_total = V1 + V2 + V3</option>
+            </select>
+            {% if formula in ["i1", "i2"] %}
+              <div class="input-group"><div class="input-label">CORRIENTE TOTAL (I_total)</div><input class="input-field" type="number" step="any" name="i_total" placeholder="0.00" required></div>
+              <div class="input-group"><div class="input-label">RESISTENCIA R1</div><input class="input-field" type="number" step="any" name="r1" placeholder="0.00" required></div>
+              <div class="input-group"><div class="input-label">RESISTENCIA R2</div><input class="input-field" type="number" step="any" name="r2" placeholder="0.00" required></div>
+            {% elif formula in ["v1", "v2"] %}
+              <div class="input-group"><div class="input-label">VOLTAJE TOTAL (V_total)</div><input class="input-field" type="number" step="any" name="v_total" placeholder="0.00" required></div>
+              <div class="input-group"><div class="input-label">RESISTENCIA R1</div><input class="input-field" type="number" step="any" name="r1" placeholder="0.00" required></div>
+              <div class="input-group"><div class="input-label">RESISTENCIA R2</div><input class="input-field" type="number" step="any" name="r2" placeholder="0.00" required></div>
+            {% elif formula == "i_total" %}
+              <div class="input-group"><div class="input-label">CORRIENTE I1</div><input class="input-field" type="number" step="any" name="i1" placeholder="0.00" required></div>
+              <div class="input-group"><div class="input-label">CORRIENTE I2</div><input class="input-field" type="number" step="any" name="i2" placeholder="0.00" required></div>
+            {% elif formula == "v_total" %}
+              <div class="input-group"><div class="input-label">VOLTAJE V1</div><input class="input-field" type="number" step="any" name="v1" placeholder="0.00" required></div>
+              <div class="input-group"><div class="input-label">VOLTAJE V2</div><input class="input-field" type="number" step="any" name="v2" placeholder="0.00" required></div>
+              <div class="input-group"><div class="input-label">VOLTAJE V3</div><input class="input-field" type="number" step="any" name="v3" placeholder="0.00" required></div>
+            {% endif %}
+
+          <!-- ── POTENCIA DISIPADA ── -->
+          {% elif modulo == "disipada" %}
+            <div class="calc-title">// POTENCIA DISIPADA</div>
+            <select class="formula-select" name="formula" onchange="this.form.submit()">
+              <option value="">-- SELECCIONAR FÓRMULA --</option>
+              <option value="p_i2r"  {% if formula == 'p_i2r' %}selected{% endif %}>P = I² × R</option>
+              <option value="p_v2r"  {% if formula == 'p_v2r' %}selected{% endif %}>P = V² / R</option>
+              <option value="r_pi2"  {% if formula == 'r_pi2' %}selected{% endif %}>R = P / I²</option>
+              <option value="r_v2p"  {% if formula == 'r_v2p' %}selected{% endif %}>R = V² / P</option>
+              <option value="i_raiz" {% if formula == 'i_raiz' %}selected{% endif %}>I = √(P / R)</option>
+              <option value="v_raiz" {% if formula == 'v_raiz' %}selected{% endif %}>V = √(P × R)</option>
+            </select>
+            {% if formula == "p_i2r" %}
+              <div class="input-group"><div class="input-label">CORRIENTE (I)</div><input class="input-field" type="number" step="any" name="corriente" placeholder="0.00" required></div>
+              <div class="input-group"><div class="input-label">RESISTENCIA (R)</div><input class="input-field" type="number" step="any" name="resistencia" placeholder="0.00" required></div>
+            {% elif formula == "p_v2r" %}
+              <div class="input-group"><div class="input-label">VOLTAJE (V)</div><input class="input-field" type="number" step="any" name="voltaje" placeholder="0.00" required></div>
+              <div class="input-group"><div class="input-label">RESISTENCIA (R)</div><input class="input-field" type="number" step="any" name="resistencia" placeholder="0.00" required></div>
+            {% elif formula == "r_pi2" %}
+              <div class="input-group"><div class="input-label">POTENCIA (P)</div><input class="input-field" type="number" step="any" name="potencia" placeholder="0.00" required></div>
+              <div class="input-group"><div class="input-label">CORRIENTE (I)</div><input class="input-field" type="number" step="any" name="corriente" placeholder="0.00" required></div>
+            {% elif formula == "r_v2p" %}
+              <div class="input-group"><div class="input-label">VOLTAJE (V)</div><input class="input-field" type="number" step="any" name="voltaje" placeholder="0.00" required></div>
+              <div class="input-group"><div class="input-label">POTENCIA (P)</div><input class="input-field" type="number" step="any" name="potencia" placeholder="0.00" required></div>
+            {% elif formula in ["i_raiz", "v_raiz"] %}
+              <div class="input-group"><div class="input-label">POTENCIA (P)</div><input class="input-field" type="number" step="any" name="potencia" placeholder="0.00" required></div>
+              <div class="input-group"><div class="input-label">RESISTENCIA (R)</div><input class="input-field" type="number" step="any" name="resistencia" placeholder="0.00" required></div>
+            {% endif %}
+
+          <!-- ── RESISTENCIAS EQUIV ── -->
+          {% elif modulo == "resistencias" %}
+            <div class="calc-title">// RESISTENCIAS EQUIVALENTES</div>
+            <select class="formula-select" name="formula" onchange="this.form.submit()">
+              <option value="">-- SELECCIONAR FÓRMULA --</option>
+              <option value="serie2"    {% if formula == 'serie2' %}selected{% endif %}>Serie 2R: R = R1 + R2</option>
+              <option value="serie3"    {% if formula == 'serie3' %}selected{% endif %}>Serie 3R: R = R1 + R2 + R3</option>
+              <option value="paralelo2" {% if formula == 'paralelo2' %}selected{% endif %}>Paralelo 2R: (R1×R2)/(R1+R2)</option>
+              <option value="paralelo3" {% if formula == 'paralelo3' %}selected{% endif %}>Paralelo 3R: 1/(1/R1+1/R2+1/R3)</option>
+            </select>
+            <div class="input-group"><div class="input-label">RESISTENCIA R1 — Ohms</div><input class="input-field" type="number" step="any" name="r1" placeholder="0.00" required></div>
+            <div class="input-group"><div class="input-label">RESISTENCIA R2 — Ohms</div><input class="input-field" type="number" step="any" name="r2" placeholder="0.00" required></div>
+            {% if formula in ["serie3", "paralelo3"] %}
+              <div class="input-group"><div class="input-label">RESISTENCIA R3 — Ohms</div><input class="input-field" type="number" step="any" name="r3" placeholder="0.00" required></div>
+            {% endif %}
+
+          <!-- ── CAÍDA DE TENSIÓN ── -->
+          {% elif modulo == "caida" %}
+            <div class="calc-title">// CAÍDA DE TENSIÓN</div>
+            <select class="formula-select" name="formula" onchange="this.form.submit()">
+              <option value="">-- SELECCIONAR FÓRMULA --</option>
+              <option value="v_ir"            {% if formula == 'v_ir' %}selected{% endif %}>V = I × R</option>
+              <option value="v1_serie"         {% if formula == 'v1_serie' %}selected{% endif %}>V1 serie = Vt × (R1/(R1+R2))</option>
+              <option value="v2_serie"         {% if formula == 'v2_serie' %}selected{% endif %}>V2 serie = Vt × (R2/(R1+R2))</option>
+              <option value="i1_paralelo"      {% if formula == 'i1_paralelo' %}selected{% endif %}>I1 paralelo = It × (R2/(R1+R2))</option>
+              <option value="i2_paralelo"      {% if formula == 'i2_paralelo' %}selected{% endif %}>I2 paralelo = It × (R1/(R1+R2))</option>
+              <option value="i_vr"             {% if formula == 'i_vr' %}selected{% endif %}>I = V / R</option>
+              <option value="v_total_serie"    {% if formula == 'v_total_serie' %}selected{% endif %}>V_total = V1 + V2 + V3</option>
+              <option value="i_total_paralelo" {% if formula == 'i_total_paralelo' %}selected{% endif %}>I_total = I1 + I2 + I3</option>
+            </select>
+            {% if formula == "v_ir" %}
+              <div class="input-group"><div class="input-label">CORRIENTE (I)</div><input class="input-field" type="number" step="any" name="corriente" placeholder="0.00" required></div>
+              <div class="input-group"><div class="input-label">RESISTENCIA (R)</div><input class="input-field" type="number" step="any" name="resistencia" placeholder="0.00" required></div>
+            {% elif formula == "i_vr" %}
+              <div class="input-group"><div class="input-label">VOLTAJE (V)</div><input class="input-field" type="number" step="any" name="voltaje" placeholder="0.00" required></div>
+              <div class="input-group"><div class="input-label">RESISTENCIA (R)</div><input class="input-field" type="number" step="any" name="resistencia" placeholder="0.00" required></div>
+            {% elif formula in ["v1_serie", "v2_serie"] %}
+              <div class="input-group"><div class="input-label">VOLTAJE TOTAL</div><input class="input-field" type="number" step="any" name="v_total" placeholder="0.00" required></div>
+              <div class="input-group"><div class="input-label">R1</div><input class="input-field" type="number" step="any" name="r1" placeholder="0.00" required></div>
+              <div class="input-group"><div class="input-label">R2</div><input class="input-field" type="number" step="any" name="r2" placeholder="0.00" required></div>
+            {% elif formula in ["i1_paralelo", "i2_paralelo"] %}
+              <div class="input-group"><div class="input-label">CORRIENTE TOTAL</div><input class="input-field" type="number" step="any" name="i_total" placeholder="0.00" required></div>
+              <div class="input-group"><div class="input-label">R1</div><input class="input-field" type="number" step="any" name="r1" placeholder="0.00" required></div>
+              <div class="input-group"><div class="input-label">R2</div><input class="input-field" type="number" step="any" name="r2" placeholder="0.00" required></div>
+            {% elif formula == "v_total_serie" %}
+              <div class="input-group"><div class="input-label">V1</div><input class="input-field" type="number" step="any" name="v1" placeholder="0.00" required></div>
+              <div class="input-group"><div class="input-label">V2</div><input class="input-field" type="number" step="any" name="v2" placeholder="0.00" required></div>
+              <div class="input-group"><div class="input-label">V3</div><input class="input-field" type="number" step="any" name="v3" placeholder="0.00" required></div>
+            {% elif formula == "i_total_paralelo" %}
+              <div class="input-group"><div class="input-label">I1</div><input class="input-field" type="number" step="any" name="i1" placeholder="0.00" required></div>
+              <div class="input-group"><div class="input-label">I2</div><input class="input-field" type="number" step="any" name="i2" placeholder="0.00" required></div>
+              <div class="input-group"><div class="input-label">I3</div><input class="input-field" type="number" step="any" name="i3" placeholder="0.00" required></div>
+            {% endif %}
+
+          <!-- ══════════════════════════════════════════
+               07 / CÓDIGO DE COLORES
+          ══════════════════════════════════════════ -->
+          {% elif modulo == "colores" %}
+            <div class="calc-title">// CÓDIGO DE COLORES — RESISTENCIAS</div>
+
+            <!-- Tipo de resistencia -->
+            <select class="formula-select" name="formula" onchange="this.form.submit()">
+              <option value="">-- SELECCIONAR TIPO --</option>
+              <option value="4bandas" {% if formula == '4bandas' %}selected{% endif %}>4 Bandas (estándar)</option>
+              <option value="5bandas" {% if formula == '5bandas' %}selected{% endif %}>5 Bandas (precisión)</option>
+            </select>
+
+            {% if formula in ["4bandas", "5bandas"] %}
+
+            <!-- Resistor SVG dinámico -->
+            <div class="resistor-container">
+              <svg class="resistor-svg" viewBox="0 0 400 100" xmlns="http://www.w3.org/2000/svg" id="resistorSVG">
+                <!-- Cables -->
+                <line x1="0" y1="50" x2="60" y2="50" stroke="#aaa" stroke-width="3"/>
+                <line x1="340" y1="50" x2="400" y2="50" stroke="#aaa" stroke-width="3"/>
+                <!-- Cuerpo -->
+                <rect x="60" y="28" width="280" height="44" rx="8" fill="#c8a96e"/>
+                <!-- Bandas — posiciones fijas, coloreadas por JS -->
+                {% if formula == "4bandas" %}
+                  <rect id="svgB1" x="90"  y="28" width="22" height="44" rx="2" fill="#ccc"/>
+                  <rect id="svgB2" x="128" y="28" width="22" height="44" rx="2" fill="#ccc"/>
+                  <rect id="svgB3" x="190" y="28" width="22" height="44" rx="2" fill="#ccc"/>
+                  <rect id="svgB4" x="270" y="28" width="22" height="44" rx="2" fill="#ccc"/>
+                {% else %}
+                  <rect id="svgB1" x="85"  y="28" width="18" height="44" rx="2" fill="#ccc"/>
+                  <rect id="svgB2" x="115" y="28" width="18" height="44" rx="2" fill="#ccc"/>
+                  <rect id="svgB3" x="145" y="28" width="18" height="44" rx="2" fill="#ccc"/>
+                  <rect id="svgB4" x="205" y="28" width="18" height="44" rx="2" fill="#ccc"/>
+                  <rect id="svgB5" x="270" y="28" width="18" height="44" rx="2" fill="#ccc"/>
+                {% endif %}
+              </svg>
+            </div>
+
+            <!-- Selectores de bandas -->
+            <div class="bandas-grid">
+
+              <!-- Banda 1 -->
+              <div class="banda-group">
+                <div class="banda-label">BANDA 1 — <span>1er dígito</span></div>
+                <select class="banda-select" name="banda1" id="sel1" onchange="updateBandas()" required>
+                  <option value="">-- color --</option>
+                  {% for c in ["negro","marron","rojo","naranja","amarillo","verde","azul","violeta","gris","blanco"] %}
+                    <option value="{{ c }}" {% if request.form.get('banda1')==c %}selected{% endif %}>{{ c|upper }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <!-- Banda 2 -->
+              <div class="banda-group">
+                <div class="banda-label">BANDA 2 — <span>2do dígito</span></div>
+                <select class="banda-select" name="banda2" id="sel2" onchange="updateBandas()" required>
+                  <option value="">-- color --</option>
+                  {% for c in ["negro","marron","rojo","naranja","amarillo","verde","azul","violeta","gris","blanco"] %}
+                    <option value="{{ c }}" {% if request.form.get('banda2')==c %}selected{% endif %}>{{ c|upper }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              {% if formula == "5bandas" %}
+              <!-- Banda 3 (solo 5 bandas) -->
+              <div class="banda-group">
+                <div class="banda-label">BANDA 3 — <span>3er dígito</span></div>
+                <select class="banda-select" name="banda3" id="sel3" onchange="updateBandas()" required>
+                  <option value="">-- color --</option>
+                  {% for c in ["negro","marron","rojo","naranja","amarillo","verde","azul","violeta","gris","blanco"] %}
+                    <option value="{{ c }}" {% if request.form.get('banda3')==c %}selected{% endif %}>{{ c|upper }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <!-- Banda 4 = multiplicador -->
+              <div class="banda-group">
+                <div class="banda-label">BANDA 4 — <span>multiplicador (×10ⁿ)</span></div>
+                <select class="banda-select" name="banda4" id="sel4" onchange="updateBandas()" required>
+                  <option value="">-- color --</option>
+                  {% for c in ["negro","marron","rojo","naranja","amarillo","verde","azul","violeta","dorado","plateado"] %}
+                    <option value="{{ c }}" {% if request.form.get('banda4')==c %}selected{% endif %}>{{ c|upper }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <!-- Banda 5 = tolerancia -->
+              <div class="banda-group" style="grid-column: 1 / -1;">
+                <div class="banda-label">BANDA 5 — <span>tolerancia (margen de error)</span></div>
+                <select class="banda-select" name="banda5" id="sel5" onchange="updateBandas()" required>
+                  <option value="">-- color --</option>
+                  {% for c in ["marron","rojo","verde","azul","violeta","gris","dorado","plateado"] %}
+                    <option value="{{ c }}" {% if request.form.get('banda5')==c %}selected{% endif %}>{{ c|upper }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              {% else %}
+              <!-- Banda 3 = multiplicador (4 bandas) -->
+              <div class="banda-group">
+                <div class="banda-label">BANDA 3 — <span>multiplicador (×10ⁿ)</span></div>
+                <select class="banda-select" name="banda3" id="sel3" onchange="updateBandas()" required>
+                  <option value="">-- color --</option>
+                  {% for c in ["negro","marron","rojo","naranja","amarillo","verde","azul","violeta","dorado","plateado"] %}
+                    <option value="{{ c }}" {% if request.form.get('banda3')==c %}selected{% endif %}>{{ c|upper }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <!-- Banda 4 = tolerancia (4 bandas) -->
+              <div class="banda-group">
+                <div class="banda-label">BANDA 4 — <span>tolerancia (margen de error)</span></div>
+                <select class="banda-select" name="banda4" id="sel4" onchange="updateBandas()" required>
+                  <option value="">-- color --</option>
+                  {% for c in ["marron","rojo","verde","azul","violeta","gris","dorado","plateado"] %}
+                    <option value="{{ c }}" {% if request.form.get('banda4')==c %}selected{% endif %}>{{ c|upper }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              {% endif %}
+
+            </div><!-- /bandas-grid -->
+            {% endif %}<!-- /if formula -->
+
+          <!-- ── FILTROS RC / RL ── -->
+          {% elif modulo == "filtros" %}
+            <div class="calc-title">// FILTROS RC / RL</div>
+            <select class="formula-select" name="formula" onchange="this.form.submit()">
+              <option value="">-- SELECCIONAR CÁLCULO --</option>
+              <optgroup label="── FILTRO RC ──">
+                <option value="rc_fc" {% if formula == 'rc_fc' %}selected{% endif %}>RC → Frec. de corte: fc = 1/(2πRC)</option>
+                <option value="rc_r"  {% if formula == 'rc_r' %}selected{% endif %}>RC → Resistencia: R = 1/(2π·fc·C)</option>
+                <option value="rc_c"  {% if formula == 'rc_c' %}selected{% endif %}>RC → Capacitancia: C = 1/(2π·fc·R)</option>
+                <option value="rc_xc" {% if formula == 'rc_xc' %}selected{% endif %}>RC → Reactancia cap.: Xc = 1/(2πfC)</option>
+              </optgroup>
+              <optgroup label="── FILTRO RL ──">
+                <option value="rl_fc" {% if formula == 'rl_fc' %}selected{% endif %}>RL → Frec. de corte: fc = R/(2πL)</option>
+                <option value="rl_r"  {% if formula == 'rl_r' %}selected{% endif %}>RL → Resistencia: R = 2π·fc·L</option>
+                <option value="rl_l"  {% if formula == 'rl_l' %}selected{% endif %}>RL → Inductancia: L = R/(2π·fc)</option>
+                <option value="rl_xl" {% if formula == 'rl_xl' %}selected{% endif %}>RL → Reactancia ind.: Xl = 2πfL</option>
+              </optgroup>
+            </select>
+            {% if formula in ["rc_fc", "rc_xc"] %}
+              <div class="input-group"><div class="input-label">RESISTENCIA (R) — Ohms</div><input class="input-field" type="number" step="any" name="resistencia" placeholder="ej: 1000" required></div>
+              <div class="input-group"><div class="input-label">CAPACITANCIA (C) — Farads &nbsp;(100nF = 0.0000001)</div><input class="input-field" type="number" step="any" name="capacitancia" placeholder="ej: 0.0000001" required></div>
+            {% elif formula == "rc_r" %}
+              <div class="input-group"><div class="input-label">FRECUENCIA DE CORTE (fc) — Hz</div><input class="input-field" type="number" step="any" name="frecuencia" placeholder="ej: 1000" required></div>
+              <div class="input-group"><div class="input-label">CAPACITANCIA (C) — Farads</div><input class="input-field" type="number" step="any" name="capacitancia" placeholder="ej: 0.0000001" required></div>
+            {% elif formula == "rc_c" %}
+              <div class="input-group"><div class="input-label">FRECUENCIA DE CORTE (fc) — Hz</div><input class="input-field" type="number" step="any" name="frecuencia" placeholder="ej: 1000" required></div>
+              <div class="input-group"><div class="input-label">RESISTENCIA (R) — Ohms</div><input class="input-field" type="number" step="any" name="resistencia" placeholder="ej: 1000" required></div>
+            {% elif formula in ["rl_fc", "rl_xl"] %}
+              <div class="input-group"><div class="input-label">RESISTENCIA (R) — Ohms</div><input class="input-field" type="number" step="any" name="resistencia" placeholder="ej: 1000" required></div>
+              <div class="input-group"><div class="input-label">INDUCTANCIA (L) — Henries &nbsp;(10mH = 0.01)</div><input class="input-field" type="number" step="any" name="inductancia" placeholder="ej: 0.01" required></div>
+            {% elif formula == "rl_r" %}
+              <div class="input-group"><div class="input-label">FRECUENCIA DE CORTE (fc) — Hz</div><input class="input-field" type="number" step="any" name="frecuencia" placeholder="ej: 1000" required></div>
+              <div class="input-group"><div class="input-label">INDUCTANCIA (L) — Henries</div><input class="input-field" type="number" step="any" name="inductancia" placeholder="ej: 0.01" required></div>
+            {% elif formula == "rl_l" %}
+              <div class="input-group"><div class="input-label">FRECUENCIA DE CORTE (fc) — Hz</div><input class="input-field" type="number" step="any" name="frecuencia" placeholder="ej: 1000" required></div>
+              <div class="input-group"><div class="input-label">RESISTENCIA (R) — Ohms</div><input class="input-field" type="number" step="any" name="resistencia" placeholder="ej: 1000" required></div>
+            {% endif %}
+
+          <!-- ══════════════════════════════════════════
+               09 / CONVERSIÓN DE UNIDADES
+          ══════════════════════════════════════════ -->
+          {% elif modulo == "conversion" %}
+            <div class="calc-title">// CONVERSIÓN DE UNIDADES</div>
+
+            <!-- Selector de magnitud -->
+            <select class="formula-select" name="formula" onchange="this.form.submit()">
+              <option value="">-- SELECCIONAR MAGNITUD --</option>
+              <optgroup label="── RESISTENCIA ──">
+                <option value="resistencia" {% if formula=='resistencia' %}selected{% endif %}>Resistencia (Ω / kΩ / MΩ)</option>
+              </optgroup>
+              <optgroup label="── VOLTAJE ──">
+                <option value="voltaje" {% if formula=='voltaje' %}selected{% endif %}>Voltaje (µV / mV / V / kV)</option>
+              </optgroup>
+              <optgroup label="── CORRIENTE ──">
+                <option value="corriente" {% if formula=='corriente' %}selected{% endif %}>Corriente (µA / mA / A)</option>
+              </optgroup>
+              <optgroup label="── FRECUENCIA ──">
+                <option value="frecuencia" {% if formula=='frecuencia' %}selected{% endif %}>Frecuencia (Hz / kHz / MHz / GHz)</option>
+              </optgroup>
+              <optgroup label="── CAPACITANCIA ──">
+                <option value="capacitancia" {% if formula=='capacitancia' %}selected{% endif %}>Capacitancia (pF / nF / µF / mF / F)</option>
+              </optgroup>
+              <optgroup label="── INDUCTANCIA ──">
+                <option value="inductancia" {% if formula=='inductancia' %}selected{% endif %}>Inductancia (µH / mH / H)</option>
+              </optgroup>
+              <optgroup label="── POTENCIA ──">
+                <option value="potencia_w" {% if formula=='potencia_w' %}selected{% endif %}>Potencia (mW / W / kW)</option>
+              </optgroup>
+            </select>
+
+            {% if formula %}
+            <!-- Fila: valor + unidad origen → unidad destino -->
+            <div class="conv-row">
+              <div class="input-group" style="margin:0">
+                <div class="input-label">VALOR A CONVERTIR</div>
+                <input class="input-field" type="number" step="any" name="valor"
+                       value="{{ request.form.get('valor','') }}"
+                       placeholder="ej: 1000" required>
+              </div>
+              <div class="conv-arrow">→</div>
+              <div class="input-group" style="margin:0">
+                <div class="input-label">CONVERTIR A</div>
+                <select class="formula-select" name="unidad_origen" style="margin:0" required>
+                  <option value="">-- unidad --</option>
+
+                  {% if formula == "resistencia" %}
+                    {% set unidades = [("ohm","Ω — Ohm"),("kohm","kΩ — Kilo-ohm"),("mohm","MΩ — Mega-ohm")] %}
+                  {% elif formula == "voltaje" %}
+                    {% set unidades = [("uv","µV — Microvolt"),("mv","mV — Milivolt"),("v","V — Volt"),("kv","kV — Kilovolt")] %}
+                  {% elif formula == "corriente" %}
+                    {% set unidades = [("ua","µA — Microamper"),("ma","mA — Miliamper"),("a","A — Amper")] %}
+                  {% elif formula == "frecuencia" %}
+                    {% set unidades = [("hz","Hz — Hertz"),("khz","kHz — Kilohertz"),("mhz","MHz — Megahertz"),("ghz","GHz — Gigahertz")] %}
+                  {% elif formula == "capacitancia" %}
+                    {% set unidades = [("pf","pF — Picofarad"),("nf","nF — Nanofarad"),("uf","µF — Microfarad"),("mf","mF — Milifarad"),("f","F — Farad")] %}
+                  {% elif formula == "inductancia" %}
+                    {% set unidades = [("uh","µH — Microhenry"),("mh","mH — Milihenry"),("h","H — Henry")] %}
+                  {% elif formula == "potencia_w" %}
+                    {% set unidades = [("mw","mW — Miliwatt"),("w","W — Watt"),("kw","kW — Kilowatt")] %}
+                  {% endif %}
+
+                  <!-- unidad_origen = la que tiene el usuario -->
+                  <optgroup label="Tengo este valor en...">
+                  {% for val, label in unidades %}
+                    <option value="{{ val }}" {% if request.form.get('unidad_origen')==val %}selected{% endif %}>{{ label }}</option>
+                  {% endfor %}
+                  </optgroup>
+                </select>
+              </div>
+            </div>
+
+            <!-- Destino: a qué unidad convertir -->
+            {% if request.form.get('unidad_origen') %}
+            <div class="input-group">
+              <div class="input-label">QUIERO CONVERTIR A</div>
+              <select class="formula-select" name="unidad_destino" style="margin-bottom:0" required>
+                <option value="">-- unidad destino --</option>
+                {% for val, label in unidades %}
+                  {% if val != request.form.get('unidad_origen') %}
+                    <option value="{{ val }}" {% if request.form.get('unidad_destino')==val %}selected{% endif %}>{{ label }}</option>
+                  {% endif %}
+                {% endfor %}
+              </select>
+            </div>
+            {% endif %}
+
+            {% endif %}<!-- /if formula -->
+
+          {% endif %}<!-- fin modulos -->
+
+          {% if formula %}
+            <button type="submit" class="btn-calcular">CALCULAR</button>
+          {% endif %}
+
+        </form>
+
+        {% if resultado %}
+          <div class="resultado">▶ {{ resultado }}</div>
+        {% endif %}
+        {% if error %}
+          <div class="error">✗ {{ error }}</div>
+        {% endif %}
+
+      {% endif %}
+    </div><!-- /calc-panel -->
+  </div><!-- /layout -->
+
+  <div class="footer">
+    <span>// SISTEMA DE AUTOMATIZACIÓN</span>
+    <span>R.R.Z.</span>
+  </div>
+
+</div>
+
+<script>
+// ── MAPA DE COLORES CSS ──
+const COLOR_MAP = {
+  negro:    "#111111",
+  marron:   "#8B4513",
+  rojo:     "#CC0000",
+  naranja:  "#FF8C00",
+  amarillo: "#FFD700",
+  verde:    "#228B22",
+  azul:     "#1E3ECC",
+  violeta:  "#7B0DB0",
+  gris:     "#808080",
+  blanco:   "#F0F0F0",
+  dorado:   "#CFB53B",
+  plateado: "#C0C0C0",
+};
+
+// ── Aplica color al SVG y al borde del select para UNA banda ──
+function colorearBanda(selId, svgId) {
+  const sel = document.getElementById(selId);
+  const svg = document.getElementById(svgId);
+  if (!sel || !svg) return;
+  const hex = COLOR_MAP[sel.value] || "#444444";
+  svg.setAttribute("fill", hex);
+  sel.style.borderLeftColor = hex;
+  sel.style.borderLeftWidth = "5px";
+}
+
+// ── Actualiza todas las bandas (al cargar la página con valores de Flask) ──
+function updateBandas() {
+  const pares = [
+    ["sel1","svgB1"],["sel2","svgB2"],
+    ["sel3","svgB3"],["sel4","svgB4"],["sel5","svgB5"]
+  ];
+  pares.forEach(([sid, bid]) => colorearBanda(sid, bid));
+}
+
+// Ejecutar al cargar (repoblado por Flask tras calcular)
+document.addEventListener("DOMContentLoaded", updateBandas);
+
+// ── PWA: registrar Service Worker ──
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/static/sw.js')
+      .then(r => console.log('SW registrado:', r.scope))
+      .catch(e => console.log('SW error:', e));
+  });
+}
+</script>
+
+<!-- ══════════════════════════════════════════
+     GLOSARIO
+══════════════════════════════════════════ -->
+<div class="glosario" id="glosario">
+  <div class="glosario-title">// GLOSARIO — TÉRMINOS FRECUENTES</div>
+  <div class="glosario-grid">
+
+    <div class="glos-item"><span class="glos-sym">Ω</span><span class="glos-name">Ohm</span><span class="glos-def">Unidad de resistencia eléctrica. A mayor valor, más dificulta el paso de corriente.</span></div>
+    <div class="glos-item"><span class="glos-sym">kΩ</span><span class="glos-name">Kilo-ohm</span><span class="glos-def">1 kΩ = 1.000 Ω. Resistencias de uso común en circuitos de señal.</span></div>
+    <div class="glos-item"><span class="glos-sym">MΩ</span><span class="glos-name">Mega-ohm</span><span class="glos-def">1 MΩ = 1.000.000 Ω. Usado en circuitos de muy alta impedancia.</span></div>
+
+    <div class="glos-item"><span class="glos-sym">V</span><span class="glos-name">Volt</span><span class="glos-def">Unidad de tensión eléctrica (diferencia de potencial). "La presión" que empuja la corriente.</span></div>
+    <div class="glos-item"><span class="glos-sym">mV</span><span class="glos-name">Milivolt</span><span class="glos-def">1 mV = 0,001 V. Típico en señales de sensores y audio.</span></div>
+    <div class="glos-item"><span class="glos-sym">kV</span><span class="glos-name">Kilovolt</span><span class="glos-def">1 kV = 1.000 V. Usado en sistemas de alta tensión.</span></div>
+
+    <div class="glos-item"><span class="glos-sym">A</span><span class="glos-name">Amper</span><span class="glos-def">Unidad de corriente eléctrica. "La cantidad" de electrones que fluyen por segundo.</span></div>
+    <div class="glos-item"><span class="glos-sym">mA</span><span class="glos-name">Miliamper</span><span class="glos-def">1 mA = 0,001 A. Corriente típica en circuitos electrónicos.</span></div>
+    <div class="glos-item"><span class="glos-sym">µA</span><span class="glos-name">Microamper</span><span class="glos-def">1 µA = 0,000001 A. Usado en circuitos de muy bajo consumo.</span></div>
+
+    <div class="glos-item"><span class="glos-sym">W</span><span class="glos-name">Watt</span><span class="glos-def">Unidad de potencia. Energía consumida o disipada por segundo (P = V × I).</span></div>
+    <div class="glos-item"><span class="glos-sym">mW</span><span class="glos-name">Miliwatt</span><span class="glos-def">1 mW = 0,001 W. Potencia típica en circuitos de señal baja.</span></div>
+    <div class="glos-item"><span class="glos-sym">kW</span><span class="glos-name">Kilowatt</span><span class="glos-def">1 kW = 1.000 W. Usado en motores y equipos de potencia.</span></div>
+
+    <div class="glos-item"><span class="glos-sym">F</span><span class="glos-name">Farad</span><span class="glos-def">Unidad de capacitancia. Capacidad de un capacitor para almacenar carga eléctrica.</span></div>
+    <div class="glos-item"><span class="glos-sym">µF</span><span class="glos-name">Microfaradio</span><span class="glos-def">1 µF = 0,000001 F. Capacitores comunes en filtros y fuentes de alimentación.</span></div>
+    <div class="glos-item"><span class="glos-sym">nF</span><span class="glos-name">Nanofaradio</span><span class="glos-def">1 nF = 0,000000001 F. Típico en filtros de alta frecuencia.</span></div>
+    <div class="glos-item"><span class="glos-sym">pF</span><span class="glos-name">Picofaradio</span><span class="glos-def">1 pF = 10⁻¹² F. Usado en osciladores y circuitos de RF.</span></div>
+
+    <div class="glos-item"><span class="glos-sym">H</span><span class="glos-name">Henry</span><span class="glos-def">Unidad de inductancia. Capacidad de una bobina de oponerse a cambios de corriente.</span></div>
+    <div class="glos-item"><span class="glos-sym">mH</span><span class="glos-name">Milihenry</span><span class="glos-def">1 mH = 0,001 H. Inductores comunes en filtros y conversores.</span></div>
+    <div class="glos-item"><span class="glos-sym">µH</span><span class="glos-name">Microhenry</span><span class="glos-def">1 µH = 0,000001 H. Usado en circuitos de RF y switching de alta frecuencia.</span></div>
+
+    <div class="glos-item"><span class="glos-sym">Hz</span><span class="glos-name">Hertz</span><span class="glos-def">Unidad de frecuencia. Ciclos por segundo de una señal periódica.</span></div>
+    <div class="glos-item"><span class="glos-sym">kHz</span><span class="glos-name">Kilohertz</span><span class="glos-def">1 kHz = 1.000 Hz. Rango de audio y señales de baja frecuencia.</span></div>
+    <div class="glos-item"><span class="glos-sym">MHz</span><span class="glos-name">Megahertz</span><span class="glos-def">1 MHz = 1.000.000 Hz. Frecuencias de radio AM, osciladores y microprocesadores.</span></div>
+    <div class="glos-item"><span class="glos-sym">GHz</span><span class="glos-name">Gigahertz</span><span class="glos-def">1 GHz = 10⁹ Hz. Wi-Fi, procesadores modernos y señales de microondas.</span></div>
+
+    <div class="glos-item"><span class="glos-sym">fc</span><span class="glos-name">Frec. de corte</span><span class="glos-def">Frecuencia a la que un filtro atenúa la señal a –3 dB (≈70,7% de la amplitud original).</span></div>
+    <div class="glos-item"><span class="glos-sym">Xc</span><span class="glos-name">Reactancia cap.</span><span class="glos-def">Oposición de un capacitor al paso de corriente alterna. Xc = 1/(2π·f·C).</span></div>
+    <div class="glos-item"><span class="glos-sym">Xl</span><span class="glos-name">Reactancia ind.</span><span class="glos-def">Oposición de un inductor al paso de corriente alterna. Xl = 2π·f·L.</span></div>
+    <div class="glos-item"><span class="glos-sym">dBm</span><span class="glos-name">Decibel-miliwatt</span><span class="glos-def">Unidad de potencia relativa a 1 mW. 0 dBm = 1 mW. Usado en RF y telecomunicaciones.</span></div>
+
+  </div>
+</div>
+
+</body>
+</html>
