@@ -63,10 +63,17 @@ def index():
 # ============================================================
 @app.route("/calcular", methods=["POST"])
 def calcular():
-    modulo = request.form.get("modulo")
-    formula = request.form.get("formula")
+    modulo      = request.form.get("modulo")
+    formula     = request.form.get("formula")
+    solo_formula = request.form.get("solo_formula") == "1"
     resultado = None
     error = None
+
+    # Si solo cambió la fórmula, mostrar el formulario sin calcular
+    if solo_formula:
+        return render_template("index.html",
+                               resultado=None, error=None,
+                               modulo=modulo, formula=formula)
 
     try:
         # ── LEY DE OHM ──────────────────────────────────────
