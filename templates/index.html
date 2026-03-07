@@ -314,14 +314,14 @@
               <option value="resistencia" {% if formula == 'resistencia' %}selected{% endif %}>R = V / I → Calcular Resistencia</option>
             </select>
             {% if formula == "voltaje" %}
-              <div class="input-group"><div class="input-label">CORRIENTE (I) — Amperes</div><input class="input-field" type="number" step="any" name="corriente" placeholder="0.00" required></div>
-              <div class="input-group"><div class="input-label">RESISTENCIA (R) — Ohms</div><input class="input-field" type="number" step="any" name="resistencia" placeholder="0.00" required></div>
+              <div class="input-group"><div class="input-label">CORRIENTE (I) — Amperes</div><input class="input-field" type="text" inputmode="decimal" name="corriente" placeholder="0,00" required></div>
+              <div class="input-group"><div class="input-label">RESISTENCIA (R) — Ohms</div><input class="input-field" type="text" inputmode="decimal" name="resistencia" placeholder="0,00" required></div>
             {% elif formula == "corriente" %}
-              <div class="input-group"><div class="input-label">VOLTAJE (V) — Volts</div><input class="input-field" type="number" step="any" name="voltaje" placeholder="0.00" required></div>
-              <div class="input-group"><div class="input-label">RESISTENCIA (R) — Ohms</div><input class="input-field" type="number" step="any" name="resistencia" placeholder="0.00" required></div>
+              <div class="input-group"><div class="input-label">VOLTAJE (V) — Volts</div><input class="input-field" type="text" inputmode="decimal" name="voltaje" placeholder="0,00" required></div>
+              <div class="input-group"><div class="input-label">RESISTENCIA (R) — Ohms</div><input class="input-field" type="text" inputmode="decimal" name="resistencia" placeholder="0,00" required></div>
             {% elif formula == "resistencia" %}
-              <div class="input-group"><div class="input-label">VOLTAJE (V) — Volts</div><input class="input-field" type="number" step="any" name="voltaje" placeholder="0.00" required></div>
-              <div class="input-group"><div class="input-label">CORRIENTE (I) — Amperes</div><input class="input-field" type="number" step="any" name="corriente" placeholder="0.00" required></div>
+              <div class="input-group"><div class="input-label">VOLTAJE (V) — Volts</div><input class="input-field" type="text" inputmode="decimal" name="voltaje" placeholder="0,00" required></div>
+              <div class="input-group"><div class="input-label">CORRIENTE (I) — Amperes</div><input class="input-field" type="text" inputmode="decimal" name="corriente" placeholder="0,00" required></div>
             {% endif %}
 
           <!-- ── POTENCIA ── -->
@@ -340,17 +340,17 @@
               <option value="v_raiz" {% if formula == 'v_raiz' %}selected{% endif %}>V = √(P × R)</option>
             </select>
             {% if formula in ["p_vi", "v_pi", "i_pv"] %}
-              {% if formula != "i_pv" %}<div class="input-group"><div class="input-label">VOLTAJE (V)</div><input class="input-field" type="number" step="any" name="voltaje" placeholder="0.00" required></div>{% endif %}
-              {% if formula != "v_pi" %}<div class="input-group"><div class="input-label">CORRIENTE (I)</div><input class="input-field" type="number" step="any" name="corriente" placeholder="0.00" required></div>{% endif %}
-              {% if formula in ["v_pi","i_pv"] %}<div class="input-group"><div class="input-label">POTENCIA (P)</div><input class="input-field" type="number" step="any" name="potencia" placeholder="0.00" required></div>{% endif %}
+              {% if formula != "i_pv" %}<div class="input-group"><div class="input-label">VOLTAJE (V)</div><input class="input-field" type="text" inputmode="decimal" name="voltaje" placeholder="0,00" required></div>{% endif %}
+              {% if formula != "v_pi" %}<div class="input-group"><div class="input-label">CORRIENTE (I)</div><input class="input-field" type="text" inputmode="decimal" name="corriente" placeholder="0,00" required></div>{% endif %}
+              {% if formula in ["v_pi","i_pv"] %}<div class="input-group"><div class="input-label">POTENCIA (P)</div><input class="input-field" type="text" inputmode="decimal" name="potencia" placeholder="0,00" required></div>{% endif %}
             {% elif formula in ["p_i2r", "i_raiz", "r_pi2"] %}
-              {% if formula != "i_raiz" %}<div class="input-group"><div class="input-label">CORRIENTE (I)</div><input class="input-field" type="number" step="any" name="corriente" placeholder="0.00" required></div>{% endif %}
-              {% if formula != "p_i2r" %}<div class="input-group"><div class="input-label">POTENCIA (P)</div><input class="input-field" type="number" step="any" name="potencia" placeholder="0.00" required></div>{% endif %}
-              <div class="input-group"><div class="input-label">RESISTENCIA (R)</div><input class="input-field" type="number" step="any" name="resistencia" placeholder="0.00" required></div>
+              {% if formula != "i_raiz" %}<div class="input-group"><div class="input-label">CORRIENTE (I)</div><input class="input-field" type="text" inputmode="decimal" name="corriente" placeholder="0,00" required></div>{% endif %}
+              {% if formula != "p_i2r" %}<div class="input-group"><div class="input-label">POTENCIA (P)</div><input class="input-field" type="text" inputmode="decimal" name="potencia" placeholder="0,00" required></div>{% endif %}
+              <div class="input-group"><div class="input-label">RESISTENCIA (R)</div><input class="input-field" type="text" inputmode="decimal" name="resistencia" placeholder="0,00" required></div>
             {% elif formula in ["p_v2r", "r_v2p", "v_raiz"] %}
-              {% if formula != "v_raiz" %}<div class="input-group"><div class="input-label">VOLTAJE (V)</div><input class="input-field" type="number" step="any" name="voltaje" placeholder="0.00" required></div>{% endif %}
-              {% if formula != "p_v2r" %}<div class="input-group"><div class="input-label">POTENCIA (P)</div><input class="input-field" type="number" step="any" name="potencia" placeholder="0.00" required></div>{% endif %}
-              <div class="input-group"><div class="input-label">RESISTENCIA (R)</div><input class="input-field" type="number" step="any" name="resistencia" placeholder="0.00" required></div>
+              {% if formula != "v_raiz" %}<div class="input-group"><div class="input-label">VOLTAJE (V)</div><input class="input-field" type="text" inputmode="decimal" name="voltaje" placeholder="0,00" required></div>{% endif %}
+              {% if formula != "p_v2r" %}<div class="input-group"><div class="input-label">POTENCIA (P)</div><input class="input-field" type="text" inputmode="decimal" name="potencia" placeholder="0,00" required></div>{% endif %}
+              <div class="input-group"><div class="input-label">RESISTENCIA (R)</div><input class="input-field" type="text" inputmode="decimal" name="resistencia" placeholder="0,00" required></div>
             {% endif %}
 
           <!-- ── KIRCHHOFF ── -->
@@ -366,20 +366,20 @@
               <option value="v_total" {% if formula == 'v_total' %}selected{% endif %}>V_total = V1 + V2 + V3</option>
             </select>
             {% if formula in ["i1", "i2"] %}
-              <div class="input-group"><div class="input-label">CORRIENTE TOTAL (I_total)</div><input class="input-field" type="number" step="any" name="i_total" placeholder="0.00" required></div>
-              <div class="input-group"><div class="input-label">RESISTENCIA R1</div><input class="input-field" type="number" step="any" name="r1" placeholder="0.00" required></div>
-              <div class="input-group"><div class="input-label">RESISTENCIA R2</div><input class="input-field" type="number" step="any" name="r2" placeholder="0.00" required></div>
+              <div class="input-group"><div class="input-label">CORRIENTE TOTAL (I_total)</div><input class="input-field" type="text" inputmode="decimal" name="i_total" placeholder="0,00" required></div>
+              <div class="input-group"><div class="input-label">RESISTENCIA R1</div><input class="input-field" type="text" inputmode="decimal" name="r1" placeholder="0,00" required></div>
+              <div class="input-group"><div class="input-label">RESISTENCIA R2</div><input class="input-field" type="text" inputmode="decimal" name="r2" placeholder="0,00" required></div>
             {% elif formula in ["v1", "v2"] %}
-              <div class="input-group"><div class="input-label">VOLTAJE TOTAL (V_total)</div><input class="input-field" type="number" step="any" name="v_total" placeholder="0.00" required></div>
-              <div class="input-group"><div class="input-label">RESISTENCIA R1</div><input class="input-field" type="number" step="any" name="r1" placeholder="0.00" required></div>
-              <div class="input-group"><div class="input-label">RESISTENCIA R2</div><input class="input-field" type="number" step="any" name="r2" placeholder="0.00" required></div>
+              <div class="input-group"><div class="input-label">VOLTAJE TOTAL (V_total)</div><input class="input-field" type="text" inputmode="decimal" name="v_total" placeholder="0,00" required></div>
+              <div class="input-group"><div class="input-label">RESISTENCIA R1</div><input class="input-field" type="text" inputmode="decimal" name="r1" placeholder="0,00" required></div>
+              <div class="input-group"><div class="input-label">RESISTENCIA R2</div><input class="input-field" type="text" inputmode="decimal" name="r2" placeholder="0,00" required></div>
             {% elif formula == "i_total" %}
-              <div class="input-group"><div class="input-label">CORRIENTE I1</div><input class="input-field" type="number" step="any" name="i1" placeholder="0.00" required></div>
-              <div class="input-group"><div class="input-label">CORRIENTE I2</div><input class="input-field" type="number" step="any" name="i2" placeholder="0.00" required></div>
+              <div class="input-group"><div class="input-label">CORRIENTE I1</div><input class="input-field" type="text" inputmode="decimal" name="i1" placeholder="0,00" required></div>
+              <div class="input-group"><div class="input-label">CORRIENTE I2</div><input class="input-field" type="text" inputmode="decimal" name="i2" placeholder="0,00" required></div>
             {% elif formula == "v_total" %}
-              <div class="input-group"><div class="input-label">VOLTAJE V1</div><input class="input-field" type="number" step="any" name="v1" placeholder="0.00" required></div>
-              <div class="input-group"><div class="input-label">VOLTAJE V2</div><input class="input-field" type="number" step="any" name="v2" placeholder="0.00" required></div>
-              <div class="input-group"><div class="input-label">VOLTAJE V3</div><input class="input-field" type="number" step="any" name="v3" placeholder="0.00" required></div>
+              <div class="input-group"><div class="input-label">VOLTAJE V1</div><input class="input-field" type="text" inputmode="decimal" name="v1" placeholder="0,00" required></div>
+              <div class="input-group"><div class="input-label">VOLTAJE V2</div><input class="input-field" type="text" inputmode="decimal" name="v2" placeholder="0,00" required></div>
+              <div class="input-group"><div class="input-label">VOLTAJE V3</div><input class="input-field" type="text" inputmode="decimal" name="v3" placeholder="0,00" required></div>
             {% endif %}
 
           <!-- ── POTENCIA DISIPADA ── -->
@@ -395,20 +395,20 @@
               <option value="v_raiz" {% if formula == 'v_raiz' %}selected{% endif %}>V = √(P × R)</option>
             </select>
             {% if formula == "p_i2r" %}
-              <div class="input-group"><div class="input-label">CORRIENTE (I)</div><input class="input-field" type="number" step="any" name="corriente" placeholder="0.00" required></div>
-              <div class="input-group"><div class="input-label">RESISTENCIA (R)</div><input class="input-field" type="number" step="any" name="resistencia" placeholder="0.00" required></div>
+              <div class="input-group"><div class="input-label">CORRIENTE (I)</div><input class="input-field" type="text" inputmode="decimal" name="corriente" placeholder="0,00" required></div>
+              <div class="input-group"><div class="input-label">RESISTENCIA (R)</div><input class="input-field" type="text" inputmode="decimal" name="resistencia" placeholder="0,00" required></div>
             {% elif formula == "p_v2r" %}
-              <div class="input-group"><div class="input-label">VOLTAJE (V)</div><input class="input-field" type="number" step="any" name="voltaje" placeholder="0.00" required></div>
-              <div class="input-group"><div class="input-label">RESISTENCIA (R)</div><input class="input-field" type="number" step="any" name="resistencia" placeholder="0.00" required></div>
+              <div class="input-group"><div class="input-label">VOLTAJE (V)</div><input class="input-field" type="text" inputmode="decimal" name="voltaje" placeholder="0,00" required></div>
+              <div class="input-group"><div class="input-label">RESISTENCIA (R)</div><input class="input-field" type="text" inputmode="decimal" name="resistencia" placeholder="0,00" required></div>
             {% elif formula == "r_pi2" %}
-              <div class="input-group"><div class="input-label">POTENCIA (P)</div><input class="input-field" type="number" step="any" name="potencia" placeholder="0.00" required></div>
-              <div class="input-group"><div class="input-label">CORRIENTE (I)</div><input class="input-field" type="number" step="any" name="corriente" placeholder="0.00" required></div>
+              <div class="input-group"><div class="input-label">POTENCIA (P)</div><input class="input-field" type="text" inputmode="decimal" name="potencia" placeholder="0,00" required></div>
+              <div class="input-group"><div class="input-label">CORRIENTE (I)</div><input class="input-field" type="text" inputmode="decimal" name="corriente" placeholder="0,00" required></div>
             {% elif formula == "r_v2p" %}
-              <div class="input-group"><div class="input-label">VOLTAJE (V)</div><input class="input-field" type="number" step="any" name="voltaje" placeholder="0.00" required></div>
-              <div class="input-group"><div class="input-label">POTENCIA (P)</div><input class="input-field" type="number" step="any" name="potencia" placeholder="0.00" required></div>
+              <div class="input-group"><div class="input-label">VOLTAJE (V)</div><input class="input-field" type="text" inputmode="decimal" name="voltaje" placeholder="0,00" required></div>
+              <div class="input-group"><div class="input-label">POTENCIA (P)</div><input class="input-field" type="text" inputmode="decimal" name="potencia" placeholder="0,00" required></div>
             {% elif formula in ["i_raiz", "v_raiz"] %}
-              <div class="input-group"><div class="input-label">POTENCIA (P)</div><input class="input-field" type="number" step="any" name="potencia" placeholder="0.00" required></div>
-              <div class="input-group"><div class="input-label">RESISTENCIA (R)</div><input class="input-field" type="number" step="any" name="resistencia" placeholder="0.00" required></div>
+              <div class="input-group"><div class="input-label">POTENCIA (P)</div><input class="input-field" type="text" inputmode="decimal" name="potencia" placeholder="0,00" required></div>
+              <div class="input-group"><div class="input-label">RESISTENCIA (R)</div><input class="input-field" type="text" inputmode="decimal" name="resistencia" placeholder="0,00" required></div>
             {% endif %}
 
           <!-- ── RESISTENCIAS EQUIV ── -->
@@ -421,10 +421,10 @@
               <option value="paralelo2" {% if formula == 'paralelo2' %}selected{% endif %}>Paralelo 2R: (R1×R2)/(R1+R2)</option>
               <option value="paralelo3" {% if formula == 'paralelo3' %}selected{% endif %}>Paralelo 3R: 1/(1/R1+1/R2+1/R3)</option>
             </select>
-            <div class="input-group"><div class="input-label">RESISTENCIA R1 — Ohms</div><input class="input-field" type="number" step="any" name="r1" placeholder="0.00" required></div>
-            <div class="input-group"><div class="input-label">RESISTENCIA R2 — Ohms</div><input class="input-field" type="number" step="any" name="r2" placeholder="0.00" required></div>
+            <div class="input-group"><div class="input-label">RESISTENCIA R1 — Ohms</div><input class="input-field" type="text" inputmode="decimal" name="r1" placeholder="0,00" required></div>
+            <div class="input-group"><div class="input-label">RESISTENCIA R2 — Ohms</div><input class="input-field" type="text" inputmode="decimal" name="r2" placeholder="0,00" required></div>
             {% if formula in ["serie3", "paralelo3"] %}
-              <div class="input-group"><div class="input-label">RESISTENCIA R3 — Ohms</div><input class="input-field" type="number" step="any" name="r3" placeholder="0.00" required></div>
+              <div class="input-group"><div class="input-label">RESISTENCIA R3 — Ohms</div><input class="input-field" type="text" inputmode="decimal" name="r3" placeholder="0,00" required></div>
             {% endif %}
 
           <!-- ── CAÍDA DE TENSIÓN ── -->
@@ -442,27 +442,27 @@
               <option value="i_total_paralelo" {% if formula == 'i_total_paralelo' %}selected{% endif %}>I_total = I1 + I2 + I3</option>
             </select>
             {% if formula == "v_ir" %}
-              <div class="input-group"><div class="input-label">CORRIENTE (I)</div><input class="input-field" type="number" step="any" name="corriente" placeholder="0.00" required></div>
-              <div class="input-group"><div class="input-label">RESISTENCIA (R)</div><input class="input-field" type="number" step="any" name="resistencia" placeholder="0.00" required></div>
+              <div class="input-group"><div class="input-label">CORRIENTE (I)</div><input class="input-field" type="text" inputmode="decimal" name="corriente" placeholder="0,00" required></div>
+              <div class="input-group"><div class="input-label">RESISTENCIA (R)</div><input class="input-field" type="text" inputmode="decimal" name="resistencia" placeholder="0,00" required></div>
             {% elif formula == "i_vr" %}
-              <div class="input-group"><div class="input-label">VOLTAJE (V)</div><input class="input-field" type="number" step="any" name="voltaje" placeholder="0.00" required></div>
-              <div class="input-group"><div class="input-label">RESISTENCIA (R)</div><input class="input-field" type="number" step="any" name="resistencia" placeholder="0.00" required></div>
+              <div class="input-group"><div class="input-label">VOLTAJE (V)</div><input class="input-field" type="text" inputmode="decimal" name="voltaje" placeholder="0,00" required></div>
+              <div class="input-group"><div class="input-label">RESISTENCIA (R)</div><input class="input-field" type="text" inputmode="decimal" name="resistencia" placeholder="0,00" required></div>
             {% elif formula in ["v1_serie", "v2_serie"] %}
-              <div class="input-group"><div class="input-label">VOLTAJE TOTAL</div><input class="input-field" type="number" step="any" name="v_total" placeholder="0.00" required></div>
-              <div class="input-group"><div class="input-label">R1</div><input class="input-field" type="number" step="any" name="r1" placeholder="0.00" required></div>
-              <div class="input-group"><div class="input-label">R2</div><input class="input-field" type="number" step="any" name="r2" placeholder="0.00" required></div>
+              <div class="input-group"><div class="input-label">VOLTAJE TOTAL</div><input class="input-field" type="text" inputmode="decimal" name="v_total" placeholder="0,00" required></div>
+              <div class="input-group"><div class="input-label">R1</div><input class="input-field" type="text" inputmode="decimal" name="r1" placeholder="0,00" required></div>
+              <div class="input-group"><div class="input-label">R2</div><input class="input-field" type="text" inputmode="decimal" name="r2" placeholder="0,00" required></div>
             {% elif formula in ["i1_paralelo", "i2_paralelo"] %}
-              <div class="input-group"><div class="input-label">CORRIENTE TOTAL</div><input class="input-field" type="number" step="any" name="i_total" placeholder="0.00" required></div>
-              <div class="input-group"><div class="input-label">R1</div><input class="input-field" type="number" step="any" name="r1" placeholder="0.00" required></div>
-              <div class="input-group"><div class="input-label">R2</div><input class="input-field" type="number" step="any" name="r2" placeholder="0.00" required></div>
+              <div class="input-group"><div class="input-label">CORRIENTE TOTAL</div><input class="input-field" type="text" inputmode="decimal" name="i_total" placeholder="0,00" required></div>
+              <div class="input-group"><div class="input-label">R1</div><input class="input-field" type="text" inputmode="decimal" name="r1" placeholder="0,00" required></div>
+              <div class="input-group"><div class="input-label">R2</div><input class="input-field" type="text" inputmode="decimal" name="r2" placeholder="0,00" required></div>
             {% elif formula == "v_total_serie" %}
-              <div class="input-group"><div class="input-label">V1</div><input class="input-field" type="number" step="any" name="v1" placeholder="0.00" required></div>
-              <div class="input-group"><div class="input-label">V2</div><input class="input-field" type="number" step="any" name="v2" placeholder="0.00" required></div>
-              <div class="input-group"><div class="input-label">V3</div><input class="input-field" type="number" step="any" name="v3" placeholder="0.00" required></div>
+              <div class="input-group"><div class="input-label">V1</div><input class="input-field" type="text" inputmode="decimal" name="v1" placeholder="0,00" required></div>
+              <div class="input-group"><div class="input-label">V2</div><input class="input-field" type="text" inputmode="decimal" name="v2" placeholder="0,00" required></div>
+              <div class="input-group"><div class="input-label">V3</div><input class="input-field" type="text" inputmode="decimal" name="v3" placeholder="0,00" required></div>
             {% elif formula == "i_total_paralelo" %}
-              <div class="input-group"><div class="input-label">I1</div><input class="input-field" type="number" step="any" name="i1" placeholder="0.00" required></div>
-              <div class="input-group"><div class="input-label">I2</div><input class="input-field" type="number" step="any" name="i2" placeholder="0.00" required></div>
-              <div class="input-group"><div class="input-label">I3</div><input class="input-field" type="number" step="any" name="i3" placeholder="0.00" required></div>
+              <div class="input-group"><div class="input-label">I1</div><input class="input-field" type="text" inputmode="decimal" name="i1" placeholder="0,00" required></div>
+              <div class="input-group"><div class="input-label">I2</div><input class="input-field" type="text" inputmode="decimal" name="i2" placeholder="0,00" required></div>
+              <div class="input-group"><div class="input-label">I3</div><input class="input-field" type="text" inputmode="decimal" name="i3" placeholder="0,00" required></div>
             {% endif %}
 
           <!-- ══════════════════════════════════════════
@@ -609,23 +609,23 @@
               </optgroup>
             </select>
             {% if formula in ["rc_fc", "rc_xc"] %}
-              <div class="input-group"><div class="input-label">RESISTENCIA (R) — Ohms</div><input class="input-field" type="number" step="any" name="resistencia" placeholder="ej: 1000" required></div>
-              <div class="input-group"><div class="input-label">CAPACITANCIA (C) — Farads &nbsp;(100nF = 0.0000001)</div><input class="input-field" type="number" step="any" name="capacitancia" placeholder="ej: 0.0000001" required></div>
+              <div class="input-group"><div class="input-label">RESISTENCIA (R) — Ohms</div><input class="input-field" type="text" inputmode="decimal" name="resistencia" placeholder="ej: 1000" required></div>
+              <div class="input-group"><div class="input-label">CAPACITANCIA (C) — Farads &nbsp;(100nF = 0.0000001)</div><input class="input-field" type="text" inputmode="decimal" name="capacitancia" placeholder="ej: 0,0000001" required></div>
             {% elif formula == "rc_r" %}
-              <div class="input-group"><div class="input-label">FRECUENCIA DE CORTE (fc) — Hz</div><input class="input-field" type="number" step="any" name="frecuencia" placeholder="ej: 1000" required></div>
-              <div class="input-group"><div class="input-label">CAPACITANCIA (C) — Farads</div><input class="input-field" type="number" step="any" name="capacitancia" placeholder="ej: 0.0000001" required></div>
+              <div class="input-group"><div class="input-label">FRECUENCIA DE CORTE (fc) — Hz</div><input class="input-field" type="text" inputmode="decimal" name="frecuencia" placeholder="ej: 1000" required></div>
+              <div class="input-group"><div class="input-label">CAPACITANCIA (C) — Farads</div><input class="input-field" type="text" inputmode="decimal" name="capacitancia" placeholder="ej: 0,0000001" required></div>
             {% elif formula == "rc_c" %}
-              <div class="input-group"><div class="input-label">FRECUENCIA DE CORTE (fc) — Hz</div><input class="input-field" type="number" step="any" name="frecuencia" placeholder="ej: 1000" required></div>
-              <div class="input-group"><div class="input-label">RESISTENCIA (R) — Ohms</div><input class="input-field" type="number" step="any" name="resistencia" placeholder="ej: 1000" required></div>
+              <div class="input-group"><div class="input-label">FRECUENCIA DE CORTE (fc) — Hz</div><input class="input-field" type="text" inputmode="decimal" name="frecuencia" placeholder="ej: 1000" required></div>
+              <div class="input-group"><div class="input-label">RESISTENCIA (R) — Ohms</div><input class="input-field" type="text" inputmode="decimal" name="resistencia" placeholder="ej: 1000" required></div>
             {% elif formula in ["rl_fc", "rl_xl"] %}
-              <div class="input-group"><div class="input-label">RESISTENCIA (R) — Ohms</div><input class="input-field" type="number" step="any" name="resistencia" placeholder="ej: 1000" required></div>
-              <div class="input-group"><div class="input-label">INDUCTANCIA (L) — Henries &nbsp;(10mH = 0.01)</div><input class="input-field" type="number" step="any" name="inductancia" placeholder="ej: 0.01" required></div>
+              <div class="input-group"><div class="input-label">RESISTENCIA (R) — Ohms</div><input class="input-field" type="text" inputmode="decimal" name="resistencia" placeholder="ej: 1000" required></div>
+              <div class="input-group"><div class="input-label">INDUCTANCIA (L) — Henries &nbsp;(10mH = 0.01)</div><input class="input-field" type="text" inputmode="decimal" name="inductancia" placeholder="ej: 0,01" required></div>
             {% elif formula == "rl_r" %}
-              <div class="input-group"><div class="input-label">FRECUENCIA DE CORTE (fc) — Hz</div><input class="input-field" type="number" step="any" name="frecuencia" placeholder="ej: 1000" required></div>
-              <div class="input-group"><div class="input-label">INDUCTANCIA (L) — Henries</div><input class="input-field" type="number" step="any" name="inductancia" placeholder="ej: 0.01" required></div>
+              <div class="input-group"><div class="input-label">FRECUENCIA DE CORTE (fc) — Hz</div><input class="input-field" type="text" inputmode="decimal" name="frecuencia" placeholder="ej: 1000" required></div>
+              <div class="input-group"><div class="input-label">INDUCTANCIA (L) — Henries</div><input class="input-field" type="text" inputmode="decimal" name="inductancia" placeholder="ej: 0,01" required></div>
             {% elif formula == "rl_l" %}
-              <div class="input-group"><div class="input-label">FRECUENCIA DE CORTE (fc) — Hz</div><input class="input-field" type="number" step="any" name="frecuencia" placeholder="ej: 1000" required></div>
-              <div class="input-group"><div class="input-label">RESISTENCIA (R) — Ohms</div><input class="input-field" type="number" step="any" name="resistencia" placeholder="ej: 1000" required></div>
+              <div class="input-group"><div class="input-label">FRECUENCIA DE CORTE (fc) — Hz</div><input class="input-field" type="text" inputmode="decimal" name="frecuencia" placeholder="ej: 1000" required></div>
+              <div class="input-group"><div class="input-label">RESISTENCIA (R) — Ohms</div><input class="input-field" type="text" inputmode="decimal" name="resistencia" placeholder="ej: 1000" required></div>
             {% endif %}
 
           <!-- ══════════════════════════════════════════
@@ -665,7 +665,7 @@
             <div class="conv-row">
               <div class="input-group" style="margin:0">
                 <div class="input-label">VALOR A CONVERTIR</div>
-                <input class="input-field" type="number" step="any" name="valor"
+                <input class="input-field" type="text" inputmode="decimal" name="valor"
                        value="{{ request.form.get('valor','') }}"
                        placeholder="ej: 1000" required>
               </div>
@@ -728,14 +728,14 @@
               <option value="vf_referencia"  {% if formula == 'vf_referencia' %}selected{% endif %}>Vf referencia por color</option>
             </select>
             {% if formula == "resistencia" %}
-              <div class="input-group"><div class="input-label">TENSIÓN DE FUENTE Vcc — Volts</div><input class="input-field" type="number" step="any" name="vcc" placeholder="5 (ej: 5V, 9V, 12V)" required></div>
-              <div class="input-group"><div class="input-label">TENSIÓN FORWARD Vf — Volts</div><input class="input-field" type="number" step="any" name="vf" placeholder="2.0 (rojo≈1.8V, azul≈3.2V)" required></div>
-              <div class="input-group"><div class="input-label">CORRIENTE DESEADA If — mA</div><input class="input-field" type="number" step="any" name="if_ma" placeholder="20 (típico: 10-20 mA)" required></div>
+              <div class="input-group"><div class="input-label">TENSIÓN DE FUENTE Vcc — Volts</div><input class="input-field" type="text" inputmode="decimal" name="vcc" placeholder="5 (ej: 5V, 9V, 12V)" required></div>
+              <div class="input-group"><div class="input-label">TENSIÓN FORWARD Vf — Volts</div><input class="input-field" type="text" inputmode="decimal" name="vf" placeholder="2,0 (rojo≈1,8V, azul≈3,2V)" required></div>
+              <div class="input-group"><div class="input-label">CORRIENTE DESEADA If — mA</div><input class="input-field" type="text" inputmode="decimal" name="if_ma" placeholder="20 (típico: 10-20 mA)" required></div>
               <div class="formula-hint">R = (Vcc − Vf) / If</div>
             {% elif formula == "corriente" %}
-              <div class="input-group"><div class="input-label">TENSIÓN DE FUENTE Vcc — Volts</div><input class="input-field" type="number" step="any" name="vcc" placeholder="5" required></div>
-              <div class="input-group"><div class="input-label">TENSIÓN FORWARD Vf — Volts</div><input class="input-field" type="number" step="any" name="vf" placeholder="2.0" required></div>
-              <div class="input-group"><div class="input-label">RESISTENCIA R — Ohms</div><input class="input-field" type="number" step="any" name="resistencia" placeholder="330" required></div>
+              <div class="input-group"><div class="input-label">TENSIÓN DE FUENTE Vcc — Volts</div><input class="input-field" type="text" inputmode="decimal" name="vcc" placeholder="5" required></div>
+              <div class="input-group"><div class="input-label">TENSIÓN FORWARD Vf — Volts</div><input class="input-field" type="text" inputmode="decimal" name="vf" placeholder="2,0" required></div>
+              <div class="input-group"><div class="input-label">RESISTENCIA R — Ohms</div><input class="input-field" type="text" inputmode="decimal" name="resistencia" placeholder="330" required></div>
               <div class="formula-hint">If = (Vcc − Vf) / R</div>
             {% elif formula == "vf_referencia" %}
               <div class="input-group">
@@ -766,20 +766,20 @@
               <option value="tiempo_carga"  {% if formula == 'tiempo_carga' %}selected{% endif %}>τ = R × C → Tiempo de carga</option>
             </select>
             {% if formula == "energia" %}
-              <div class="input-group"><div class="input-label">CAPACITANCIA C — Farads</div><input class="input-field" type="number" step="any" name="capacitancia" placeholder="0.001 (1mF = 0.001F)" required></div>
-              <div class="input-group"><div class="input-label">VOLTAJE V — Volts</div><input class="input-field" type="number" step="any" name="voltaje" placeholder="5" required></div>
+              <div class="input-group"><div class="input-label">CAPACITANCIA C — Farads</div><input class="input-field" type="text" inputmode="decimal" name="capacitancia" placeholder="0,001 (1mF = 0,001F)" required></div>
+              <div class="input-group"><div class="input-label">VOLTAJE V — Volts</div><input class="input-field" type="text" inputmode="decimal" name="voltaje" placeholder="5" required></div>
               <div class="formula-hint">E = ½ × C × V²</div>
             {% elif formula == "carga" %}
-              <div class="input-group"><div class="input-label">CAPACITANCIA C — Farads</div><input class="input-field" type="number" step="any" name="capacitancia" placeholder="0.0001 (100µF = 0.0001F)" required></div>
-              <div class="input-group"><div class="input-label">VOLTAJE V — Volts</div><input class="input-field" type="number" step="any" name="voltaje" placeholder="12" required></div>
+              <div class="input-group"><div class="input-label">CAPACITANCIA C — Farads</div><input class="input-field" type="text" inputmode="decimal" name="capacitancia" placeholder="0,0001 (100µF = 0,0001F)" required></div>
+              <div class="input-group"><div class="input-label">VOLTAJE V — Volts</div><input class="input-field" type="text" inputmode="decimal" name="voltaje" placeholder="12" required></div>
               <div class="formula-hint">Q = C × V</div>
             {% elif formula == "voltaje_cap" %}
-              <div class="input-group"><div class="input-label">CARGA Q — Coulombs</div><input class="input-field" type="number" step="any" name="carga" placeholder="0.001" required></div>
-              <div class="input-group"><div class="input-label">CAPACITANCIA C — Farads</div><input class="input-field" type="number" step="any" name="capacitancia" placeholder="0.0001" required></div>
+              <div class="input-group"><div class="input-label">CARGA Q — Coulombs</div><input class="input-field" type="text" inputmode="decimal" name="carga" placeholder="0,001" required></div>
+              <div class="input-group"><div class="input-label">CAPACITANCIA C — Farads</div><input class="input-field" type="text" inputmode="decimal" name="capacitancia" placeholder="0,0001" required></div>
               <div class="formula-hint">V = Q / C</div>
             {% elif formula == "tiempo_carga" %}
-              <div class="input-group"><div class="input-label">RESISTENCIA R — Ohms</div><input class="input-field" type="number" step="any" name="resistencia" placeholder="1000" required></div>
-              <div class="input-group"><div class="input-label">CAPACITANCIA C — Farads</div><input class="input-field" type="number" step="any" name="capacitancia" placeholder="0.001" required></div>
+              <div class="input-group"><div class="input-label">RESISTENCIA R — Ohms</div><input class="input-field" type="text" inputmode="decimal" name="resistencia" placeholder="1000" required></div>
+              <div class="input-group"><div class="input-label">CAPACITANCIA C — Farads</div><input class="input-field" type="text" inputmode="decimal" name="capacitancia" placeholder="0,001" required></div>
               <div class="formula-hint">τ = R × C  |  63% carga en 1τ  |  99% en 5τ</div>
             {% endif %}
 
