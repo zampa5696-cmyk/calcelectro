@@ -288,6 +288,8 @@
         <a href="/?modulo=colores"><button class="mod-btn {% if modulo == 'colores' %}activo{% endif %}">07 / COD. COLORES</button></a>
         <a href="/?modulo=filtros"><button class="mod-btn {% if modulo == 'filtros' %}activo{% endif %}">08 / FILTROS RC/RL</button></a>
         <a href="/?modulo=conversion"><button class="mod-btn {% if modulo == 'conversion' %}activo{% endif %}">09 / CONVERSIÓN</button></a>
+        <a href="/?modulo=led"><button class="mod-btn {% if modulo == 'led' %}activo{% endif %}">10 / CÁLCULO LED</button></a>
+        <a href="/?modulo=capacitor"><button class="mod-btn {% if modulo == 'capacitor' %}activo{% endif %}">11 / CAPACITOR</button></a>
       </div>
     </div>
 
@@ -719,6 +721,74 @@
 
           {% if formula %}
             <button type="submit" class="btn-calcular">CALCULAR</button>
+  
+          {# ── CÁLCULO LED ── #}
+          {% elif modulo == "led" %}
+            <div class="calc-title">// CÁLCULO LED</div>
+            <select class="formula-select" name="formula" onchange="this.form.submit()">
+              <option value="">-- SELECCIONAR CÁLCULO --</option>
+              <option value="resistencia"    {% if formula == 'resistencia' %}selected{% endif %}>R = (Vcc - Vf) / If → Resistencia limitadora</option>
+              <option value="corriente"      {% if formula == 'corriente' %}selected{% endif %}>If = (Vcc - Vf) / R → Corriente en LED</option>
+              <option value="vf_referencia"  {% if formula == 'vf_referencia' %}selected{% endif %}>Vf referencia por color</option>
+            </select>
+
+            {% if formula == "resistencia" %}
+              <div class="input-group"><div class="input-label">TENSIÓN DE FUENTE Vcc — Volts</div><input class="input-field" type="number" step="any" name="vcc" placeholder="5 (ej: 5V, 9V, 12V)" required></div>
+              <div class="input-group"><div class="input-label">TENSIÓN FORWARD Vf — Volts</div><input class="input-field" type="number" step="any" name="vf" placeholder="2.0 (rojo≈1.8V, azul≈3.2V)" required></div>
+              <div class="input-group"><div class="input-label">CORRIENTE DESEADA If — mA</div><input class="input-field" type="number" step="any" name="if_ma" placeholder="20 (típico: 10-20 mA)" required></div>
+              <div class="formula-hint">R = (Vcc − Vf) / If</div>
+            {% elif formula == "corriente" %}
+              <div class="input-group"><div class="input-label">TENSIÓN DE FUENTE Vcc — Volts</div><input class="input-field" type="number" step="any" name="vcc" placeholder="5" required></div>
+              <div class="input-group"><div class="input-label">TENSIÓN FORWARD Vf — Volts</div><input class="input-field" type="number" step="any" name="vf" placeholder="2.0" required></div>
+              <div class="input-group"><div class="input-label">RESISTENCIA R — Ohms</div><input class="input-field" type="number" step="any" name="resistencia" placeholder="330" required></div>
+              <div class="formula-hint">If = (Vcc − Vf) / R</div>
+            {% elif formula == "vf_referencia" %}
+              <div class="input-group">
+                <div class="input-label">COLOR DEL LED</div>
+                <select class="formula-select" name="color_led">
+                  <option value="">-- ELEGIR COLOR --</option>
+                  <option value="rojo">Rojo (≈ 1,8 V)</option>
+                  <option value="naranja">Naranja (≈ 2,0 V)</option>
+                  <option value="amarillo">Amarillo (≈ 2,1 V)</option>
+                  <option value="verde">Verde (≈ 2,2 V)</option>
+                  <option value="azul">Azul (≈ 3,2 V)</option>
+                  <option value="blanco">Blanco (≈ 3,2 V)</option>
+                  <option value="uv">UV (≈ 3,4 V)</option>
+                  <option value="infrarrojo">Infrarrojo (≈ 1,2 V)</option>
+                </select>
+              </div>
+              <div class="formula-hint">Valores típicos — siempre verificar datasheet</div>
+            {% endif %}
+
+          {# ── CAPACITOR — ENERGÍA Y CARGA ── #}
+          {% elif modulo == "capacitor" %}
+            <div class="calc-title">// CAPACITOR — ENERGÍA Y CARGA</div>
+            <select class="formula-select" name="formula" onchange="this.form.submit()">
+              <option value="">-- SELECCIONAR CÁLCULO --</option>
+              <option value="energia"       {% if formula == 'energia' %}selected{% endif %}>E = ½CV² → Energía almacenada</option>
+              <option value="carga"         {% if formula == 'carga' %}selected{% endif %}>Q = C × V → Carga eléctrica</option>
+              <option value="voltaje_cap"   {% if formula == 'voltaje_cap' %}selected{% endif %}>V = Q / C → Voltaje</option>
+              <option value="tiempo_carga"  {% if formula == 'tiempo_carga' %}selected{% endif %}>τ = R × C → Tiempo de carga</option>
+            </select>
+
+            {% if formula == "energia" %}
+              <div class="input-group"><div class="input-label">CAPACITANCIA C — Farads</div><input class="input-field" type="number" step="any" name="capacitancia" placeholder="0.001 (1mF = 0.001F)" required></div>
+              <div class="input-group"><div class="input-label">VOLTAJE V — Volts</div><input class="input-field" type="number" step="any" name="voltaje" placeholder="5" required></div>
+              <div class="formula-hint">E = ½ × C × V²</div>
+            {% elif formula == "carga" %}
+              <div class="input-group"><div class="input-label">CAPACITANCIA C — Farads</div><input class="input-field" type="number" step="any" name="capacitancia" placeholder="0.0001 (100µF = 0.0001F)" required></div>
+              <div class="input-group"><div class="input-label">VOLTAJE V — Volts</div><input class="input-field" type="number" step="any" name="voltaje" placeholder="12" required></div>
+              <div class="formula-hint">Q = C × V</div>
+            {% elif formula == "voltaje_cap" %}
+              <div class="input-group"><div class="input-label">CARGA Q — Coulombs</div><input class="input-field" type="number" step="any" name="carga" placeholder="0.001" required></div>
+              <div class="input-group"><div class="input-label">CAPACITANCIA C — Farads</div><input class="input-field" type="number" step="any" name="capacitancia" placeholder="0.0001" required></div>
+              <div class="formula-hint">V = Q / C</div>
+            {% elif formula == "tiempo_carga" %}
+              <div class="input-group"><div class="input-label">RESISTENCIA R — Ohms</div><input class="input-field" type="number" step="any" name="resistencia" placeholder="1000" required></div>
+              <div class="input-group"><div class="input-label">CAPACITANCIA C — Farads</div><input class="input-field" type="number" step="any" name="capacitancia" placeholder="0.001" required></div>
+              <div class="formula-hint">τ = R × C  |  63% carga en 1τ  |  99% en 5τ</div>
+            {% endif %}
+
           {% endif %}
 
         </form>
