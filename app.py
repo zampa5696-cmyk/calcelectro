@@ -416,6 +416,76 @@ def calcular():
                     resultado = (f"{fmt(v)}  {SIMBOLOS[origen]}  =  "
                                  f"{fmt(valor_destino, 6)}  {SIMBOLOS[destino]}")
 
+
+        # ── LED ─────────────────────────────────────────────
+        elif modulo == "led":
+            VF_REF = {
+                "rojo": 1.8, "naranja": 2.0, "amarillo": 2.1,
+                "verde": 2.2, "azul": 3.2, "blanco": 3.2,
+                "uv": 3.4, "infrarrojo": 1.2
+            }
+            if formula == "resistencia":
+                vcc   = float(request.form.get("vcc"))
+                vf    = float(request.form.get("vf"))
+                if_ma = float(request.form.get("if_ma"))
+                if if_ma <= 0:
+                    error = "La corriente del LED debe ser mayor a 0."
+                else:
+                    if_a = if_ma / 1000
+                    r = (vcc - vf) / if_a
+                    if r < 0:
+                        error = "Vf no puede ser mayor que Vcc."
+                    else:
+                        p_r   = if_a**2 * r
+                        p_led = vf * if_a
+                        resultado = (f"Resistencia = {fmt(r)} Ω  |  "
+                                     f"Potencia en R = {fmt(p_r * 1000, 2)} mW  |  "
+                                     f"Potencia en LED = {fmt(p_led * 1000, 2)} mW")
+            elif formula == "corriente":
+                vcc = float(request.form.get("vcc"))
+                vf  = float(request.form.get("vf"))
+                r   = float(request.form.get("resistencia"))
+                if r <= 0:
+                    error = "La resistencia debe ser mayor a 0."
+                else:
+                    if_a = (vcc - vf) / r
+                    if if_a < 0:
+                        error = "Vf no puede ser mayor que Vcc."
+                    else:
+                        resultado = (f"Corriente LED = {fmt(if_a * 1000, 2)} mA  |  "
+                                     f"Potencia en R = {fmt(if_a**2 * r * 1000, 2)} mW")
+            elif formula == "vf_referencia":
+                color = request.form.get("color_led", "").lower()
+                if color in VF_REF:
+                    resultado = (f"Vf referencia ({color}) ≈ {fmt(VF_REF[color], 1)} V  "
+                                 f"— Valor típico, verificar datasheet.")
+                else:
+                    error = "Color no reconocido."
+
+        # ── CAPACITOR — ENERGÍA Y CARGA ──────────────────────
+        elif modulo == "capacitor":
+            if formula == "energia":
+                c = float(request.form.get("capacitancia"))
+                v = float(request.form.get("voltaje"))
+                e = 0.5 * c * v**2
+                resultado = f"Energía almacenada = {fmt(e, 6)} J  ({fmt(e * 1000, 4)} mJ)"
+            elif formula == "carga":
+                c = float(request.form.get("capacitancia"))
+                v = float(request.form.get("voltaje"))
+                q = c * v
+                resultado = f"Carga = {fmt(q, 6)} C  ({fmt(q * 1_000_000, 4)} µC)"
+            elif formula == "voltaje_cap":
+                q = float(request.form.get("carga"))
+                c = float(request.form.get("capacitancia"))
+                resultado = f"Voltaje = {fmt(q / c)} V"
+            elif formula == "tiempo_carga":
+                r   = float(request.form.get("resistencia"))
+                c   = float(request.form.get("capacitancia"))
+                tau = r * c
+                resultado = (f"Constante τ = {fmt(tau, 6)} s  |  "
+                             f"Carga al 63% en τ = {fmt(tau, 6)} s  |  "
+                             f"Carga al 99% en 5τ = {fmt(5 * tau, 6)} s")
+
     except (ValueError, TypeError):
         error = "Ingresá valores numéricos válidos en todos los campos."
     except ZeroDivisionError:
