@@ -517,6 +517,27 @@ def calcular():
                              f"Carga al 63% en τ = {fmt(tau, 6)} s  |  "
                              f"Carga al 99% en 5τ = {fmt(5 * tau, 6)} s")
 
+        elif modulo == "boleta":
+            monto_total = parsear_numero(request.form.get("monto_total", "0"))
+            cantidad_casas = int(request.form.get("cantidad_casas", 3))
+            casas = []
+            total_kwh = 0
+            for i in range(1, cantidad_casas + 1):
+                nombre = request.form.get(f"nombre_casa_{i}", f"Casa {i}").strip() or f"Casa {i}"
+                kwh_str = request.form.get(f"kwh_casa_{i}", "0")
+                kwh = parsear_numero(kwh_str) if kwh_str.strip() else 0
+                casas.append({"nombre": nombre, "kwh": kwh})
+                total_kwh += kwh
+            if total_kwh <= 0:
+                error = "El total de kWh debe ser mayor a cero."
+            else:
+                for casa in casas:
+                    casa["porcentaje"] = round((casa["kwh"] / total_kwh) * 100, 2)
+                    casa["monto"] = round((casa["kwh"] / total_kwh) * monto_total, 2)
+                resultado = f"DIVISIÓN DE BOLETA|{monto_total}|{total_kwh}|{len(casas)}"
+                for casa in casas:
+                    resultado += f"|{casa['nombre']}|{fmt(casa['kwh'])}|{fmt(casa['porcentaje'])}|{fmt(casa['monto'])}"
+
     except (ValueError, TypeError):
         error = "Ingresá valores numéricos válidos en todos los campos."
     except ZeroDivisionError:
