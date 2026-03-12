@@ -266,6 +266,155 @@
       border-bottom: 1px solid #2a2a2a;
       padding-bottom: 8px; margin-bottom: 6px;
     }
+
+    /* ══ MÓDULO BOLETA ══ */
+    .mod-btn-boleta {
+      width: 100%;
+      background: transparent;
+      border: 1px solid var(--boleta-borde);
+      color: var(--boleta-acento);
+      font-family: var(--boleta-font);
+      font-size: 0.6rem;
+      padding: 10px 8px;
+      cursor: pointer;
+      letter-spacing: 1px;
+      text-align: left;
+      transition: all 0.15s;
+      margin-top: 8px;
+      display: block;
+    }
+    .mod-btn-boleta:hover, .mod-btn-boleta.activo {
+      background: var(--boleta-acento);
+      color: #000;
+      border-color: var(--boleta-acento);
+    }
+    .boleta-wrap { font-family: var(--boleta-font); }
+    .boleta-titulo {
+      font-family: var(--boleta-font);
+      color: var(--boleta-acento);
+      font-size: 0.75rem;
+      letter-spacing: 3px;
+      margin-bottom: 20px;
+      text-shadow: 0 0 12px rgba(46,204,113,0.4);
+    }
+    .boleta-label {
+      font-family: var(--boleta-font);
+      font-size: 0.5rem;
+      color: var(--boleta-acento);
+      letter-spacing: 2px;
+      margin-bottom: 6px;
+    }
+    .boleta-input {
+      background: var(--boleta-fondo);
+      border: 1px solid var(--boleta-borde);
+      color: var(--boleta-acento);
+      font-family: var(--boleta-font);
+      font-size: 0.65rem;
+      padding: 10px 14px;
+      width: 100%;
+      outline: none;
+      margin-bottom: 16px;
+      transition: border-color 0.2s;
+    }
+    .boleta-input:focus { border-color: var(--boleta-acento); }
+    .casa-row {
+      background: var(--boleta-fondo);
+      border: 1px solid var(--boleta-borde);
+      padding: 12px;
+      margin-bottom: 8px;
+      display: grid;
+      grid-template-columns: 1fr 1fr auto;
+      gap: 10px;
+      align-items: end;
+    }
+    .casa-row input {
+      background: #0d1a0d;
+      border: 1px solid var(--boleta-borde);
+      color: var(--boleta-acento);
+      font-family: var(--boleta-font);
+      font-size: 0.55rem;
+      padding: 8px 10px;
+      width: 100%;
+      outline: none;
+    }
+    .casa-row input:focus { border-color: var(--boleta-acento); }
+    .btn-casa {
+      background: transparent;
+      border: 1px solid var(--boleta-borde);
+      color: var(--boleta-acento);
+      font-family: var(--boleta-font);
+      font-size: 0.8rem;
+      padding: 8px 14px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn-casa:hover { background: var(--boleta-acento); color: #000; }
+    .btn-calcular-boleta {
+      background: var(--boleta-acento);
+      color: #000;
+      border: none;
+      font-family: var(--boleta-font);
+      font-size: 0.55rem;
+      padding: 14px;
+      cursor: pointer;
+      letter-spacing: 2px;
+      width: 100%;
+      margin-top: 12px;
+      font-weight: 700;
+      transition: background 0.15s;
+    }
+    .btn-calcular-boleta:hover { background: var(--boleta-acento2); }
+    .btn-agregar-casa {
+      width: 100%; margin-top: 4px;
+      background: transparent;
+      border: 1px dashed var(--boleta-borde);
+      color: var(--boleta-acento);
+      font-family: var(--boleta-font);
+      font-size: 0.45rem;
+      padding: 10px;
+      cursor: pointer;
+      letter-spacing: 2px;
+      transition: all 0.15s;
+    }
+    .btn-agregar-casa:hover { border-color: var(--boleta-acento); background: rgba(46,204,113,0.05); }
+    .boleta-resultado {
+      background: var(--boleta-fondo);
+      border: 1px solid var(--boleta-acento);
+      padding: 16px;
+      margin-top: 16px;
+      font-family: var(--boleta-font);
+    }
+    .boleta-resultado-titulo {
+      font-size: 0.5rem;
+      color: var(--boleta-acento);
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+      border-bottom: 1px solid var(--boleta-borde);
+      padding-bottom: 8px;
+    }
+    .boleta-casa-result {
+      display: grid;
+      grid-template-columns: 1fr auto auto auto;
+      gap: 12px;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--boleta-borde);
+      font-size: 0.48rem;
+      align-items: center;
+    }
+    .boleta-casa-result:last-child { border-bottom: none; }
+    .boleta-casa-nombre { color: #fff; letter-spacing: 1px; }
+    .boleta-casa-kwh { color: var(--text2); }
+    .boleta-casa-pct { color: var(--boleta-acento); }
+    .boleta-casa-monto { color: var(--boleta-acento); font-weight: 700; font-size: 0.58rem; }
+    .boleta-total {
+      margin-top: 10px;
+      font-size: 0.45rem;
+      color: var(--text2);
+      text-align: right;
+      letter-spacing: 1px;
+      padding-top: 8px;
+      border-top: 1px solid var(--boleta-borde);
+    }
   </style>
 </head>
 <body>
@@ -701,7 +850,7 @@
                   {% endfor %}
                 </div>
 
-                <button type="button" class="btn-casa" style="width:100%;margin-top:4px;" onclick="agregarCasa()">+ AGREGAR CASA</button>
+                <button type="button" class="btn-agregar-casa" onclick="agregarCasa()">+ AGREGAR CASA</button>
                 <button type="submit" class="btn-calcular-boleta">CALCULAR DIVISIÓN</button>
               </form>
 
