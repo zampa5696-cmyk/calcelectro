@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Calculadora Electrónica</title>
-  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
   <!-- PWA -->
   <link rel="manifest" href="/static/manifest.json">
   <meta name="theme-color" content="#ff6b00">
@@ -30,6 +30,12 @@
       --accent2:   #e05e00;
       --input-bg:  #0d0d0d;
       --resultado-bg: #0d0d0d;
+      /* módulo boleta */
+      --boleta-acento:  #2ecc71;
+      --boleta-acento2: #27ae60;
+      --boleta-fondo:   #0a120a;
+      --boleta-borde:   #1e4a1e;
+      --boleta-font:    'Orbitron', sans-serif;
     }
     body[data-tema="gris"] {
       --bg:        #1e1e1e;
@@ -291,6 +297,7 @@
         <a href="/?modulo=conversion"><button class="mod-btn {% if modulo == 'conversion' %}activo{% endif %}">09 / CONVERSIÓN</button></a>
         <a href="/?modulo=led"><button class="mod-btn {% if modulo == 'led' %}activo{% endif %}">10 / CÁLCULO LED</button></a>
         <a href="/?modulo=capacitor"><button class="mod-btn {% if modulo == 'capacitor' %}activo{% endif %}">11 / CAPACITOR</button></a>
+        <a href="/?modulo=boleta"><button class="mod-btn-boleta {% if modulo == 'boleta' %}activo{% endif %}">⚡ 12 / DIVISOR BOLETA</button></a>
       </div>
     </div>
 
@@ -659,6 +666,69 @@
                 <option value="potencia_w" {% if formula=='potencia_w' %}selected{% endif %}>Potencia (mW / W / kW)</option>
               </optgroup>
             </select>
+
+            {% elif modulo == "boleta" %}
+            <div class="boleta-wrap">
+              <div class="boleta-titulo">⚡ DIVISOR DE BOLETA ELÉCTRICA</div>
+
+              <form method="POST" id="form-boleta">
+                <input type="hidden" name="modulo" value="boleta">
+                <input type="hidden" name="cantidad_casas" id="cantidad_casas" value="3">
+
+                <div class="boleta-label">MONTO TOTAL DE LA BOLETA ($)</div>
+                <input class="boleta-input" type="text" inputmode="decimal"
+                       name="monto_total" placeholder="Ej: 15000" required
+                       value="{{ request.form.get('monto_total', '') }}">
+
+                <div class="boleta-label" style="margin-bottom:10px;">CASAS</div>
+                <div id="casas-container">
+                  {% for i in range(1, 4) %}
+                  <div class="casa-row" id="casa-row-{{ i }}">
+                    <div>
+                      <div style="font-family:var(--boleta-font);font-size:0.45rem;color:var(--boleta-acento);margin-bottom:4px;">NOMBRE</div>
+                      <input type="text" name="nombre_casa_{{ i }}"
+                             placeholder="Casa {{ i }}"
+                             value="{{ request.form.get('nombre_casa_' ~ i, 'Casa ' ~ i) }}">
+                    </div>
+                    <div>
+                      <div style="font-family:var(--boleta-font);font-size:0.45rem;color:var(--boleta-acento);margin-bottom:4px;">kWh CONSUMIDOS</div>
+                      <input type="text" inputmode="decimal" name="kwh_casa_{{ i }}"
+                             placeholder="0"
+                             value="{{ request.form.get('kwh_casa_' ~ i, '') }}">
+                    </div>
+                    <button type="button" class="btn-casa" onclick="quitarCasa({{ i }})">−</button>
+                  </div>
+                  {% endfor %}
+                </div>
+
+                <button type="button" class="btn-casa" style="width:100%;margin-top:4px;" onclick="agregarCasa()">+ AGREGAR CASA</button>
+                <button type="submit" class="btn-calcular-boleta">CALCULAR DIVISIÓN</button>
+              </form>
+
+              {% if resultado and resultado.startswith('DIVISIÓN DE BOLETA') %}
+                {% set partes = resultado.split('|') %}
+                {% set monto_total = partes[1] %}
+                {% set total_kwh = partes[2] %}
+                {% set n_casas = partes[3]|int %}
+                <div class="boleta-resultado">
+                  <div class="boleta-resultado-titulo">// RESULTADO</div>
+                  {% for i in range(n_casas) %}
+                    {% set base = 4 + i * 4 %}
+                    <div class="boleta-casa-result">
+                      <span class="boleta-casa-nombre">{{ partes[base] }}</span>
+                      <span class="boleta-casa-kwh">{{ partes[base+1] }} kWh</span>
+                      <span class="boleta-casa-pct">{{ partes[base+2] }}%</span>
+                      <span class="boleta-casa-monto">$ {{ partes[base+3] }}</span>
+                    </div>
+                  {% endfor %}
+                  <div class="boleta-total">TOTAL: {{ total_kwh }} kWh — $ {{ monto_total }}</div>
+                </div>
+              {% endif %}
+
+              {% if error %}
+                <div style="color:var(--boleta-acento);font-family:var(--boleta-font);font-size:0.5rem;margin-top:12px;">⚠ {{ error }}</div>
+              {% endif %}
+            </div>
 
             {% if formula %}
             <!-- Fila: valor + unidad origen → unidad destino -->
