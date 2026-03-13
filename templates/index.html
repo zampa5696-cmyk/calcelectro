@@ -1125,6 +1125,40 @@ if ('serviceWorker' in navigator) {
       .catch(e => console.log('SW error:', e));
   });
 }
+
+// ── Módulo Boleta ──
+let numCasas = 3;
+
+function agregarCasa() {
+  numCasas++;
+  document.getElementById('cantidad_casas').value = numCasas;
+  const cont = document.getElementById('casas-container');
+  const div = document.createElement('div');
+  div.className = 'casa-row';
+  div.id = 'casa-row-' + numCasas;
+  div.innerHTML = `
+    <div>
+      <div style="font-family:var(--boleta-font);font-size:0.45rem;color:var(--boleta-acento);margin-bottom:4px;letter-spacing:1px;">NOMBRE</div>
+      <input type="text" name="nombre_casa_${numCasas}" placeholder="Casa ${numCasas}">
+    </div>
+    <div>
+      <div style="font-family:var(--boleta-font);font-size:0.45rem;color:var(--boleta-acento);margin-bottom:4px;letter-spacing:1px;">kWh CONSUMIDOS</div>
+      <input type="text" inputmode="decimal" name="kwh_casa_${numCasas}" placeholder="0">
+    </div>
+    <button type="button" class="btn-casa" onclick="quitarCasa(${numCasas})">−</button>
+  `;
+  cont.appendChild(div);
+}
+
+function quitarCasa(id) {
+  const row = document.getElementById('casa-row-' + id);
+  const total = document.querySelectorAll('.casa-row').length;
+  if (row && total > 1) {
+    row.remove();
+    numCasas = document.querySelectorAll('.casa-row').length;
+    document.getElementById('cantidad_casas').value = numCasas;
+  }
+}
 </script>
 
 <!-- ══════════════════════════════════════════
