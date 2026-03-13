@@ -816,6 +816,153 @@
               </optgroup>
             </select>
 
+            {% if formula %}
+              <div class="input-group">
+                <div class="input-label">VALOR A CONVERTIR</div>
+                <input class="input-field" type="text" inputmode="decimal"
+                       name="valor" placeholder="0,00" required
+                       value="{{ request.form.get('valor', '') }}">
+              </div>
+
+              <!-- Selects de unidad según magnitud -->
+              {% if formula == "resistencia" %}
+                <div class="input-group">
+                  <div class="input-label">UNIDAD ORIGEN</div>
+                  <select class="formula-select" name="unidad_origen">
+                    <option value="ohm"  {% if request.form.get('unidad_origen')=='ohm'  %}selected{% endif %}>Ω  — Ohm</option>
+                    <option value="kohm" {% if request.form.get('unidad_origen')=='kohm' %}selected{% endif %}>kΩ — Kilohm</option>
+                    <option value="mohm" {% if request.form.get('unidad_origen')=='mohm' %}selected{% endif %}>MΩ — Megaohm</option>
+                  </select>
+                </div>
+                <div class="input-group">
+                  <div class="input-label">UNIDAD DESTINO</div>
+                  <select class="formula-select" name="unidad_destino">
+                    <option value="ohm"  {% if request.form.get('unidad_destino')=='ohm'  %}selected{% endif %}>Ω  — Ohm</option>
+                    <option value="kohm" {% if request.form.get('unidad_destino')=='kohm' %}selected{% endif %}>kΩ — Kilohm</option>
+                    <option value="mohm" {% if request.form.get('unidad_destino')=='mohm' %}selected{% endif %}>MΩ — Megaohm</option>
+                  </select>
+                </div>
+
+              {% elif formula == "voltaje" %}
+                <div class="input-group">
+                  <div class="input-label">UNIDAD ORIGEN</div>
+                  <select class="formula-select" name="unidad_origen">
+                    <option value="uv" {% if request.form.get('unidad_origen')=='uv' %}selected{% endif %}>µV — Microvolt</option>
+                    <option value="mv" {% if request.form.get('unidad_origen')=='mv' %}selected{% endif %}>mV — Milivolt</option>
+                    <option value="v"  {% if request.form.get('unidad_origen')=='v'  %}selected{% endif %}>V  — Volt</option>
+                    <option value="kv" {% if request.form.get('unidad_origen')=='kv' %}selected{% endif %}>kV — Kilovolt</option>
+                  </select>
+                </div>
+                <div class="input-group">
+                  <div class="input-label">UNIDAD DESTINO</div>
+                  <select class="formula-select" name="unidad_destino">
+                    <option value="uv" {% if request.form.get('unidad_destino')=='uv' %}selected{% endif %}>µV — Microvolt</option>
+                    <option value="mv" {% if request.form.get('unidad_destino')=='mv' %}selected{% endif %}>mV — Milivolt</option>
+                    <option value="v"  {% if request.form.get('unidad_destino')=='v'  %}selected{% endif %}>V  — Volt</option>
+                    <option value="kv" {% if request.form.get('unidad_destino')=='kv' %}selected{% endif %}>kV — Kilovolt</option>
+                  </select>
+                </div>
+
+              {% elif formula == "corriente" %}
+                <div class="input-group">
+                  <div class="input-label">UNIDAD ORIGEN</div>
+                  <select class="formula-select" name="unidad_origen">
+                    <option value="ua" {% if request.form.get('unidad_origen')=='ua' %}selected{% endif %}>µA — Microampere</option>
+                    <option value="ma" {% if request.form.get('unidad_origen')=='ma' %}selected{% endif %}>mA — Miliampere</option>
+                    <option value="a"  {% if request.form.get('unidad_origen')=='a'  %}selected{% endif %}>A  — Ampere</option>
+                  </select>
+                </div>
+                <div class="input-group">
+                  <div class="input-label">UNIDAD DESTINO</div>
+                  <select class="formula-select" name="unidad_destino">
+                    <option value="ua" {% if request.form.get('unidad_destino')=='ua' %}selected{% endif %}>µA — Microampere</option>
+                    <option value="ma" {% if request.form.get('unidad_destino')=='ma' %}selected{% endif %}>mA — Miliampere</option>
+                    <option value="a"  {% if request.form.get('unidad_destino')=='a'  %}selected{% endif %}>A  — Ampere</option>
+                  </select>
+                </div>
+
+              {% elif formula == "frecuencia" %}
+                <div class="input-group">
+                  <div class="input-label">UNIDAD ORIGEN</div>
+                  <select class="formula-select" name="unidad_origen">
+                    <option value="hz"  {% if request.form.get('unidad_origen')=='hz'  %}selected{% endif %}>Hz  — Hertz</option>
+                    <option value="khz" {% if request.form.get('unidad_origen')=='khz' %}selected{% endif %}>kHz — Kilohertz</option>
+                    <option value="mhz" {% if request.form.get('unidad_origen')=='mhz' %}selected{% endif %}>MHz — Megahertz</option>
+                    <option value="ghz" {% if request.form.get('unidad_origen')=='ghz' %}selected{% endif %}>GHz — Gigahertz</option>
+                  </select>
+                </div>
+                <div class="input-group">
+                  <div class="input-label">UNIDAD DESTINO</div>
+                  <select class="formula-select" name="unidad_destino">
+                    <option value="hz"  {% if request.form.get('unidad_destino')=='hz'  %}selected{% endif %}>Hz  — Hertz</option>
+                    <option value="khz" {% if request.form.get('unidad_destino')=='khz' %}selected{% endif %}>kHz — Kilohertz</option>
+                    <option value="mhz" {% if request.form.get('unidad_destino')=='mhz' %}selected{% endif %}>MHz — Megahertz</option>
+                    <option value="ghz" {% if request.form.get('unidad_destino')=='ghz' %}selected{% endif %}>GHz — Gigahertz</option>
+                  </select>
+                </div>
+
+              {% elif formula == "capacitancia" %}
+                <div class="input-group">
+                  <div class="input-label">UNIDAD ORIGEN</div>
+                  <select class="formula-select" name="unidad_origen">
+                    <option value="pf" {% if request.form.get('unidad_origen')=='pf' %}selected{% endif %}>pF — Picofarad</option>
+                    <option value="nf" {% if request.form.get('unidad_origen')=='nf' %}selected{% endif %}>nF — Nanofarad</option>
+                    <option value="uf" {% if request.form.get('unidad_origen')=='uf' %}selected{% endif %}>µF — Microfarad</option>
+                    <option value="mf" {% if request.form.get('unidad_origen')=='mf' %}selected{% endif %}>mF — Milifarad</option>
+                    <option value="f"  {% if request.form.get('unidad_origen')=='f'  %}selected{% endif %}>F  — Farad</option>
+                  </select>
+                </div>
+                <div class="input-group">
+                  <div class="input-label">UNIDAD DESTINO</div>
+                  <select class="formula-select" name="unidad_destino">
+                    <option value="pf" {% if request.form.get('unidad_destino')=='pf' %}selected{% endif %}>pF — Picofarad</option>
+                    <option value="nf" {% if request.form.get('unidad_destino')=='nf' %}selected{% endif %}>nF — Nanofarad</option>
+                    <option value="uf" {% if request.form.get('unidad_destino')=='uf' %}selected{% endif %}>µF — Microfarad</option>
+                    <option value="mf" {% if request.form.get('unidad_destino')=='mf' %}selected{% endif %}>mF — Milifarad</option>
+                    <option value="f"  {% if request.form.get('unidad_destino')=='f'  %}selected{% endif %}>F  — Farad</option>
+                  </select>
+                </div>
+
+              {% elif formula == "inductancia" %}
+                <div class="input-group">
+                  <div class="input-label">UNIDAD ORIGEN</div>
+                  <select class="formula-select" name="unidad_origen">
+                    <option value="uh" {% if request.form.get('unidad_origen')=='uh' %}selected{% endif %}>µH — Microhenry</option>
+                    <option value="mh" {% if request.form.get('unidad_origen')=='mh' %}selected{% endif %}>mH — Milihenry</option>
+                    <option value="h"  {% if request.form.get('unidad_origen')=='h'  %}selected{% endif %}>H  — Henry</option>
+                  </select>
+                </div>
+                <div class="input-group">
+                  <div class="input-label">UNIDAD DESTINO</div>
+                  <select class="formula-select" name="unidad_destino">
+                    <option value="uh" {% if request.form.get('unidad_destino')=='uh' %}selected{% endif %}>µH — Microhenry</option>
+                    <option value="mh" {% if request.form.get('unidad_destino')=='mh' %}selected{% endif %}>mH — Milihenry</option>
+                    <option value="h"  {% if request.form.get('unidad_destino')=='h'  %}selected{% endif %}>H  — Henry</option>
+                  </select>
+                </div>
+
+              {% elif formula == "potencia_w" %}
+                <div class="input-group">
+                  <div class="input-label">UNIDAD ORIGEN</div>
+                  <select class="formula-select" name="unidad_origen">
+                    <option value="mw" {% if request.form.get('unidad_origen')=='mw' %}selected{% endif %}>mW — Miliwatt</option>
+                    <option value="w"  {% if request.form.get('unidad_origen')=='w'  %}selected{% endif %}>W  — Watt</option>
+                    <option value="kw" {% if request.form.get('unidad_origen')=='kw' %}selected{% endif %}>kW — Kilowatt</option>
+                  </select>
+                </div>
+                <div class="input-group">
+                  <div class="input-label">UNIDAD DESTINO</div>
+                  <select class="formula-select" name="unidad_destino">
+                    <option value="mw" {% if request.form.get('unidad_destino')=='mw' %}selected{% endif %}>mW — Miliwatt</option>
+                    <option value="w"  {% if request.form.get('unidad_destino')=='w'  %}selected{% endif %}>W  — Watt</option>
+                    <option value="kw" {% if request.form.get('unidad_destino')=='kw' %}selected{% endif %}>kW — Kilowatt</option>
+                  </select>
+                </div>
+              {% endif %}
+
+              <button type="submit" class="btn-calcular">CALCULAR</button>
+            {% endif %}
+
             {% elif modulo == "boleta" %}
             <div class="boleta-wrap">
               <div class="boleta-titulo">⚡ DIVISOR DE BOLETA ELÉCTRICA</div>
