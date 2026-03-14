@@ -269,152 +269,36 @@
 
     /* ══ MÓDULO BOLETA ══ */
     .mod-btn-boleta {
-      width: 100%;
-      background: transparent;
-      border: 1px solid var(--boleta-borde);
-      color: var(--boleta-acento);
-      font-family: var(--boleta-font);
-      font-size: 0.6rem;
-      padding: 10px 8px;
-      cursor: pointer;
-      letter-spacing: 1px;
-      text-align: left;
-      transition: all 0.15s;
-      margin-top: 8px;
-      display: block;
+      width: 100%; background: transparent;
+      border: 1px solid var(--boleta-borde); color: var(--boleta-acento);
+      font-family: var(--boleta-font); font-size: 0.6rem;
+      padding: 10px 8px; cursor: pointer; letter-spacing: 1px;
+      text-align: left; transition: all 0.15s; margin-top: 8px; display: block;
     }
-    .mod-btn-boleta:hover, .mod-btn-boleta.activo {
-      background: var(--boleta-acento);
-      color: #000;
-      border-color: var(--boleta-acento);
-    }
+    .mod-btn-boleta:hover, .mod-btn-boleta.activo { background: var(--boleta-acento); color: #000; border-color: var(--boleta-acento); }
     .boleta-wrap { font-family: var(--boleta-font); }
-    .boleta-titulo {
-      font-family: var(--boleta-font);
-      color: var(--boleta-acento);
-      font-size: 0.75rem;
-      letter-spacing: 3px;
-      margin-bottom: 20px;
-      text-shadow: 0 0 12px rgba(46,204,113,0.4);
-    }
-    .boleta-label {
-      font-family: var(--boleta-font);
-      font-size: 0.5rem;
-      color: var(--boleta-acento);
-      letter-spacing: 2px;
-      margin-bottom: 6px;
-    }
-    .boleta-input {
-      background: var(--boleta-fondo);
-      border: 1px solid var(--boleta-borde);
-      color: var(--boleta-acento);
-      font-family: var(--boleta-font);
-      font-size: 0.65rem;
-      padding: 10px 14px;
-      width: 100%;
-      outline: none;
-      margin-bottom: 16px;
-      transition: border-color 0.2s;
-    }
+    .boleta-titulo { font-family: var(--boleta-font); color: var(--boleta-acento); font-size: 0.75rem; letter-spacing: 3px; margin-bottom: 20px; text-shadow: 0 0 12px rgba(46,204,113,0.4); }
+    .boleta-label { font-family: var(--boleta-font); font-size: 0.5rem; color: var(--boleta-acento); letter-spacing: 2px; margin-bottom: 6px; }
+    .boleta-input { background: var(--boleta-fondo); border: 1px solid var(--boleta-borde); color: var(--boleta-acento); font-family: var(--boleta-font); font-size: 0.65rem; padding: 10px 14px; width: 100%; outline: none; margin-bottom: 16px; transition: border-color 0.2s; }
     .boleta-input:focus { border-color: var(--boleta-acento); }
-    .casa-row {
-      background: var(--boleta-fondo);
-      border: 1px solid var(--boleta-borde);
-      padding: 12px;
-      margin-bottom: 8px;
-      display: grid;
-      grid-template-columns: 1fr 1fr auto;
-      gap: 10px;
-      align-items: end;
-    }
-    .casa-row input {
-      background: #0d1a0d;
-      border: 1px solid var(--boleta-borde);
-      color: var(--boleta-acento);
-      font-family: var(--boleta-font);
-      font-size: 0.55rem;
-      padding: 8px 10px;
-      width: 100%;
-      outline: none;
-    }
+    .casa-row { background: var(--boleta-fondo); border: 1px solid var(--boleta-borde); padding: 12px; margin-bottom: 8px; display: grid; grid-template-columns: 1fr 1fr auto; gap: 10px; align-items: end; }
+    .casa-row input { background: #0d1a0d; border: 1px solid var(--boleta-borde); color: var(--boleta-acento); font-family: var(--boleta-font); font-size: 0.55rem; padding: 8px 10px; width: 100%; outline: none; }
     .casa-row input:focus { border-color: var(--boleta-acento); }
-    .btn-casa {
-      background: transparent;
-      border: 1px solid var(--boleta-borde);
-      color: var(--boleta-acento);
-      font-family: var(--boleta-font);
-      font-size: 0.8rem;
-      padding: 8px 14px;
-      cursor: pointer;
-      transition: all 0.15s;
-    }
+    .btn-casa { background: transparent; border: 1px solid var(--boleta-borde); color: var(--boleta-acento); font-family: var(--boleta-font); font-size: 0.8rem; padding: 8px 14px; cursor: pointer; transition: all 0.15s; }
     .btn-casa:hover { background: var(--boleta-acento); color: #000; }
-    .btn-calcular-boleta {
-      background: var(--boleta-acento);
-      color: #000;
-      border: none;
-      font-family: var(--boleta-font);
-      font-size: 0.55rem;
-      padding: 14px;
-      cursor: pointer;
-      letter-spacing: 2px;
-      width: 100%;
-      margin-top: 12px;
-      font-weight: 700;
-      transition: background 0.15s;
-    }
+    .btn-calcular-boleta { background: var(--boleta-acento); color: #000; border: none; font-family: var(--boleta-font); font-size: 0.55rem; padding: 14px; cursor: pointer; letter-spacing: 2px; width: 100%; margin-top: 12px; font-weight: 700; transition: background 0.15s; }
     .btn-calcular-boleta:hover { background: var(--boleta-acento2); }
-    .btn-agregar-casa {
-      width: 100%; margin-top: 4px;
-      background: transparent;
-      border: 1px dashed var(--boleta-borde);
-      color: var(--boleta-acento);
-      font-family: var(--boleta-font);
-      font-size: 0.45rem;
-      padding: 10px;
-      cursor: pointer;
-      letter-spacing: 2px;
-      transition: all 0.15s;
-    }
+    .btn-agregar-casa { width: 100%; margin-top: 4px; background: transparent; border: 1px dashed var(--boleta-borde); color: var(--boleta-acento); font-family: var(--boleta-font); font-size: 0.45rem; padding: 10px; cursor: pointer; letter-spacing: 2px; transition: all 0.15s; }
     .btn-agregar-casa:hover { border-color: var(--boleta-acento); background: rgba(46,204,113,0.05); }
-    .boleta-resultado {
-      background: var(--boleta-fondo);
-      border: 1px solid var(--boleta-acento);
-      padding: 16px;
-      margin-top: 16px;
-      font-family: var(--boleta-font);
-    }
-    .boleta-resultado-titulo {
-      font-size: 0.5rem;
-      color: var(--boleta-acento);
-      letter-spacing: 2px;
-      margin-bottom: 12px;
-      border-bottom: 1px solid var(--boleta-borde);
-      padding-bottom: 8px;
-    }
-    .boleta-casa-result {
-      display: grid;
-      grid-template-columns: 1fr auto auto auto;
-      gap: 12px;
-      padding: 8px 0;
-      border-bottom: 1px solid var(--boleta-borde);
-      font-size: 0.48rem;
-      align-items: center;
-    }
+    .boleta-resultado { background: var(--boleta-fondo); border: 1px solid var(--boleta-acento); padding: 16px; margin-top: 16px; font-family: var(--boleta-font); }
+    .boleta-resultado-titulo { font-size: 0.5rem; color: var(--boleta-acento); letter-spacing: 2px; margin-bottom: 12px; border-bottom: 1px solid var(--boleta-borde); padding-bottom: 8px; }
+    .boleta-casa-result { display: grid; grid-template-columns: 1fr auto auto auto; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--boleta-borde); font-size: 0.48rem; align-items: center; }
     .boleta-casa-result:last-child { border-bottom: none; }
     .boleta-casa-nombre { color: #fff; letter-spacing: 1px; }
     .boleta-casa-kwh { color: var(--text2); }
     .boleta-casa-pct { color: var(--boleta-acento); }
     .boleta-casa-monto { color: var(--boleta-acento); font-weight: 700; font-size: 0.58rem; }
-    .boleta-total {
-      margin-top: 10px;
-      font-size: 0.45rem;
-      color: var(--text2);
-      text-align: right;
-      letter-spacing: 1px;
-      padding-top: 8px;
-      border-top: 1px solid var(--boleta-borde);
-    }
+    .boleta-total { margin-top: 10px; font-size: 0.45rem; color: var(--text2); text-align: right; letter-spacing: 1px; padding-top: 8px; border-top: 1px solid var(--boleta-borde); }
   </style>
 </head>
 <body>
@@ -824,265 +708,109 @@
                        value="{{ request.form.get('valor', '') }}">
               </div>
 
-              <!-- Selects de unidad según magnitud -->
               {% if formula == "resistencia" %}
-                <div class="input-group">
-                  <div class="input-label">UNIDAD ORIGEN</div>
+                <div class="input-group"><div class="input-label">UNIDAD ORIGEN</div>
                   <select class="formula-select" name="unidad_origen">
                     <option value="ohm"  {% if request.form.get('unidad_origen')=='ohm'  %}selected{% endif %}>Ω  — Ohm</option>
                     <option value="kohm" {% if request.form.get('unidad_origen')=='kohm' %}selected{% endif %}>kΩ — Kilohm</option>
                     <option value="mohm" {% if request.form.get('unidad_origen')=='mohm' %}selected{% endif %}>MΩ — Megaohm</option>
-                  </select>
-                </div>
-                <div class="input-group">
-                  <div class="input-label">UNIDAD DESTINO</div>
+                  </select></div>
+                <div class="input-group"><div class="input-label">UNIDAD DESTINO</div>
                   <select class="formula-select" name="unidad_destino">
                     <option value="ohm"  {% if request.form.get('unidad_destino')=='ohm'  %}selected{% endif %}>Ω  — Ohm</option>
                     <option value="kohm" {% if request.form.get('unidad_destino')=='kohm' %}selected{% endif %}>kΩ — Kilohm</option>
                     <option value="mohm" {% if request.form.get('unidad_destino')=='mohm' %}selected{% endif %}>MΩ — Megaohm</option>
-                  </select>
-                </div>
-
+                  </select></div>
               {% elif formula == "voltaje" %}
-                <div class="input-group">
-                  <div class="input-label">UNIDAD ORIGEN</div>
+                <div class="input-group"><div class="input-label">UNIDAD ORIGEN</div>
                   <select class="formula-select" name="unidad_origen">
                     <option value="uv" {% if request.form.get('unidad_origen')=='uv' %}selected{% endif %}>µV — Microvolt</option>
                     <option value="mv" {% if request.form.get('unidad_origen')=='mv' %}selected{% endif %}>mV — Milivolt</option>
                     <option value="v"  {% if request.form.get('unidad_origen')=='v'  %}selected{% endif %}>V  — Volt</option>
                     <option value="kv" {% if request.form.get('unidad_origen')=='kv' %}selected{% endif %}>kV — Kilovolt</option>
-                  </select>
-                </div>
-                <div class="input-group">
-                  <div class="input-label">UNIDAD DESTINO</div>
+                  </select></div>
+                <div class="input-group"><div class="input-label">UNIDAD DESTINO</div>
                   <select class="formula-select" name="unidad_destino">
                     <option value="uv" {% if request.form.get('unidad_destino')=='uv' %}selected{% endif %}>µV — Microvolt</option>
                     <option value="mv" {% if request.form.get('unidad_destino')=='mv' %}selected{% endif %}>mV — Milivolt</option>
                     <option value="v"  {% if request.form.get('unidad_destino')=='v'  %}selected{% endif %}>V  — Volt</option>
                     <option value="kv" {% if request.form.get('unidad_destino')=='kv' %}selected{% endif %}>kV — Kilovolt</option>
-                  </select>
-                </div>
-
+                  </select></div>
               {% elif formula == "corriente" %}
-                <div class="input-group">
-                  <div class="input-label">UNIDAD ORIGEN</div>
+                <div class="input-group"><div class="input-label">UNIDAD ORIGEN</div>
                   <select class="formula-select" name="unidad_origen">
                     <option value="ua" {% if request.form.get('unidad_origen')=='ua' %}selected{% endif %}>µA — Microampere</option>
                     <option value="ma" {% if request.form.get('unidad_origen')=='ma' %}selected{% endif %}>mA — Miliampere</option>
                     <option value="a"  {% if request.form.get('unidad_origen')=='a'  %}selected{% endif %}>A  — Ampere</option>
-                  </select>
-                </div>
-                <div class="input-group">
-                  <div class="input-label">UNIDAD DESTINO</div>
+                  </select></div>
+                <div class="input-group"><div class="input-label">UNIDAD DESTINO</div>
                   <select class="formula-select" name="unidad_destino">
                     <option value="ua" {% if request.form.get('unidad_destino')=='ua' %}selected{% endif %}>µA — Microampere</option>
                     <option value="ma" {% if request.form.get('unidad_destino')=='ma' %}selected{% endif %}>mA — Miliampere</option>
                     <option value="a"  {% if request.form.get('unidad_destino')=='a'  %}selected{% endif %}>A  — Ampere</option>
-                  </select>
-                </div>
-
+                  </select></div>
               {% elif formula == "frecuencia" %}
-                <div class="input-group">
-                  <div class="input-label">UNIDAD ORIGEN</div>
+                <div class="input-group"><div class="input-label">UNIDAD ORIGEN</div>
                   <select class="formula-select" name="unidad_origen">
                     <option value="hz"  {% if request.form.get('unidad_origen')=='hz'  %}selected{% endif %}>Hz  — Hertz</option>
                     <option value="khz" {% if request.form.get('unidad_origen')=='khz' %}selected{% endif %}>kHz — Kilohertz</option>
                     <option value="mhz" {% if request.form.get('unidad_origen')=='mhz' %}selected{% endif %}>MHz — Megahertz</option>
                     <option value="ghz" {% if request.form.get('unidad_origen')=='ghz' %}selected{% endif %}>GHz — Gigahertz</option>
-                  </select>
-                </div>
-                <div class="input-group">
-                  <div class="input-label">UNIDAD DESTINO</div>
+                  </select></div>
+                <div class="input-group"><div class="input-label">UNIDAD DESTINO</div>
                   <select class="formula-select" name="unidad_destino">
                     <option value="hz"  {% if request.form.get('unidad_destino')=='hz'  %}selected{% endif %}>Hz  — Hertz</option>
                     <option value="khz" {% if request.form.get('unidad_destino')=='khz' %}selected{% endif %}>kHz — Kilohertz</option>
                     <option value="mhz" {% if request.form.get('unidad_destino')=='mhz' %}selected{% endif %}>MHz — Megahertz</option>
                     <option value="ghz" {% if request.form.get('unidad_destino')=='ghz' %}selected{% endif %}>GHz — Gigahertz</option>
-                  </select>
-                </div>
-
+                  </select></div>
               {% elif formula == "capacitancia" %}
-                <div class="input-group">
-                  <div class="input-label">UNIDAD ORIGEN</div>
+                <div class="input-group"><div class="input-label">UNIDAD ORIGEN</div>
                   <select class="formula-select" name="unidad_origen">
                     <option value="pf" {% if request.form.get('unidad_origen')=='pf' %}selected{% endif %}>pF — Picofarad</option>
                     <option value="nf" {% if request.form.get('unidad_origen')=='nf' %}selected{% endif %}>nF — Nanofarad</option>
                     <option value="uf" {% if request.form.get('unidad_origen')=='uf' %}selected{% endif %}>µF — Microfarad</option>
                     <option value="mf" {% if request.form.get('unidad_origen')=='mf' %}selected{% endif %}>mF — Milifarad</option>
                     <option value="f"  {% if request.form.get('unidad_origen')=='f'  %}selected{% endif %}>F  — Farad</option>
-                  </select>
-                </div>
-                <div class="input-group">
-                  <div class="input-label">UNIDAD DESTINO</div>
+                  </select></div>
+                <div class="input-group"><div class="input-label">UNIDAD DESTINO</div>
                   <select class="formula-select" name="unidad_destino">
                     <option value="pf" {% if request.form.get('unidad_destino')=='pf' %}selected{% endif %}>pF — Picofarad</option>
                     <option value="nf" {% if request.form.get('unidad_destino')=='nf' %}selected{% endif %}>nF — Nanofarad</option>
                     <option value="uf" {% if request.form.get('unidad_destino')=='uf' %}selected{% endif %}>µF — Microfarad</option>
                     <option value="mf" {% if request.form.get('unidad_destino')=='mf' %}selected{% endif %}>mF — Milifarad</option>
                     <option value="f"  {% if request.form.get('unidad_destino')=='f'  %}selected{% endif %}>F  — Farad</option>
-                  </select>
-                </div>
-
+                  </select></div>
               {% elif formula == "inductancia" %}
-                <div class="input-group">
-                  <div class="input-label">UNIDAD ORIGEN</div>
+                <div class="input-group"><div class="input-label">UNIDAD ORIGEN</div>
                   <select class="formula-select" name="unidad_origen">
                     <option value="uh" {% if request.form.get('unidad_origen')=='uh' %}selected{% endif %}>µH — Microhenry</option>
                     <option value="mh" {% if request.form.get('unidad_origen')=='mh' %}selected{% endif %}>mH — Milihenry</option>
                     <option value="h"  {% if request.form.get('unidad_origen')=='h'  %}selected{% endif %}>H  — Henry</option>
-                  </select>
-                </div>
-                <div class="input-group">
-                  <div class="input-label">UNIDAD DESTINO</div>
+                  </select></div>
+                <div class="input-group"><div class="input-label">UNIDAD DESTINO</div>
                   <select class="formula-select" name="unidad_destino">
                     <option value="uh" {% if request.form.get('unidad_destino')=='uh' %}selected{% endif %}>µH — Microhenry</option>
                     <option value="mh" {% if request.form.get('unidad_destino')=='mh' %}selected{% endif %}>mH — Milihenry</option>
                     <option value="h"  {% if request.form.get('unidad_destino')=='h'  %}selected{% endif %}>H  — Henry</option>
-                  </select>
-                </div>
-
+                  </select></div>
               {% elif formula == "potencia_w" %}
-                <div class="input-group">
-                  <div class="input-label">UNIDAD ORIGEN</div>
+                <div class="input-group"><div class="input-label">UNIDAD ORIGEN</div>
                   <select class="formula-select" name="unidad_origen">
                     <option value="mw" {% if request.form.get('unidad_origen')=='mw' %}selected{% endif %}>mW — Miliwatt</option>
                     <option value="w"  {% if request.form.get('unidad_origen')=='w'  %}selected{% endif %}>W  — Watt</option>
                     <option value="kw" {% if request.form.get('unidad_origen')=='kw' %}selected{% endif %}>kW — Kilowatt</option>
-                  </select>
-                </div>
-                <div class="input-group">
-                  <div class="input-label">UNIDAD DESTINO</div>
+                  </select></div>
+                <div class="input-group"><div class="input-label">UNIDAD DESTINO</div>
                   <select class="formula-select" name="unidad_destino">
                     <option value="mw" {% if request.form.get('unidad_destino')=='mw' %}selected{% endif %}>mW — Miliwatt</option>
                     <option value="w"  {% if request.form.get('unidad_destino')=='w'  %}selected{% endif %}>W  — Watt</option>
                     <option value="kw" {% if request.form.get('unidad_destino')=='kw' %}selected{% endif %}>kW — Kilowatt</option>
-                  </select>
-                </div>
+                  </select></div>
               {% endif %}
 
               <button type="submit" class="btn-calcular">CALCULAR</button>
             {% endif %}
-
-            {% elif modulo == "boleta" %}
-            <div class="boleta-wrap">
-              <div class="boleta-titulo">⚡ DIVISOR DE BOLETA ELÉCTRICA</div>
-
-              <form method="POST" id="form-boleta">
-                <input type="hidden" name="modulo" value="boleta">
-                <input type="hidden" name="cantidad_casas" id="cantidad_casas" value="3">
-
-                <div class="boleta-label">MONTO TOTAL DE LA BOLETA ($)</div>
-                <input class="boleta-input" type="text" inputmode="decimal"
-                       name="monto_total" placeholder="Ej: 15000" required
-                       value="{{ request.form.get('monto_total', '') }}">
-
-                <div class="boleta-label" style="margin-bottom:10px;">CASAS</div>
-                <div id="casas-container">
-                  {% for i in range(1, 4) %}
-                  <div class="casa-row" id="casa-row-{{ i }}">
-                    <div>
-                      <div style="font-family:var(--boleta-font);font-size:0.45rem;color:var(--boleta-acento);margin-bottom:4px;">NOMBRE</div>
-                      <input type="text" name="nombre_casa_{{ i }}"
-                             placeholder="Casa {{ i }}"
-                             value="{{ request.form.get('nombre_casa_' ~ i, 'Casa ' ~ i) }}">
-                    </div>
-                    <div>
-                      <div style="font-family:var(--boleta-font);font-size:0.45rem;color:var(--boleta-acento);margin-bottom:4px;">kWh CONSUMIDOS</div>
-                      <input type="text" inputmode="decimal" name="kwh_casa_{{ i }}"
-                             placeholder="0"
-                             value="{{ request.form.get('kwh_casa_' ~ i, '') }}">
-                    </div>
-                    <button type="button" class="btn-casa" onclick="quitarCasa({{ i }})">−</button>
-                  </div>
-                  {% endfor %}
-                </div>
-
-                <button type="button" class="btn-agregar-casa" onclick="agregarCasa()">+ AGREGAR CASA</button>
-                <button type="submit" class="btn-calcular-boleta">CALCULAR DIVISIÓN</button>
-              </form>
-
-              {% if resultado and resultado.startswith('DIVISIÓN DE BOLETA') %}
-                {% set partes = resultado.split('|') %}
-                {% set monto_total = partes[1] %}
-                {% set total_kwh = partes[2] %}
-                {% set n_casas = partes[3]|int %}
-                <div class="boleta-resultado">
-                  <div class="boleta-resultado-titulo">// RESULTADO</div>
-                  {% for i in range(n_casas) %}
-                    {% set base = 4 + i * 4 %}
-                    <div class="boleta-casa-result">
-                      <span class="boleta-casa-nombre">{{ partes[base] }}</span>
-                      <span class="boleta-casa-kwh">{{ partes[base+1] }} kWh</span>
-                      <span class="boleta-casa-pct">{{ partes[base+2] }}%</span>
-                      <span class="boleta-casa-monto">$ {{ partes[base+3] }}</span>
-                    </div>
-                  {% endfor %}
-                  <div class="boleta-total">TOTAL: {{ total_kwh }} kWh — $ {{ monto_total }}</div>
-                </div>
-              {% endif %}
-
-              {% if error %}
-                <div style="color:var(--boleta-acento);font-family:var(--boleta-font);font-size:0.5rem;margin-top:12px;">⚠ {{ error }}</div>
-              {% endif %}
-            </div>
-
-            {% if formula %}
-            <!-- Fila: valor + unidad origen → unidad destino -->
-            <div class="conv-row">
-              <div class="input-group" style="margin:0">
-                <div class="input-label">VALOR A CONVERTIR</div>
-                <input class="input-field" type="text" inputmode="decimal" name="valor"
-                       value="{{ request.form.get('valor','') }}"
-                       placeholder="ej: 1000" required>
-              </div>
-              <div class="conv-arrow">→</div>
-              <div class="input-group" style="margin:0">
-                <div class="input-label">CONVERTIR A</div>
-                <select class="formula-select" name="unidad_origen" style="margin:0" required>
-                  <option value="">-- unidad --</option>
-
-                  {% if formula == "resistencia" %}
-                    {% set unidades = [("ohm","Ω — Ohm"),("kohm","kΩ — Kilo-ohm"),("mohm","MΩ — Mega-ohm")] %}
-                  {% elif formula == "voltaje" %}
-                    {% set unidades = [("uv","µV — Microvolt"),("mv","mV — Milivolt"),("v","V — Volt"),("kv","kV — Kilovolt")] %}
-                  {% elif formula == "corriente" %}
-                    {% set unidades = [("ua","µA — Microamper"),("ma","mA — Miliamper"),("a","A — Amper")] %}
-                  {% elif formula == "frecuencia" %}
-                    {% set unidades = [("hz","Hz — Hertz"),("khz","kHz — Kilohertz"),("mhz","MHz — Megahertz"),("ghz","GHz — Gigahertz")] %}
-                  {% elif formula == "capacitancia" %}
-                    {% set unidades = [("pf","pF — Picofarad"),("nf","nF — Nanofarad"),("uf","µF — Microfarad"),("mf","mF — Milifarad"),("f","F — Farad")] %}
-                  {% elif formula == "inductancia" %}
-                    {% set unidades = [("uh","µH — Microhenry"),("mh","mH — Milihenry"),("h","H — Henry")] %}
-                  {% elif formula == "potencia_w" %}
-                    {% set unidades = [("mw","mW — Miliwatt"),("w","W — Watt"),("kw","kW — Kilowatt")] %}
-                  {% endif %}
-
-                  <!-- unidad_origen = la que tiene el usuario -->
-                  <optgroup label="Tengo este valor en...">
-                  {% for val, label in unidades %}
-                    <option value="{{ val }}" {% if request.form.get('unidad_origen')==val %}selected{% endif %}>{{ label }}</option>
-                  {% endfor %}
-                  </optgroup>
-                </select>
-              </div>
-            </div>
-
-            <!-- Destino: a qué unidad convertir -->
-            {% if request.form.get('unidad_origen') %}
-            <div class="input-group">
-              <div class="input-label">QUIERO CONVERTIR A</div>
-              <select class="formula-select" name="unidad_destino" style="margin-bottom:0" required>
-                <option value="">-- unidad destino --</option>
-                {% for val, label in unidades %}
-                  {% if val != request.form.get('unidad_origen') %}
-                    <option value="{{ val }}" {% if request.form.get('unidad_destino')==val %}selected{% endif %}>{{ label }}</option>
-                  {% endif %}
-                {% endfor %}
-              </select>
-            </div>
-            {% endif %}
-
-            {% endif %}<!-- /if formula -->
 
           {# ── CÁLCULO LED ── #}
           {% elif modulo == "led" %}
@@ -1148,6 +876,63 @@
               <div class="input-group"><div class="input-label">CAPACITANCIA C — Farads</div><input class="input-field" type="text" inputmode="decimal" name="capacitancia" placeholder="0,001" required></div>
               <div class="formula-hint">τ = R × C  |  63% carga en 1τ  |  99% en 5τ</div>
             {% endif %}
+
+            {% elif modulo == "boleta" %}
+            <div class="boleta-wrap">
+              <div class="boleta-titulo">⚡ DIVISOR DE BOLETA ELÉCTRICA</div>
+              <form method="POST" id="form-boleta">
+                <input type="hidden" name="modulo" value="boleta">
+                <input type="hidden" name="cantidad_casas" id="cantidad_casas" value="3">
+                <div class="boleta-label">MONTO TOTAL DE LA BOLETA ($)</div>
+                <input class="boleta-input" type="text" inputmode="decimal"
+                       name="monto_total" placeholder="Ej: 15000" required
+                       value="{{ request.form.get('monto_total', '') }}">
+                <div class="boleta-label" style="margin-bottom:10px;">CASAS</div>
+                <div id="casas-container">
+                  {% for i in range(1, 4) %}
+                  <div class="casa-row" id="casa-row-{{ i }}">
+                    <div>
+                      <div style="font-family:var(--boleta-font);font-size:0.45rem;color:var(--boleta-acento);margin-bottom:4px;">NOMBRE</div>
+                      <input type="text" name="nombre_casa_{{ i }}"
+                             placeholder="Casa {{ i }}"
+                             value="{{ request.form.get('nombre_casa_' ~ i, 'Casa ' ~ i) }}">
+                    </div>
+                    <div>
+                      <div style="font-family:var(--boleta-font);font-size:0.45rem;color:var(--boleta-acento);margin-bottom:4px;">kWh CONSUMIDOS</div>
+                      <input type="text" inputmode="decimal" name="kwh_casa_{{ i }}"
+                             placeholder="0"
+                             value="{{ request.form.get('kwh_casa_' ~ i, '') }}">
+                    </div>
+                    <button type="button" class="btn-casa" onclick="quitarCasa({{ i }})">−</button>
+                  </div>
+                  {% endfor %}
+                </div>
+                <button type="button" class="btn-agregar-casa" onclick="agregarCasa()">+ AGREGAR CASA</button>
+                <button type="submit" class="btn-calcular-boleta">CALCULAR DIVISIÓN</button>
+              </form>
+              {% if resultado and resultado.startswith('DIVISIÓN DE BOLETA') %}
+                {% set partes = resultado.split('|') %}
+                {% set monto_total = partes[1] %}
+                {% set total_kwh = partes[2] %}
+                {% set n_casas = partes[3]|int %}
+                <div class="boleta-resultado">
+                  <div class="boleta-resultado-titulo">// RESULTADO</div>
+                  {% for i in range(n_casas) %}
+                    {% set base = 4 + i * 4 %}
+                    <div class="boleta-casa-result">
+                      <span class="boleta-casa-nombre">{{ partes[base] }}</span>
+                      <span class="boleta-casa-kwh">{{ partes[base+1] }} kWh</span>
+                      <span class="boleta-casa-pct">{{ partes[base+2] }}%</span>
+                      <span class="boleta-casa-monto">$ {{ partes[base+3] }}</span>
+                    </div>
+                  {% endfor %}
+                  <div class="boleta-total">TOTAL: {{ total_kwh }} kWh — $ {{ monto_total }}</div>
+                </div>
+              {% endif %}
+              {% if error %}
+                <div style="color:var(--boleta-acento);font-family:var(--boleta-font);font-size:0.5rem;margin-top:12px;">⚠ {{ error }}</div>
+              {% endif %}
+            </div>
 
           {% endif %}<!-- fin modulos -->
 
@@ -1275,32 +1060,18 @@ if ('serviceWorker' in navigator) {
 
 // ── Módulo Boleta ──
 let numCasas = 3;
-
 function agregarCasa() {
   numCasas++;
   document.getElementById('cantidad_casas').value = numCasas;
   const cont = document.getElementById('casas-container');
   const div = document.createElement('div');
-  div.className = 'casa-row';
-  div.id = 'casa-row-' + numCasas;
-  div.innerHTML = `
-    <div>
-      <div style="font-family:var(--boleta-font);font-size:0.45rem;color:var(--boleta-acento);margin-bottom:4px;letter-spacing:1px;">NOMBRE</div>
-      <input type="text" name="nombre_casa_${numCasas}" placeholder="Casa ${numCasas}">
-    </div>
-    <div>
-      <div style="font-family:var(--boleta-font);font-size:0.45rem;color:var(--boleta-acento);margin-bottom:4px;letter-spacing:1px;">kWh CONSUMIDOS</div>
-      <input type="text" inputmode="decimal" name="kwh_casa_${numCasas}" placeholder="0">
-    </div>
-    <button type="button" class="btn-casa" onclick="quitarCasa(${numCasas})">−</button>
-  `;
+  div.className = 'casa-row'; div.id = 'casa-row-' + numCasas;
+  div.innerHTML = `<div><div style="font-family:var(--boleta-font);font-size:0.45rem;color:var(--boleta-acento);margin-bottom:4px;">NOMBRE</div><input type="text" name="nombre_casa_${numCasas}" placeholder="Casa ${numCasas}"></div><div><div style="font-family:var(--boleta-font);font-size:0.45rem;color:var(--boleta-acento);margin-bottom:4px;">kWh CONSUMIDOS</div><input type="text" inputmode="decimal" name="kwh_casa_${numCasas}" placeholder="0"></div><button type="button" class="btn-casa" onclick="quitarCasa(${numCasas})">−</button>`;
   cont.appendChild(div);
 }
-
 function quitarCasa(id) {
   const row = document.getElementById('casa-row-' + id);
-  const total = document.querySelectorAll('.casa-row').length;
-  if (row && total > 1) {
+  if (row && document.querySelectorAll('.casa-row').length > 1) {
     row.remove();
     numCasas = document.querySelectorAll('.casa-row').length;
     document.getElementById('cantidad_casas').value = numCasas;
