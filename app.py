@@ -538,6 +538,58 @@ def calcular():
                 for casa in casas:
                     resultado += f"|{casa['nombre']}|{fmt(casa['kwh'])}|{fmt(casa['porcentaje'])}|{fmt(casa['monto'])}"
 
+
+        elif modulo == "cable":
+            # Tabla AEA 90364 — corriente base (A) para cable Cu PVC
+            # {seccion_mm2: {instalacion: {circuito: amperaje_base}}}
+            TABLA = {
+                "1.5":  {"embutido": {"monofasico": 13,  "trifasico": 11},  "aereo": {"monofasico": 17,  "trifasico": 15},  "enterrado": {"monofasico": 18,  "trifasico": 16}},
+                "2.5":  {"embutido": {"monofasico": 18,  "trifasico": 16},  "aereo": {"monofasico": 23,  "trifasico": 20},  "enterrado": {"monofasico": 25,  "trifasico": 22}},
+                "4":    {"embutido": {"monofasico": 24,  "trifasico": 21},  "aereo": {"monofasico": 31,  "trifasico": 27},  "enterrado": {"monofasico": 33,  "trifasico": 29}},
+                "6":    {"embutido": {"monofasico": 31,  "trifasico": 27},  "aereo": {"monofasico": 40,  "trifasico": 35},  "enterrado": {"monofasico": 43,  "trifasico": 38}},
+                "10":   {"embutido": {"monofasico": 42,  "trifasico": 37},  "aereo": {"monofasico": 54,  "trifasico": 47},  "enterrado": {"monofasico": 59,  "trifasico": 52}},
+                "16":   {"embutido": {"monofasico": 56,  "trifasico": 49},  "aereo": {"monofasico": 73,  "trifasico": 64},  "enterrado": {"monofasico": 79,  "trifasico": 69}},
+                "25":   {"embutido": {"monofasico": 73,  "trifasico": 64},  "aereo": {"monofasico": 95,  "trifasico": 83},  "enterrado": {"monofasico": 101, "trifasico": 88}},
+                "35":   {"embutido": {"monofasico": 89,  "trifasico": 78},  "aereo": {"monofasico": 117, "trifasico": 102}, "enterrado": {"monofasico": 122, "trifasico": 107}},
+                "50":   {"embutido": {"monofasico": 108, "trifasico": 94},  "aereo": {"monofasico": 141, "trifasico": 124}, "enterrado": {"monofasico": 148, "trifasico": 129}},
+                "70":   {"embutido": {"monofasico": 136, "trifasico": 119}, "aereo": {"monofasico": 179, "trifasico": 156}, "enterrado": {"monofasico": 187, "trifasico": 163}},
+                "95":   {"embutido": {"monofasico": 164, "trifasico": 144}, "aereo": {"monofasico": 216, "trifasico": 188}, "enterrado": {"monofasico": 225, "trifasico": 196}},
+                "120":  {"embutido": {"monofasico": 188, "trifasico": 164}, "aereo": {"monofasico": 249, "trifasico": 217}, "enterrado": {"monofasico": 259, "trifasico": 226}},
+                "150":  {"embutido": {"monofasico": 212, "trifasico": 185}, "aereo": {"monofasico": 285, "trifasico": 249}, "enterrado": {"monofasico": 296, "trifasico": 258}},
+                "185":  {"embutido": {"monofasico": 240, "trifasico": 210}, "aereo": {"monofasico": 324, "trifasico": 283}, "enterrado": {"monofasico": 337, "trifasico": 294}},
+                "240":  {"embutido": {"monofasico": 278, "trifasico": 243}, "aereo": {"monofasico": 380, "trifasico": 332}, "enterrado": {"monofasico": 395, "trifasico": 345}},
+            }
+            # Factor de corrección por temperatura (base 25°C, cable PVC 70°C máx)
+            FACTOR_TEMP = {25: 1.00, 30: 0.94, 35: 0.87, 40: 0.79, 45: 0.71, 50: 0.61}
+            # Factor de agrupamiento
+            FACTOR_GRUP = {1: 1.00, 2: 0.80, 3: 0.70, 4: 0.65, 5: 0.60}
+            # Disyuntores estándar comerciales en Argentina
+            DISYUNTORES = [6, 10, 13, 16, 20, 25, 32, 40, 50, 63, 80, 100, 125, 160, 200, 250]
+
+            seccion   = request.form.get("seccion", "")
+            instalac  = request.form.get("instalacion", "")
+            circuito  = request.form.get("circuito", "")
+            temp      = int(request.form.get("temperatura", "25"))
+            n_circ    = int(request.form.get("circuitos_agrupados", "1"))
+            n_circ    = min(n_circ, 5)
+
+            if not seccion or not instalac or not circuito:
+                error = "Completá todos los campos."
+            elif seccion not in TABLA:
+                error = "Sección no reconocida."
+            else:
+                i_base    = TABLA[seccion][instalac][circuito]
+                f_temp    = FACTOR_TEMP.get(temp, 1.0)
+                f_grup    = FACTOR_GRUP.get(n_circ, 1.0)
+                i_final   = i_base * f_temp * f_grup
+                # Disyuntor: el valor comercial inmediatamente inferior a i_final
+                disyuntor = max([d for d in DISYUNTORES if d <= i_final], default=DISYUNTORES[0])
+                # Nota de instalación
+                nota_inst = {"embutido": "embutido en pared/caño", "aereo": "a la vista/aéreo", "enterrado": "enterrado directo"}[instalac]
+                nota = f"Instalación {nota_inst} — {circuito} — {temp}°C — {n_circ} circuito(s)"
+                resultado = f"CABLE|{i_base}|{f_temp:.2f}|{f_grup:.2f}|{i_final:.1f}|{disyuntor} A|{nota}"
+
+
     except (ValueError, TypeError):
         error = "Ingresá valores numéricos válidos en todos los campos."
     except ZeroDivisionError:
