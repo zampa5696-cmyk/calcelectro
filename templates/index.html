@@ -934,7 +934,7 @@
 
           {% endif %}<!-- fin modulos -->
 
-          {% if formula %}
+          {% if formula and modulo not in ["conversion", "boleta", "cable"] %}
             <button type="submit" class="btn-calcular">CALCULAR</button>
           {% endif %}
 
